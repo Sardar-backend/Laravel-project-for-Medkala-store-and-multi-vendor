@@ -1,0 +1,143 @@
+.swiper-btn-next,
+.swiper-btn-prev,
+.swiper-btn-next-2,
+.swiper-btn-prev-2 {
+  position: absolute;
+  top: var(--swiper-navigation-top-offset, 94%);
+  margin-top: calc(0px - (var(--swiper-navigation-size) / 2));
+  z-index: 10;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  color: #ed4444;
+  border-radius: 12px;
+  width: 40px;
+  height: 40px;
+  box-shadow: 0px 10px 43px -7px rgb(255, 255, 255);
+}
+.swiper-btn-next.swiper-button-disabled,
+.swiper-btn-prev.swiper-button-disabled {
+  opacity: 0.5;
+  cursor: auto;
+  pointer-events: none;
+}
+.swiper-btn-next.swiper-button-hidden,
+.swiper-btn-prev.swiper-button-hidden {
+  opacity: 0;
+  cursor: auto;
+  pointer-events: none;
+}
+.swiper-navigation-disabled .swiper-btn-next,
+.swiper-navigation-disabled .swiper-btn-prev {
+  display: none !important;
+}
+.swiper-btn-next svg,
+.swiper-btn-prev svg {
+  width: 5px;
+  height: 5px;
+  object-fit: contain;
+  transform-origin: center;
+}
+.swiper-rtl .swiper-btn-next svg,
+.swiper-rtl .swiper-btn-prev svg {
+  transform: rotate(180deg);
+}
+.swiper-btn-prev,
+.swiper-rtl .swiper-btn-next {
+  left: var(--swiper-navigation-sides-offset, 47%);
+  right: auto;
+}
+.swiper-btn-next,
+.swiper-rtl .swiper-btn-prev {
+  right: var(--swiper-navigation-sides-offset, 40%);
+  left: auto;
+}
+.swiper-button-lock {
+  display: none;
+}
+.swiper-btn-next:after,
+.swiper-btn-prev:after {
+  font-family: swiper-icons;
+  font-size: 20px;
+  text-transform: none !important;
+  letter-spacing: 0;
+  font-variant: initial;
+  line-height: 1;
+}
+.swiper-btn-prev:after,
+.swiper-rtl .swiper-btn-next:after {
+  content: "prev";
+}
+.swiper-btn-next,
+.swiper-rtl .swiper-btn-prev {
+  right: var(--swiper-navigation-sides-offset, 47%);
+  left: auto;
+}
+.swiper-btn-next:after,
+.swiper-rtl .swiper-btn-prev:after {
+  content: "next";
+}
+
+
+
+.swiper-btn-next-2.swiper-button-disabled,
+.swiper-btn-prev-2.swiper-button-disabled {
+  opacity: 0.5;
+  cursor: auto;
+  pointer-events: none;
+}
+.swiper-btn-next-2.swiper-button-hidden,
+.swiper-btn-prev-2.swiper-button-hidden {
+  opacity: 0;
+  cursor: auto;
+  pointer-events: none;
+}
+.swiper-navigation-disabled .swiper-btn-next-2,
+.swiper-navigation-disabled .swiper-btn-prev-2 {
+  display: none !important;
+}
+.swiper-btn-next-2 svg,
+.swiper-btn-prev-2 svg {
+  width: 5px;
+  height: 5px;
+  object-fit: contain;
+  transform-origin: center;
+}
+.swiper-rtl .swiper-btn-next-2 svg,
+.swiper-rtl .swiper-btn-prev-2 svg {
+  transform: rotate(180deg);
+}
+.swiper-btn-prev-2,
+.swiper-rtl .swiper-btn-next-2 {
+  left: var(--swiper-navigation-sides-offset, 47%);
+  right: auto;
+}
+.swiper-btn-next-2,
+.swiper-rtl .swiper-btn-prev-2 {
+  right: var(--swiper-navigation-sides-offset, 40%);
+  left: auto;
+}
+.swiper-btn-next-2:after,
+.swiper-btn-prev-2:after {
+  font-family: swiper-icons;
+  font-size: 20px;
+  text-transform: none !important;
+  letter-spacing: 0;
+  font-variant: initial;
+  line-height: 1;
+}
+.swiper-btn-prev-2:after,
+.swiper-rtl .swiper-btn-next-2:after {
+  content: "prev";
+}
+.swiper-btn-next-2,
+.swiper-rtl .swiper-btn-prev-2 {
+  right: var(--swiper-navigation-sides-offset, 47%);
+  left: auto;
+}
+.swiper-btn-next-2:after,
+.swiper-rtl .swiper-btn-prev-2:after {
+  content: "next";
+}

@@ -49,8 +49,8 @@ class Product extends Model
     public function orders(){
         return $this->belongsToMany(Order::class);
     }
-    // public function favorite (){
-    //     return $this->belongsToMany(User::class,'favorites','user_id','products_id','id','id');
-    // }
+    public function favorite (){
+        return $this->belongsToMany(User::class,'favorites','user_id','products_id','id','id');
+    }
 
 }

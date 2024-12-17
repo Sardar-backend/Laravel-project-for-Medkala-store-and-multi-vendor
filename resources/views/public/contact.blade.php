@@ -54,6 +54,8 @@
                 </span>
               </div>
             </div>
+            <form action="" method="post">
+                @csrf
             <div class="px-5 md:pr-24 my-10">
               <div class="md:flex gap-x-5 gap-y-5 mb-5">
                 <div class="md:w-1/2">
@@ -68,7 +70,7 @@
                     ایمیل:
                     <svg class="fill-red-500" xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M210.23,101.57l-72.6,29,51.11,65.71a6,6,0,0,1-9.48,7.36L128,137.77,76.74,203.68a6,6,0,1,1-9.48-7.36l51.11-65.71-72.6-29a6,6,0,1,1,4.46-11.14L122,119.14V40a6,6,0,0,1,12,0v79.14l71.77-28.71a6,6,0,1,1,4.46,11.14Z"></path></svg>
                   </label>
-                  <input type="text" name="name" class="text-sm block w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-700 outline-none transition-all focus:border-red-300">
+                  <input type="email" name="email" class="text-sm block w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-700 outline-none transition-all focus:border-red-300">
                 </div>
               </div>
               <div class="w-full max-w-full shrink-0 md:w-10/12 md:flex-0">
@@ -77,13 +79,14 @@
                       توضیحات:
                       <svg class="fill-red-500" xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M210.23,101.57l-72.6,29,51.11,65.71a6,6,0,0,1-9.48,7.36L128,137.77,76.74,203.68a6,6,0,1,1-9.48-7.36l51.11-65.71-72.6-29a6,6,0,1,1,4.46-11.14L122,119.14V40a6,6,0,0,1,12,0v79.14l71.77-28.71a6,6,0,1,1,4.46,11.14Z"></path></svg>
                     </label>
-                    <textarea name="description" cols="20" rows="7" class="text-sm block w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-700 outline-none transition-all focus:border-red-300"></textarea>
+                    <textarea name="content" cols="20" rows="7" class="text-sm block w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-700 outline-none transition-all focus:border-red-300"></textarea>
                   </div>
               </div>
               <span class="flex justify-center items-center my-5">
-                  <button class="px-7 py-2 text-center text-white bg-red-400 hover:bg-red-500 transition rounded-lg text-sm">ارسال</button>
+                  <button type="submit" class="px-7 py-2 text-center text-white bg-red-400 hover:bg-red-500 transition rounded-lg text-sm">ارسال</button>
               </span>
             </div>
+            </form>
             <div>
               <iframe class="rounded-3xl w-full my-5" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5487.320972393403!2d59.6102611712093!3d36.28800020180445!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f6c91ef5993b861%3A0xbc78a4fdeb4d00b5!2z2K3YsdmFINin2YXYp9mFINix2LbYpyDYudmE24zZhyDYp9mE2LPZhNin2YU!5e0!3m2!1sen!2sus!4v1690833786920!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
@@ -93,4 +96,3 @@
   </main>
   <!-- footer -->
   @endsection
-

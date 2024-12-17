@@ -15,14 +15,14 @@
       <div>
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#3d3d3d" viewBox="0 0 256 256"><path d="M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z"></path></svg>
       </div>
-      <a class="text-zinc-800 hover:text-red-400 transition" href="">
+      <a class="text-zinc-800 hover:text-red-400 transition" href="/blog">
         وبلاگ
       </a>
       <div>
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#3d3d3d" viewBox="0 0 256 256"><path d="M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z"></path></svg>
       </div>
       <a class="text-red-400" href="">
-        معرفی نینتندو سوئیچ 2
+         {{$blog->title}}
       </a>
     </div>
     <!-- text blogs -->
@@ -32,7 +32,7 @@
           <div class="flex gap-4 pb-2 flex-wrap">
             <div class="text-xs flex gap-x-1 items-center text-zinc-400">
               <svg class="fill-zinc-400" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="" viewBox="0 0 256 256"><path d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Z"></path></svg>
-              1402/11/11
+              {{jdate($blog->failed_at)->format('%B %d، %Y')}}
             </div>
             <div class="text-xs flex gap-x-1 items-center text-zinc-400">
               <svg class="fill-zinc-400" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#000000" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24ZM74.08,197.5a64,64,0,0,1,107.84,0,87.83,87.83,0,0,1-107.84,0ZM96,120a32,32,0,1,1,32,32A32,32,0,0,1,96,120Zm97.76,66.41a79.66,79.66,0,0,0-36.06-28.75,48,48,0,1,0-59.4,0,79.66,79.66,0,0,0-36.06,28.75,88,88,0,1,1,131.52,0Z"></path></svg>
@@ -44,7 +44,7 @@
             </div>
             <div class="text-xs flex gap-x-1 items-center text-zinc-400">
               <svg class="fill-zinc-400" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#000000" viewBox="0 0 256 256"><path d="M247.31,124.76c-.35-.79-8.82-19.58-27.65-38.41C194.57,61.26,162.88,48,128,48S61.43,61.26,36.34,86.35C17.51,105.18,9,124,8.69,124.76a8,8,0,0,0,0,6.5c.35.79,8.82,19.57,27.65,38.4C61.43,194.74,93.12,208,128,208s66.57-13.26,91.66-38.34c18.83-18.83,27.3-37.61,27.65-38.4A8,8,0,0,0,247.31,124.76ZM128,192c-30.78,0-57.67-11.19-79.93-33.25A133.47,133.47,0,0,1,25,128,133.33,133.33,0,0,1,48.07,97.25C70.33,75.19,97.22,64,128,64s57.67,11.19,79.93,33.25A133.46,133.46,0,0,1,231.05,128C223.84,141.46,192.43,192,128,192Zm0-112a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Z"></path></svg>
-              73بازدید
+            {{$blog->count_view}}بازدید
             </div>
           </div>
           <img class="rounded-lg" src="./assets/image/blog/10.jpg" alt="">
@@ -87,114 +87,82 @@
           </div>
         </div>
         <div class="flex flex-col p-4 mt-5 rounded-2xl bg-white shadow-box-md">
-          <!-- top comments -->
-          <div>
-            <div class="text-zinc-600">5 دیدگاه برای معرفی نینتندو سوییچ 2</div>
+
+        @if (!$comments->first())
+            <p>اولین نفری باشید که نظری ارسال میکنید</p>
+
+        @else
+        <!-- top comments -->
+        <div>
+            <div class="text-zinc-600">{{count($comments)}} دیدگاه برای معرفی {{$blog->title}}</div>
           </div>
           <!-- COMMENT -->
-          <div class="border rounded-xl px-5 py-3 my-2">
-            <div class="flex items-center gap-x-1">
+        @foreach ($comments as $comment)
+            <div class="border rounded-xl px-5 py-3 my-2">
+                <div class="flex items-center gap-x-1">
               <svg class="fill-zinc-500" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24ZM74.08,197.5a64,64,0,0,1,107.84,0,87.83,87.83,0,0,1-107.84,0ZM96,120a32,32,0,1,1,32,32A32,32,0,0,1,96,120Zm97.76,66.41a79.66,79.66,0,0,0-36.06-28.75,48,48,0,1,0-59.4,0,79.66,79.66,0,0,0-36.06,28.75,88,88,0,1,1,131.52,0Z"></path></svg>
               <div class="text-xs opacity-60">
-                امیررضا -
-                11 بهمن 1402
+              {{ $comment->user ? $comment->user->name : $comment->username }} -
+                {{jdate($comment->failed_at)->format('%B %d، %Y')}}
               </div>
             </div>
             <div class="opacity-60 text-sm py-3">
-              نظر شما درباره این لپ تاپ چیه؟
+              {{$comment->content}}
             </div>
             <div>
-              <button class="mr-auto bg-blue-500 text-zinc-50 rounded-lg px-4 py-1 md:w-auto text-sm flex justify-center items-center">
+              <button onclick="document.getElementById('targetElement').scrollIntoView({ behavior: 'smooth' });" class="mr-auto bg-blue-500 text-zinc-50 rounded-lg px-4 py-1 md:w-auto text-sm flex justify-center items-center">
                 پاسخ
               </button>
             </div>
+            @foreach ($comment->child->where('status',1) as $child )
             <!-- RESPONSE -->
             <div class="bg-blue-100 rounded-xl pl-2 pr-5 sm:pr-8 py-3 mt-2">
               <div class="flex items-center gap-x-1">
                 <svg class="fill-zinc-500" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24ZM74.08,197.5a64,64,0,0,1,107.84,0,87.83,87.83,0,0,1-107.84,0ZM96,120a32,32,0,1,1,32,32A32,32,0,0,1,96,120Zm97.76,66.41a79.66,79.66,0,0,0-36.06-28.75,48,48,0,1,0-59.4,0,79.66,79.66,0,0,0-36.06,28.75,88,88,0,1,1,131.52,0Z"></path></svg>
                 <div class="text-xs opacity-60">
-                  امیررضا -
-                  11 بهمن 1402
+                {{ $child->user ? $child->user->name : $child->username }} -
+                {{jdate($child->failed_at)->format('%B %d، %Y')}}
                 </div>
               </div>
               <div class="opacity-60 text-sm py-3">
                 لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحامه و مجله در ستون و سطرآنچنان که لازم است.
               </div>
               <div>
-                <button class="mr-auto bg-blue-500 text-zinc-50 rounded-lg px-4 py-1 md:w-auto text-sm flex justify-center items-center">
+                <button  class="mr-auto bg-blue-500 text-zinc-50 rounded-lg px-4 py-1 md:w-auto text-sm flex justify-center items-center ">
                   پاسخ
                 </button>
               </div>
             </div>
-          </div>
-          <div class="border rounded-xl px-5 py-3 my-2">
-            <div class="flex items-center gap-x-1">
-              <svg class="fill-zinc-500" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24ZM74.08,197.5a64,64,0,0,1,107.84,0,87.83,87.83,0,0,1-107.84,0ZM96,120a32,32,0,1,1,32,32A32,32,0,0,1,96,120Zm97.76,66.41a79.66,79.66,0,0,0-36.06-28.75,48,48,0,1,0-59.4,0,79.66,79.66,0,0,0-36.06,28.75,88,88,0,1,1,131.52,0Z"></path></svg>
-              <div class="text-xs opacity-60">
-                امیررضا -
-                11 بهمن 1402
-              </div>
-            </div>
-            <div class="opacity-60 text-sm py-3">
-              لورم ایپسوم متن ساختگی با تولید سادگی نامفهو است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.
-            </div>
-            <div>
-              <button  class="mr-auto bg-blue-500 text-zinc-50 rounded-lg px-4 py-1 md:w-auto text-sm flex justify-center items-center">
-                پاسخ
-              </button>
-            </div>
-          </div>
-          <div class="border rounded-xl px-5 py-3 my-2">
-            <div class="flex items-center gap-x-1">
-              <svg class="fill-zinc-500" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24ZM74.08,197.5a64,64,0,0,1,107.84,0,87.83,87.83,0,0,1-107.84,0ZM96,120a32,32,0,1,1,32,32A32,32,0,0,1,96,120Zm97.76,66.41a79.66,79.66,0,0,0-36.06-28.75,48,48,0,1,0-59.4,0,79.66,79.66,0,0,0-36.06,28.75,88,88,0,1,1,131.52,0Z"></path></svg>
-              <div class="text-xs opacity-60">
-                امیررضا -
-                11 بهمن 1402
-              </div>
-            </div>
-            <div class="opacity-60 text-sm py-3">
-              لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گ ستون و سطرآنچنان که لازم است.
-            </div>
-            <div>
-              <button  class="mr-auto bg-blue-500 text-zinc-50 rounded-lg px-4 py-1 md:w-auto text-sm flex justify-center items-center">
-                پاسخ
-              </button>
-            </div>
-            <!-- RESPONSE -->
-            <div class="bg-blue-100 rounded-xl pl-2 pr-5 sm:pr-8 py-3 mt-2">
-              <div class="flex items-center gap-x-1">
-                <svg class="fill-zinc-500" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24ZM74.08,197.5a64,64,0,0,1,107.84,0,87.83,87.83,0,0,1-107.84,0ZM96,120a32,32,0,1,1,32,32A32,32,0,0,1,96,120Zm97.76,66.41a79.66,79.66,0,0,0-36.06-28.75,48,48,0,1,0-59.4,0,79.66,79.66,0,0,0-36.06,28.75,88,88,0,1,1,131.52,0Z"></path></svg>
-                <div class="text-xs opacity-60">
-                  امیررضا -
-                  11 بهمن 1402
-                </div>
-              </div>
-              <div class="opacity-60 text-sm py-3">
-                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکهلازم است.
-              </div>
-              <div>
-                <button  class="mr-auto bg-blue-500 text-zinc-50 rounded-lg px-4 py-1 md:w-auto text-sm flex justify-center items-center">
-                  پاسخ
-                </button>
-              </div>
-            </div>
-          </div>
+            @endforeach
+        </div>
+        @endforeach
+        @endif
           <!-- BOX SENT COMMENT -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="mb-4">
-              <label for="username" class="inline-block mb-2 ml-1 font-semibold text-xs text-slate-700">نام شما:</label>
-              <input type="text" class="text-sm block w-full rounded-lg border border-gray-400 bg-white px-3 py-2 font-normal text-gray-700 outline-none focus:border-red-300">
+           <form action="{{route('create_comment')}}" method="post">
+            @csrf
+            <input type="hidden" class="parent_id"  name="parent_id" value="0"  >
+            <input type="hidden" name="commenttable_id" value="{{$blog->id}}">
+            <input type="hidden" name="commenttable_type" value="{{get_class($blog)}}">
+            @auth
+            <input type="hidden" name="user_id" value="{{request()->user()->id}}">
+            @else
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="mb-4">
+                <label for="username" class="inline-block mb-2 ml-1 font-semibold text-xs text-slate-700">نام شما:</label>
+                <input type="text" name="username" class="text-sm block w-full rounded-lg border border-gray-400 bg-white px-3 py-2 font-normal text-gray-700 outline-none focus:border-red-300">
+              </div>
+              <div class="mb-4">
+                <label for="email" class="inline-block mb-2 ml-1 font-semibold text-xs text-slate-700">ایمیل شما:</label>
+                <input type="email" name="email" class="text-sm block w-full rounded-lg border border-gray-400 bg-white px-3 py-2 font-normal text-gray-700 outline-none focus:border-red-300">
+              </div>
             </div>
-            <div class="mb-4">
-              <label for="username" class="inline-block mb-2 ml-1 font-semibold text-xs text-slate-700">ایمیل شما:</label>
-              <input type="text" class="text-sm block w-full rounded-lg border border-gray-400 bg-white px-3 py-2 font-normal text-gray-700 outline-none focus:border-red-300">
-            </div>
-          </div>
-          <div class="mb-4">
+            @endif
+          <div class="mb-4" id="targetElement">
             <label for="mailTicket" class="inline-block mb-2 ml-1 font-semibold text-xs text-slate-700">نظر شما:</label>
-            <textarea cols="30" rows="5" class="text-sm block w-full rounded-lg border border-gray-400 bg-white px-3 py-2 font-normal text-gray-700 outline-none focus:border-red-300"></textarea>
+            <textarea name="content" cols="30" rows="5" class="text-sm block w-full rounded-lg border border-gray-400 bg-white px-3 py-2 font-normal text-gray-700 outline-none focus:border-red-300"></textarea>
           </div>
-          <button class="inline-block px-8 py-2 ml-auto text-center text-white bg-red-400 hover:bg-red-500 transition rounded-lg shadow-md text-xs">ارسال نظر</button>
+          <button type="submit" class="inline-block px-8 py-2 ml-auto text-center text-white bg-red-400 hover:bg-red-500 transition rounded-lg shadow-md text-xs">ارسال نظر</button>
+          </form>
         </div>
       </div>
       <div class="lg:w-4/12">
@@ -206,90 +174,23 @@
             <span class="bg-red-400 w-full h-px"></span>
           </div>
           <ul class="grid w-full gap-3">
+            @foreach ($NewestBlogs as $item )
+
             <li>
               <label class="flex items-center justify-start gap-x-2 w-full p-2 text-gray-600 bg-white border border-gray-200 rounded-lg cursor-pointer hover:text-gray-600 hover:bg-gray-100">
                 <img class="max-w-20 rounded-md" src="./assets/image/blog/2.jpg" alt="">
                 <div class="text-center flex flex-col space-y-3">
-                  <div class="text-xs sm:text-sm">طرز پخت تاکو مثل مکزیکی ها</div>
+                  <div class="text-xs sm:text-sm">{{$item->title}}</div>
                   <div class="flex items-start gap-x-1 text-xs text-zinc-400">
                     <svg class="fill-gray-400" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z"></path></svg>
                     <span>
-                      2 دقیقه
+                    {{jdate($item->failed_at)->ago()}}
                     </span>
                   </div>
                 </div>
               </label>
             </li>
-            <li>
-              <label class="flex items-center justify-start gap-x-2 w-full p-2 text-gray-600 bg-white border border-gray-200 rounded-lg cursor-pointer hover:text-gray-600 hover:bg-gray-100">
-                <img class="max-w-20 rounded-md" src="./assets/image/blog/3.jpg" alt="">
-                <div class="text-center flex flex-col space-y-3">
-                  <div class="text-xs sm:text-sm">طرز پخت تاکو مثل مکزیکی ها</div>
-                  <div class="flex items-start gap-x-1 text-xs text-zinc-400">
-                    <svg class="fill-gray-400" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z"></path></svg>
-                    <span>
-                      2 دقیقه
-                    </span>
-                  </div>
-                </div>
-              </label>
-            </li>
-            <li>
-              <label class="flex items-center justify-start gap-x-2 w-full p-2 text-gray-600 bg-white border border-gray-200 rounded-lg cursor-pointer hover:text-gray-600 hover:bg-gray-100">
-                <img class="max-w-20 rounded-md" src="./assets/image/blog/1.jpg" alt="">
-                <div class="text-center flex flex-col space-y-3">
-                  <div class="text-xs sm:text-sm">طرز پخت تاکو مثل مکزیکی ها</div>
-                  <div class="flex items-start gap-x-1 text-xs text-zinc-400">
-                    <svg class="fill-gray-400" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z"></path></svg>
-                    <span>
-                      2 دقیقه
-                    </span>
-                  </div>
-                </div>
-              </label>
-            </li>
-            <li>
-              <label class="flex items-center justify-start gap-x-2 w-full p-2 text-gray-600 bg-white border border-gray-200 rounded-lg cursor-pointer hover:text-gray-600 hover:bg-gray-100">
-                <img class="max-w-20 rounded-md" src="./assets/image/blog/5.jpg" alt="">
-                <div class="text-center flex flex-col space-y-3">
-                  <div class="text-xs sm:text-sm">طرز پخت تاکو مثل مکزیکی ها</div>
-                  <div class="flex items-start gap-x-1 text-xs text-zinc-400">
-                    <svg class="fill-gray-400" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z"></path></svg>
-                    <span>
-                      2 دقیقه
-                    </span>
-                  </div>
-                </div>
-              </label>
-            </li>
-            <li>
-              <label class="flex items-center justify-start gap-x-2 w-full p-2 text-gray-600 bg-white border border-gray-200 rounded-lg cursor-pointer hover:text-gray-600 hover:bg-gray-100">
-                <img class="max-w-20 rounded-md" src="./assets/image/blog/4.jpg" alt="">
-                <div class="text-center flex flex-col space-y-3">
-                  <div class="text-xs sm:text-sm">طرز پخت تاکو مثل مکزیکی ها</div>
-                  <div class="flex items-start gap-x-1 text-xs text-zinc-400">
-                    <svg class="fill-gray-400" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z"></path></svg>
-                    <span>
-                      2 دقیقه
-                    </span>
-                  </div>
-                </div>
-              </label>
-            </li>
-            <li>
-              <label class="flex items-center justify-start gap-x-2 w-full p-2 text-gray-600 bg-white border border-gray-200 rounded-lg cursor-pointer hover:text-gray-600 hover:bg-gray-100">
-                <img class="max-w-20 rounded-md" src="./assets/image/blog/6.jpg" alt="">
-                <div class="text-center flex flex-col space-y-3">
-                  <div class="text-xs sm:text-sm">طرز پخت تاکو مثل مکزیکی ها</div>
-                  <div class="flex items-start gap-x-1 text-xs text-zinc-400">
-                    <svg class="fill-gray-400" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z"></path></svg>
-                    <span>
-                      2 دقیقه
-                    </span>
-                  </div>
-                </div>
-              </label>
-            </li>
+            @endforeach
           </ul>
         </div>
         <div class="p-3 bg-white rounded-xl shadow-box-sm">
@@ -300,30 +201,11 @@
             <span class="bg-red-400 w-full h-px"></span>
           </div>
           <div class="flex gap-2 flex-wrap">
+            @foreach ($tags as $tag)
             <a href="" class="bg-gray-200 text-gray-500 hover:text-gray-400 transition px-2 py-1 text-sm rounded-full w-fit">
-              #لپ_تاپ
+              #{{$tag->name}}
             </a>
-            <a href="" class="bg-gray-200 text-gray-500 hover:text-gray-400 transition px-2 py-1 text-sm rounded-full w-fit">
-              #بازی
-            </a>
-            <a href="" class="bg-gray-200 text-gray-500 hover:text-gray-400 transition px-2 py-1 text-sm rounded-full w-fit">
-              #مقاله
-            </a>
-            <a href="" class="bg-gray-200 text-gray-500 hover:text-gray-400 transition px-2 py-1 text-sm rounded-full w-fit">
-              #آموزش
-            </a>
-            <a href="" class="bg-gray-200 text-gray-500 hover:text-gray-400 transition px-2 py-1 text-sm rounded-full w-fit">
-              #برنامه_نویسی
-            </a>
-            <a href="" class="bg-gray-200 text-gray-500 hover:text-gray-400 transition px-2 py-1 text-sm rounded-full w-fit">
-              #گیمینگ
-            </a>
-            <a href="" class="bg-gray-200 text-gray-500 hover:text-gray-400 transition px-2 py-1 text-sm rounded-full w-fit">
-              #طراحی
-            </a>
-            <a href="" class="bg-gray-200 text-gray-500 hover:text-gray-400 transition px-2 py-1 text-sm rounded-full w-fit">
-              #نینتندو
-            </a>
+            @endforeach
           </div>
         </div>
       </div>
@@ -348,169 +230,36 @@
       <!-- SLIDER -->
       <div class="containerPSlider swiper mb-10">
         <div class="blog-slider px-1">
-          <div class="card-wrapper swiper-wrapper py-2">
-            <a href="" class="card swiper-slide my-2 p-2 md:p-4 bg-white rounded-2xl drop-shadow-lg">
-              <div class="image-box mb-6 ">
-                <div class="relative">
-                  <img class="mx-auto rounded-xl " src="./assets/image/blog/3.jpg" alt="" />
-                  <div class="absolute top-2 left-2">
-                    <svg class="bg-gray-200 rounded-full p-1 hover:fill-gray-500 transition" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#3d3d3d" viewBox="0 0 256 256"><path d="M184,32H72A16,16,0,0,0,56,48V224a8,8,0,0,0,12.24,6.78L128,193.43l59.77,37.35A8,8,0,0,0,200,224V48A16,16,0,0,0,184,32Zm0,177.57-51.77-32.35a8,8,0,0,0-8.48,0L72,209.57V48H184Z"></path></svg>
+            <div class="card-wrapper swiper-wrapper py-2">
+              @foreach ($relatedBlogs as $item)
+
+              <a href="" class="card swiper-slide my-2 p-2 md:p-4 bg-white rounded-2xl drop-shadow-lg">
+                <div class="image-box mb-6 ">
+                  <div class="relative">
+                    <img class="mx-auto rounded-xl " src="./assets/image/blog/3.jpg" alt="" />
+                    <div class="absolute top-2 left-2">
+                    <svg class="bg-gray-200 rounded-full p-1 hover:fill-red-500 transition" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#2b2b2b" viewBox="0 0 256 256"><path d="M178,34c-21,0-39.26,9.47-50,25.34C117.26,43.47,99,34,78,34A60.07,60.07,0,0,0,18,94c0,29.2,18.2,59.59,54.1,90.31a334.68,334.68,0,0,0,53.06,37,6,6,0,0,0,5.68,0,334.68,334.68,0,0,0,53.06-37C219.8,153.59,238,123.2,238,94A60.07,60.07,0,0,0,178,34ZM128,209.11C111.59,199.64,30,149.72,30,94A48.05,48.05,0,0,1,78,46c20.28,0,37.31,10.83,44.45,28.27a6,6,0,0,0,11.1,0C140.69,56.83,157.72,46,178,46a48.05,48.05,0,0,1,48,48C226,149.72,144.41,199.64,128,209.11Z"></path></svg>                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="">
-                <span class="mb-2 h-6 flex justify-between items-center">
-                  <div class="flex flex-col gap-y-2">
-                    <span class="text-sm font-semibold text-zinc-800">
-                      مزیت های یک ساعت هوشمند
-                    </span>
-                  </div>
-                  <div class="flex items-start gap-x-1 text-xs text-zinc-500">
-                    <span>
-                      <span>
-                        2 دقیقه
+                <div class="">
+                  <span class="mb-2 h-6 flex justify-between items-center">
+                    <div class="flex flex-col gap-y-2">
+                      <span class="text-sm font-semibold text-zinc-800">
+                        {{$item->title}}
                       </span>
-                    </span>
-                    <svg class="fill-gray-500" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z"></path></svg>
-                  </div>
-                </span>
-              </div>
-            </a>
-            <a href="" class="card swiper-slide my-2 p-2 md:p-4 bg-white rounded-2xl drop-shadow-lg">
-              <div class="image-box mb-6 ">
-                <div class="relative">
-                  <img class="mx-auto rounded-xl " src="./assets/image/blog/5.jpg" alt="" />
-                  <div class="absolute top-2 left-2">
-                    <svg class="bg-gray-200 rounded-full p-1 hover:fill-gray-500 transition" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#3d3d3d" viewBox="0 0 256 256"><path d="M184,32H72A16,16,0,0,0,56,48V224a8,8,0,0,0,12.24,6.78L128,193.43l59.77,37.35A8,8,0,0,0,200,224V48A16,16,0,0,0,184,32Zm0,177.57-51.77-32.35a8,8,0,0,0-8.48,0L72,209.57V48H184Z"></path></svg>
-                  </div>
+                    </div>
+                    <div class="flex items-start gap-x-1 text-xs text-zinc-500">
+                      <span>
+                        <span>
+                        {{jdate($item->failed_at)->ago()}}
+                        </span>
+                      </span>
+                      <svg class="fill-gray-500" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z"></path></svg>
+                    </div>
+                  </span>
                 </div>
-              </div>
-              <div class="">
-                <span class="mb-2 h-6 flex justify-between items-center">
-                  <div class="flex flex-col gap-y-2">
-                    <span class="text-sm font-semibold text-zinc-800">
-                      مزیت های یک ساعت هوشمند
-                    </span>
-                  </div>
-                  <div class="flex items-start gap-x-1 text-xs text-zinc-500">
-                    <span>
-                      <span>
-                        2 دقیقه
-                      </span>
-                    </span>
-                    <svg class="fill-gray-500" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z"></path></svg>
-                  </div>
-                </span>
-              </div>
-            </a>
-            <a href="" class="card swiper-slide my-2 p-2 md:p-4 bg-white rounded-2xl drop-shadow-lg">
-              <div class="image-box mb-6 ">
-                <div class="relative">
-                  <img class="mx-auto rounded-xl " src="./assets/image/blog/6.jpg" alt="" />
-                  <div class="absolute top-2 left-2">
-                    <svg class="bg-gray-200 rounded-full p-1 hover:fill-gray-500 transition" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#3d3d3d" viewBox="0 0 256 256"><path d="M184,32H72A16,16,0,0,0,56,48V224a8,8,0,0,0,12.24,6.78L128,193.43l59.77,37.35A8,8,0,0,0,200,224V48A16,16,0,0,0,184,32Zm0,177.57-51.77-32.35a8,8,0,0,0-8.48,0L72,209.57V48H184Z"></path></svg>
-                  </div>
-                </div>
-              </div>
-              <div class="">
-                <span class="mb-2 h-6 flex justify-between items-center">
-                  <div class="flex flex-col gap-y-2">
-                    <span class="text-sm font-semibold text-zinc-800">
-                      مزیت های یک ساعت هوشمند
-                    </span>
-                  </div>
-                  <div class="flex items-start gap-x-1 text-xs text-zinc-500">
-                    <span>
-                      <span>
-                        2 دقیقه
-                      </span>
-                    </span>
-                    <svg class="fill-gray-500" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z"></path></svg>
-                  </div>
-                </span>
-              </div>
-            </a>
-            <a href="" class="card swiper-slide my-2 p-2 md:p-4 bg-white rounded-2xl drop-shadow-lg">
-              <div class="image-box mb-6 ">
-                <div class="relative">
-                  <img class="mx-auto rounded-xl " src="./assets/image/blog/7.jpg" alt="" />
-                  <div class="absolute top-2 left-2">
-                    <svg class="bg-gray-200 rounded-full p-1 hover:fill-gray-500 transition" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#3d3d3d" viewBox="0 0 256 256"><path d="M184,32H72A16,16,0,0,0,56,48V224a8,8,0,0,0,12.24,6.78L128,193.43l59.77,37.35A8,8,0,0,0,200,224V48A16,16,0,0,0,184,32Zm0,177.57-51.77-32.35a8,8,0,0,0-8.48,0L72,209.57V48H184Z"></path></svg>
-                  </div>
-                </div>
-              </div>
-              <div class="">
-                <span class="mb-2 h-6 flex justify-between items-center">
-                  <div class="flex flex-col gap-y-2">
-                    <span class="text-sm font-semibold text-zinc-800">
-                      مزیت های یک ساعت هوشمند
-                    </span>
-                  </div>
-                  <div class="flex items-start gap-x-1 text-xs text-zinc-500">
-                    <span>
-                      <span>
-                        2 دقیقه
-                      </span>
-                    </span>
-                    <svg class="fill-gray-500" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z"></path></svg>
-                  </div>
-                </span>
-              </div>
-            </a>
-            <a href="" class="card swiper-slide my-2 p-2 md:p-4 bg-white rounded-2xl drop-shadow-lg">
-              <div class="image-box mb-6 ">
-                <div class="relative">
-                  <img class="mx-auto rounded-xl " src="./assets/image/blog/8.jpg" alt="" />
-                  <div class="absolute top-2 left-2">
-                    <svg class="bg-gray-200 rounded-full p-1 hover:fill-gray-500 transition" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#3d3d3d" viewBox="0 0 256 256"><path d="M184,32H72A16,16,0,0,0,56,48V224a8,8,0,0,0,12.24,6.78L128,193.43l59.77,37.35A8,8,0,0,0,200,224V48A16,16,0,0,0,184,32Zm0,177.57-51.77-32.35a8,8,0,0,0-8.48,0L72,209.57V48H184Z"></path></svg>
-                  </div>
-                </div>
-              </div>
-              <div class="">
-                <span class="mb-2 h-6 flex justify-between items-center">
-                  <div class="flex flex-col gap-y-2">
-                    <span class="text-sm font-semibold text-zinc-800">
-                      مزیت های یک ساعت هوشمند
-                    </span>
-                  </div>
-                  <div class="flex items-start gap-x-1 text-xs text-zinc-500">
-                    <span>
-                      <span>
-                        2 دقیقه
-                      </span>
-                    </span>
-                    <svg class="fill-gray-500" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z"></path></svg>
-                  </div>
-                </span>
-              </div>
-            </a>
-            <a href="" class="card swiper-slide my-2 p-2 md:p-4 bg-white rounded-2xl drop-shadow-lg">
-              <div class="image-box mb-6 ">
-                <div class="relative">
-                  <img class="mx-auto rounded-xl " src="./assets/image/blog/9.jpg" alt="" />
-                  <div class="absolute top-2 left-2">
-                    <svg class="bg-gray-200 rounded-full p-1 hover:fill-gray-500 transition" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#3d3d3d" viewBox="0 0 256 256"><path d="M184,32H72A16,16,0,0,0,56,48V224a8,8,0,0,0,12.24,6.78L128,193.43l59.77,37.35A8,8,0,0,0,200,224V48A16,16,0,0,0,184,32Zm0,177.57-51.77-32.35a8,8,0,0,0-8.48,0L72,209.57V48H184Z"></path></svg>
-                  </div>
-                </div>
-              </div>
-              <div class="">
-                <span class="mb-2 h-6 flex justify-between items-center">
-                  <div class="flex flex-col gap-y-2">
-                    <span class="text-sm font-semibold text-zinc-800">
-                      مزیت های یک ساعت هوشمند
-                    </span>
-                  </div>
-                  <div class="flex items-start gap-x-1 text-xs text-zinc-500">
-                    <span>
-                      <span>
-                        2 دقیقه
-                      </span>
-                    </span>
-                    <svg class="fill-gray-500" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z"></path></svg>
-                  </div>
-                </span>
-              </div>
-            </a>
+              </a>
+              @endforeach
           </div>
         </div>
         <div class="bg-red-500 w-full h-72 rounded-2xl -mt-60 relative">
@@ -520,5 +269,9 @@
       </div>
     </div>
   </main>
+
+
+
+
   <!-- footer -->
   @endsection

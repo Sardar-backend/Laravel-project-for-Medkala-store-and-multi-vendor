@@ -19,6 +19,16 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->primary(['product_id','user_id']);
         });
+
+        Schema::create('blog_user', function (Blueprint $table) {
+
+            $table->unsignedBigInteger('blog_id');
+            $table->foreign('blog_id')->references('id')->on('blogs')->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->primary(['blog_id','user_id']);
+        });
+
     }
 
     /**

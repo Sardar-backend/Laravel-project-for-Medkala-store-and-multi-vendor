@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\productcategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ProductListcontroller extends Controller
 {
@@ -37,6 +38,7 @@ public function products() {
 
     // Paginate the products (9 per page)
     $products = $products->paginate(12);
+
 
     // Return the products view with the products and categories data
     return view('public.search', compact('products', 'categories'));
@@ -158,7 +160,7 @@ public function products_popular() {
  * Displays products by category.
  * Sets up SEO and OpenGraph meta tags for the category products page.
  */
-public function Cat_products() {
+public function Cat_products(string $name) {
     // Set SEO and OpenGraph meta tags for products by category
     $this->seo()->setTitle('Products')
         ->setDescription('View all products here')
@@ -168,24 +170,39 @@ public function Cat_products() {
             'width' => 200,
         ]);
 
-    // Query to retrieve products filtered by category name
+    // Query to retrieve all products
     $products = Product::query();
 
-    // Apply search filter if a keyword is provided for category name
-    if ($keyword = request('search')) {
-        $products = $products->WhereHas('category', function($query) use ($keyword) {
-            $query->Where('name', 'LIKE', "%$keyword%");
-        })->orderBy('failed_at');
+    // Filter products by category name if a category name is provided
+    if (!empty($name)) {
+        $products = $products->whereHas('category', function($query) use ($name) {
+            // Filter products by category name containing the provided keyword
+            $query->where('name', 'LIKE', "%$name%");
+        });
     }
 
-    // Retrieve the top 4 product categories based on updated_at
-    $categories = productcategory::orderBy('updated_at')->limit(4)->get();
+    // Apply search filter if a keyword is provided in the request
+    if ($keyword = request('search')) {
+        $products = $products->where(function($query) use ($keyword) {
+            // Filter by product name or brand containing the keyword
+            $query->where('name', 'LIKE', "%$keyword%")
+                ->orWhere('Brand', 'LIKE', "%$keyword%");
+        });
+    }
 
-    // Paginate the products (9 per page)
+    // Sort the products by 'failed_at'
+    $products = $products->orderBy('failed_at');
+
+    // Retrieve the top 4 product categories, ordered by the latest updates
+    $categories = Cache::remember('top_categories', 60, function () {
+        return productcategory::orderBy('updated_at')->limit(4)->get();
+    });
+
+    // Paginate the products to display 9 items per page
     $products = $products->paginate(9);
 
     // Return the products view with the products and categories data
-    return view('products', compact('products', 'categories'));
+    return view('public.search', compact('products', 'categories'));
 }
 
 /**

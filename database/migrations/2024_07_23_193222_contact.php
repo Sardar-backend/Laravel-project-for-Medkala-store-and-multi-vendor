@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contactss', function (Blueprint $table) {
+        Schema::create('contacts', function (Blueprint $table) {
             $table->id()->primary();
             $table->string('name');
-            $table->integer('number_phone');
             $table->longText('content');
             $table->char('email');
-            $table->char('subject');
             $table->timestamp('failed_at')->useCurrent();
         });
 
@@ -35,9 +33,6 @@ return new class extends Migration
             $table->id()->primary();
             $table->string('name');
             $table->string('Brand');
-            // $table->string('image');
-            // $table->unsignedBigInteger('sabad_id');
-            // $table->foreign('sabad_id')->references('id')->on('sabad')->onDelete('cascade');
             $table->integer('price');
             $table->integer('discount_end_time');
             $table->integer('count')->default(0);
@@ -67,17 +62,18 @@ return new class extends Migration
         //     $table->timestamp('failed_at')->useCurrent();
         // });
 
-        Schema::create('adresses', function (Blueprint $table) {
+        Schema::create('address', function (Blueprint $table) {
             $table->id()->primary();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('ostan');
             $table->string('city');
-            $table->char('tahvil');
-            $table->char('adress');
+            $table->char('street');
             $table->boolean('is_selected')->default(false);
             $table->integer('number');
             $table->integer('post_number');
+            $table->integer('plate');
+            $table->longText('explanation');
             $table->timestamp('failed_at')->useCurrent();
         });
 
@@ -85,10 +81,12 @@ return new class extends Migration
             $table->id()->primary();
             $table->boolean('status')->default(0);
             $table->longText('content');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('parent_id')->default(0);
             $table->unsignedBigInteger('commenttable_id');
             $table->string('commenttable_type');
+            $table->string('email')->nullable();
+            $table->string('username')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamp('failed_at')->useCurrent();
         });

@@ -14,7 +14,7 @@ use Modules\Discount\Models\Discount;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable , HasRules  , HasApiTokens;
+    use HasFactory, Notifiable ;
 
     /**
      * The attributes that are mass assignable.
@@ -97,8 +97,8 @@ class User extends Authenticatable
     //     return $this->permisons->contains('name', $key->name) || $this->hasRole($key->roles);
     // }
 
-    public function adresses() {
-        return $this->hasMany(adresse::class);
+    public function Addresses() {
+        return $this->hasMany(address::class);
     }
 
     public function orders() {
@@ -110,8 +110,11 @@ class User extends Authenticatable
     public function favorite (){
         return $this->belongsToMany(Product::class);
     }
-
-    public function Discounts (){
-        return $this->belongsToMany(Discount::class);
+    public function favorite_blog (){
+        return $this->belongsToMany(blog::class , 'blog_user');
     }
+
+    // public function Discounts (){
+    //     return $this->belongsToMany(Discount::class);
+    // }
 }

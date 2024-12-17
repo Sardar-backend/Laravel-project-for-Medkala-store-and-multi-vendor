@@ -8,27 +8,33 @@ namespace App\Http\Controllers;
 use App\Helpers\CalculatorClassFacade\CalculatorClassFacade;
 use App\Helpers\Cart\Cart;
 use App\Helpers\Cart\CartService;
+use App\Helpers\Comparison\Comparison;
 use App\Helpers\TrendingContent;
 use App\Models\blog;
 use App\Models\Product;
 use App\Notifications\notificationCode;
 use App\Models\activecode;
-use App\Models\adresse;
+use App\Models\address;
 use App\Models\blogcategory;
 use App\Models\comment;
-use App\Models\contacts;
+use App\Models\contact;
 use App\Models\permission;
 use App\Models\Product as ModelsProduct;
 use App\Models\productcategory;
+use App\Models\Tag;
 use App\Models\User;
 use Artesaos\SEOTools\Facades\SEOTools;
+
 use \Illuminate\Support\Facades\Auth;
 use \Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate as FacadesGate;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cookie;
 
 class HomeController extends Controller
 {
@@ -49,24 +55,45 @@ class HomeController extends Controller
                 'width' => 200,
             ]);
 
-        // Fetch product categories (only parent categories)
-        $categories = productcategory::all()->where('parent', 'LIKE', 0);
+        // Caching the results of the categories query for better performance
+        $categories = Cache::remember('product_categories', 60, function () {
+            return productcategory::all()->where('parent', 0);
+        });
 
-        // // Fetch the latest 3 blog posts
-        $blogs = blog::orderBy('failed_at')->limit(3)->get();
+        // Caching the blogs query for better performance, limiting to the latest 3
+        $blogs = Cache::remember('latest_blogs', 60, function () {
+            return blog::orderBy('failed_at')->limit(3)->get();
+        });
 
+        // Caching the "amazing" products query, filtering by "chosen" and discount > 15
+        $amazing = Cache::remember('amazing_products', 60, function () {
+            return Product::whereChosen(1)->where('discust', '>', 15)->get();
+        });
 
+        // Caching the most viewed products query, limiting to the top 4 most viewed
+        $count_view = Cache::remember('most_viewed_products', 60, function () {
+            return Product::orderBy('count_view')->limit(4)->get();
+        });
 
+        // Caching the chosen products query, limiting to the first 4
+        $pro = Cache::remember('chosen_products', 60, function () {
+            return Product::where('Chosen', 1)->limit(4)->get();
+        });
 
-        // Fetch products by different conditions for the homepage display
-        $count_view = Product::orderBy('count_view')->limit(4)->get();
-        $pro = Product::where('Chosen', 1)->limit(4)->get();
-        $special_sale = Product::where('Special_sale', 1)->limit(2)->get();
-        $discounted = Product::where('discust', '>', 20)->limit(4)->get();
+        // Caching the special sale products query, limiting to 2 items
+        $special_sale = Cache::remember('special_sale_products', 60, function () {
+            return Product::where('Special_sale', 1)->limit(2)->get();
+        });
+
+        // Caching the discounted products query, limiting to the top 4 with discount > 20
+        $discounted = Cache::remember('discounted_products', 60, function () {
+            return Product::where('discust', '>', 20)->limit(4)->get();
+        });
+
 
         // Return the homepage view with the fetched data
         return view('public.index',
-        compact('pro', 'categories', 'blogs', 'discounted', 'count_view', 'special_sale')
+        compact('pro', 'categories', 'blogs', 'discounted', 'count_view', 'special_sale' , 'amazing')
     );
     }
 
@@ -106,11 +133,55 @@ class HomeController extends Controller
                 'width' => 200,
             ]);
 
-        // Fetch the blogs from the database with pagination
-        $blogs = blog::orderBy('failed_at')->paginate(10);
+    // Cache most visited blogs for 10 minutes
+    $mostVisitedBlogs = Cache::remember('mostVisitedBlogs', 600, function () {
+        return blog::orderBy('count_view', 'desc')->limit(6)->get();
+    });
 
-        // Return the blog view with the fetched blogs and additional data
-        return view('public.blog', compact('blogs'));
+    // Cache top liked blogs for 10 minutes
+    $topLikedBlogs = Cache::remember('topLikedBlogs', 600, function () {
+        return blog::withCount('likedByUsers')
+            ->orderBy('liked_by_users_count', 'desc')
+            ->limit(3)
+            ->get();
+    });
+
+    // Cache the most liked and most viewed blog for 10 minutes
+    $topLikedAndViewedBlog = Cache::remember('topLikedAndViewedBlog', 600, function () {
+        return blog::withCount('likedByUsers')
+            ->orderBy('liked_by_users_count', 'desc')
+            ->orderByDesc('count_view')
+            ->first();
+    });
+
+    // Paginate blogs, no caching applied as it changes frequently
+    $paginatedBlogs = blog::orderBy('failed_at', 'desc')->paginate(10);
+
+    // Retrieve favorite blogs for the authenticated user if logged in
+    $userFavoriteBlogs = auth()->check()
+        ? auth()->user()->favorite_blog()->get()
+        : [];
+
+    // Cache blog categories for 1 hour
+    $blogCategories = Cache::remember('blogCategories', 3600, function () {
+        return blogcategory::all();
+    });
+
+
+
+
+
+    // Return the blog view with all the data
+    return view('public.blog', compact(
+        'paginatedBlogs',
+        'blogCategories',
+        'mostVisitedBlogs',
+        'userFavoriteBlogs',
+        'topLikedBlogs',
+        'topLikedAndViewedBlog'
+    ));
+
+
     }
 
     /**
@@ -121,7 +192,7 @@ class HomeController extends Controller
     public function contact()
     {
         // Log in a specific user (for demonstration purposes)
-        Auth::loginUsingId(26);
+        Auth::loginUsingId(1);
 
         // Set SEO data for the Contact Us page
         $this->seo()->setTitle('تماس با ما')
@@ -137,6 +208,66 @@ class HomeController extends Controller
     }
 
 
+     /**
+     * Display a product page along with its details and comments.
+     *
+     * @param int $id
+     * @return \Illuminate\View\View
+     */
+    public function product(int $id)
+    {
+        // Find the product by its ID
+
+        $product = Product::findOrFail($id);
+        // Set SEO data based on the product's name and description
+        $this->seo()->setTitle($product->name)
+            ->setDescription($product->discription)
+            ->opengraph()->setTitle($product->name)
+            ->addImage(asset('img/logo.png'), [
+                'height' => 200,
+                'width' => 200,
+            ]);
+
+
+
+        // Increment the product's view count by 1
+        $product->increment('count_view');
+
+
+        // Get the product's category and associated products
+        // $category = $product->category()->get()->first();
+        // $category = $category->products()->get();
+
+        // Get approved comments for the product (root comments)
+        $comments = $product->comment()->where('status', 'LIKE', true)
+            ->where('parent_id', 'LIKE', 0)
+            ->get();
+
+
+        // Fetch related blogs based on the current blog's categories (not cached to ensure accuracy)
+        $relatedproduct = Cache::remember("related_product_{$product->id}", 600, function () use ($product) {
+        $categoryIds = $product->category->pluck('id');
+
+        return Product::with('category')
+            ->whereHas('category', function ($query) use ($categoryIds) {
+                $query->whereIn('productcategory.id', $categoryIds);
+            })
+            ->where('id', '!=', $product->id)
+            ->distinct()
+            ->get();
+        });
+
+        // Return the product page view with the product details, comments, and category
+        return view('public.single-product'
+        , compact(
+        'product','comments' , 'relatedproduct'
+        // 'comments', 'category'
+        )
+    );
+    }
+
+
+
     /**
      * Handle the submission of the contact form.
      *
@@ -149,20 +280,16 @@ class HomeController extends Controller
         $data = $request->validate([
             'name' => ['required','string'],
             'email' => ['required','email'],
-            'number_phone' => ['required'],
-            'subject' => ['required','string'],
             'content' => ['required','string']
         ], [
             'name.required' => 'لطفاً نام خود را وارد کنید.',
             'email.required' => 'لطفاً ایمیل خود را وارد کنید.',
             'email.email' => 'ایمیل وارد شده صحیح نیست.',
-            'number_phone.required' => 'لطفاً شماره تماس خود را وارد کنید.',
-            'subject.required' => 'لطفاً موضوع پیام خود را وارد کنید.',
             'content.required' => 'لطفاً محتوای پیام خود را وارد کنید.'
         ]);
 
         // Create a new contact entry in the database
-        $con = contacts::create($data);
+        $con = contact::create($data);
 
         // Show success alert to the user
         Alert::success('ارسال موفیت آمیز بود', 'پیغام شما ارسال شد');
@@ -199,98 +326,70 @@ class HomeController extends Controller
      */
     public function blog_single(int $id)
     {
-        // Find the blog post by its ID
-        $blog = blog::find($id);
+    // Cache the blog post or fetch from the database if not cached
+    $blog = Cache::remember("blog_{$id}", 600, function () use ($id) {
+        return blog::findOrFail($id);
+    });
 
-        // Set SEO data based on the blog post content
-        $this->seo()->setTitle($blog->title)
-            ->setDescription($blog->content)
-            ->opengraph()->setTitle($blog->title)
-            ->addImage(asset('img/logo.png'), [
-                'height' => 200,
-                'width' => 200,
-            ]);
-
-        // Increment the blog's view count by 1
-        $view = $blog->count_view + 1;
-        $blog->update(['count_view' => $view]);
-
-        // Get approved comments for the blog (root comments)
-        $comments = $blog->comment()->where('status', 'LIKE', true)
-            ->where('parent_id', 'LIKE', 0)
-            ->get();
-
-        // Return the blog post view with comments and additional data
-        return view('public.blog(single)', compact('blog', 'comments'));
-    }
-
-    /**
-     * Display a product page along with its details and comments.
-     *
-     * @param int $id
-     * @return \Illuminate\View\View
-     */
-    public function product(int $id)
-    {
-        // Find the product by its ID
-        $product = Product::find($id);
-
-        // Set SEO data based on the product's name and description
-        $this->seo()->setTitle($product->name)
-            ->setDescription($product->discription)
-            ->opengraph()->setTitle($product->name)
-            ->addImage(asset('img/logo.png'), [
-                'height' => 200,
-                'width' => 200,
-            ]);
-
-        // If the product is not found, return a 404 error page
-        if (is_null($product)) {
-            return view('404');
-        }
-
-        // Increment the product's view count by 1
-        $view = $product->count_view + 1;
-        $product->update(['count_view' => $view]);
-
-        // Get the product's category and associated products
-        $category = $product->category()->get()->first();
-        $category = $category->products()->get();
-
-        // Get approved comments for the product (root comments)
-        $comments = $product->comment()->where('status', 'LIKE', true)
-            ->where('parent_id', 'LIKE', 0)
-            ->get();
-
-        // Get the current logged-in user
-        $user = request()->user();
-
-        // Return the product page view with the product details, comments, and category
-        return view('product', compact('product', 'comments', 'category'));
-    }
-/**
- * Displays the user edit page with SEO and OpenGraph meta tags.
- */
-public function edit_user() {
-    // Set SEO title and description for the edit user page
-    $this->seo()->setTitle('ویرایش اطلاعات')
-        ->setDescription('اینجا میتوانید اطلاعت خود را ویرایش کنید')
-        ->opengraph()->setTitle('ویرایش اطلاعات')
-        // Add image for OpenGraph sharing
+    // Set SEO metadata for the blog post
+    $this->seo()->setTitle($blog->title)
+        ->setDescription(Str::limit(strip_tags($blog->content), 150)) // Limit description to 150 characters
+        ->opengraph()->setTitle($blog->title)
         ->addImage(asset('img/logo.png'), [
             'height' => 200,
             'width' => 200,
         ]);
-    // Return the view for the edit user page
-    return view('edit');
-}
+
+    // Increment the blog's view count (not cached to ensure accuracy)
+    $blog->increment('count_view');
+
+    // Cache the approved comments (root comments) for the blog post
+    $comments = Cache::remember("blog_{$id}_comments", 600, function () use ($blog) {
+        return $blog->comment()
+            ->where('status', true)
+            ->where('parent_id', 0)
+            ->get();
+    });
+
+    $NewestBlogs = Cache::remember('NewestBlogs', 600, function () {
+        return blog::orderBy('count_view', 'desc')->limit(6)->get();
+    });
+
+    // Fetch related blogs based on the current blog's categories (not cached to ensure accuracy)
+    $relatedBlogs = Cache::remember("related_blogs_{$blog->id}", 600, function () use ($blog) {
+        $categoryIds = $blog->category->pluck('id');
+
+        return Blog::with('category')
+            ->whereHas('category', function ($query) use ($categoryIds) {
+                $query->whereIn('blogcategorys.id', $categoryIds);
+            })
+            ->where('id', '!=', $blog->id)
+            ->distinct()
+            ->get();
+    });
+    $tags = Cache::remember('blogCategories', 600, function () use ($blog) {
+        return $blog->tags()->get();
+    });
+
+    // Get approved comments for the blog (root comments)
+    $comments = $blog->comment()->where('status', 'LIKE', true)
+    ->where('parent_id', 'LIKE', 0)
+    ->get();
+
+
+    // Return the view with the blog data and comments
+
+        return view('public.blog(single)', compact('comments','tags','relatedBlogs','NewestBlogs','blog', 'comments'));
+    }
+
+
 
 /**
  * Marks a selected address as the primary address for the user.
  */
 public function selectadresses(int $id) {
     // Retrieve the address by its ID and user ID
-    $address = adresse::where('id', $id)
+    $address = address::where('id', $id)
         ->where('user_id', auth()->user()->id())
         ->first();
 
@@ -310,7 +409,7 @@ public function selectadresses(int $id) {
 public function edit_user_post(Request $request, int $id) {
     // Find the user by ID
     $user = User::find($id);
-    Alert::
+
     // Validate the incoming request data
     $data = $request->validate([
         'name' => ['required', 'string', 'max:255'],
@@ -356,34 +455,28 @@ public function edit_user_post(Request $request, int $id) {
     return redirect()->route('personal');
 }
 
-/**
- * Displays the user's shopping cart.
- */
-public function cart() {
-    // Set SEO and OpenGraph meta tags for the cart page
-    $this->seo()->setTitle('سبد خرید')
-        ->setDescription('سبد خود را اینجا مشاهده کنید')
-        ->opengraph()->setTitle('سبد خرید')
-        ->addImage(asset('img/logo.png'), [
-            'height' => 200,
-            'width' => 200,
-        ]);
-
-    // Return the view for the cart page
-    return view('cart');
-}
 
 /**
  * Handles the submission of a new comment.
  */
 public function craete_comment(Request $request) {
+
+    if ($request->commenttable_type==='App\Models\Product') {
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
+    }
     // Validate the incoming request data for comment creation
     $data = $request->validate([
         'parent_id' => 'max:255',  // Optional parent comment ID
-        'user_id' => 'required',   // User ID must be provided
+        'user_id' => 'nullable',   // User ID must be provided
+        'email' => 'nullable',   // User ID must be provided
+        'username' => 'nullable',   // User ID must be provided
         'commenttable_id' => 'required',  // ID of the table being commented on
         'commenttable_type' => 'required', // Type of the table being commented on
         'content' => 'required',   // Comment content must be provided
+        'subject' => 'nullable',
+        'hosting' => 'nullable',
     ]);
 
     // Create a new comment in the database
@@ -401,7 +494,7 @@ public function craete_comment(Request $request) {
  * Handles the "like" action for a product by the authenticated user.
  * Adds the product to the user's list of favorites.
  */
-public function like_post(Request $request) {
+public function like_post (Request $request) {
     // Find the product by its ID from the request
     $p = Product::find($request->product_id);
 
@@ -416,7 +509,7 @@ public function like_post(Request $request) {
  * Handles the "dislike" action for a product by the authenticated user.
  * Removes the product from the user's list of favorites.
  */
-public function dislike_post(Request $request) {
+public function dislike_post (Request $request) {
     // Find the product by its ID from the request
     $product = Product::find($request->product_id);
 
@@ -464,9 +557,22 @@ public function blog_category(string $category) {
         ->paginate(4);
 
     // Return the view for the blog category page with the list of blogs and additional data
-    return view('blog', compact('blogs'))
-        ->with('last_blog', TrendingContent::getTopViewed()[0])
-        ->with('last_products', TrendingContent::getTopViewed()[1]);
+    return view('blog', compact('blogs'));
+}
+
+
+public function rules(){
+        // Set SEO data for the rules page
+        $this->seo()->setTitle('شرایط و قوانین ')
+        ->setDescription('  شرایط و قوانین را اینجا بیابید')
+        ->opengraph()->setTitle('شرایط و قوانین')
+        ->addImage(asset('img/logo.png'), [
+            'height' => 200,
+            'width' => 200,
+        ]);
+
+    // Return the rules view
+    return view('public.rules');
 }
 
 

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->bigInteger('cart_number')->nullable();
             $table->bigInteger('meli_code')->nullable();
             $table->dateTime('birthday')->nullable();
-            // $table->string('password');
+            $table->string('password');
             $table->char('image')->nullable();
             $table->bigInteger('home_number')->nullable();
             $table->string('email')->nullable()->unique();

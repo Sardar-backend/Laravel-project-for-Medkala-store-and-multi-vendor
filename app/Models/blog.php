@@ -26,4 +26,15 @@ class blog extends Model
 
         return $this->belongsToMany(blogcategory::class,'blogcategorys_blog');
     }
+
+    public function likedByUsers()
+    {
+        return $this->belongsToMany(User::class , 'blog_user');
+    }
+
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
+    }
+
 }

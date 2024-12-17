@@ -20,4 +20,10 @@ class productcategory extends Model
     }
 
 
+    public function Brand() {
+
+        return $this->belongsToMany(Brand::class);
+    }
+
+
 }

@@ -5,19 +5,19 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="./assets/css/output.css">
-  <link rel="stylesheet" href="./assets/css/font.css">
+  <link rel="stylesheet" href="{{ asset('./assets/css/output.css')}}">
+  <link rel="stylesheet" href="{{ asset('./assets/css/font.css')}}">
 
-  <link href="./assets/css/dependencies/swiper.min.css" rel="stylesheet"/>
-  <link href="./assets/css/app.css" rel="stylesheet"/>
-
-  <link rel="stylesheet" href="./assets/css/dependencies/swiper-product.css">
-  <link href="./assets/css/main.css" rel="stylesheet"/>
-
+  <link href="{{ asset('./assets/css/dependencies/swiper.min.css')}}" rel="stylesheet"/>
+  <link href="{{ asset('./assets/css/app.css')}}" rel="stylesheet"/>
+  <link href="./assets/css/dependencies/nouislider.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset('./assets/css/dependencies/swiper-product.css')}}">
+  <link href="{{ asset('./assets/css/main.css" rel="stylesheet')}}"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <!-- <title>صفحه اصلی</title> -->
 {!! SEO::generate() !!}
 
-  <style>
+  <!-- <style>
     .scroll-animate {
         opacity: 0; /* مخفی */
         transform: translateY(80px); /* حرکت اولیه */
@@ -30,11 +30,202 @@
       }
 
 
-  </style>
+  </style> -->
+<style>
+  /* انیمیشن تکان دادن زنگوله */
+  @keyframes ring {
+    0% { transform: rotate(0); }
+    25% { transform: rotate(-15deg); }
+    50% { transform: rotate(15deg); }
+    75% { transform: rotate(-10deg); }
+    100% { transform: rotate(0); }
+  }
+
+  /* انیمیشن پرش */
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+
+  /* استایل اصلی دکمه */
+  .bell {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #ffffff;
+    background: linear-gradient(135deg, #ff4d4d, #ff0000);
+    border-radius: 12px;
+    border: 2px solid #ffffff;
+    box-shadow: 0 5px 10px rgba(255, 0, 0, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+    cursor: pointer;
+  }
+
+  /* هاور */
+  .bell:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 0, 0, 0.4);
+    background: linear-gradient(135deg, #ff6666, #ff1a1a);
+  }
+
+  /* زنگوله با انیمیشن در حالت هاور */
+  .bell:hover .bell-icon {
+    animation: ring 0.6s ease-in-out, bounce 0.6s ease-in-out;
+  }
+
+  /* افکت نور ملایم */
+  .bell::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 12px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.5), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  /* نور در حالت هاور */
+  .bell:hover::after {
+    opacity: 1;
+  }
+
+  .tab-hidden {
+  display: none;
+}
+
+.tab-active {
+  color: #000;
+  font-weight: bold;
+  border-bottom: 2px solid #000;
+}
+
+
+
+.tab-hidden {
+  display: none;
+}
+
+.content-box {
+  position: relative;
+  background-color: #fff;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  width: 100%; /* عرض 100 درصد */
+  max-width: 100%; /* حداکثر عرض به 100 درصد تغییر کرد */
+  margin: 40px auto;
+  direction: rtl; /* راست‌چین کردن محتوا */
+  transition: all 0.3s ease-in-out;
+}
+
+.content-box::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 8px;
+  background-color: #D32F2F;
+  border-radius: 10px;
+}
+
+.content-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #D32F2F;
+  text-align: center;
+  margin-bottom: 25px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.content-text {
+  font-size: 20px;
+  line-height: 1.8;
+  color: #444;
+  text-align: justify; /* متن مساوی */
+  padding-bottom: 25px;
+}
+
+.content-box:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+
+
+.tab-hidden {
+  display: none;
+}
+
+.review-box {
+  position: relative;
+  background-color: #F5F5F5; /* پس‌زمینه خاکی روشن */
+  padding: 25px 35px;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 100%;
+  margin: 40px auto;
+  direction: rtl;
+  transition: all 0.3s ease-in-out;
+}
+
+.review-box::before {
+  content: "";
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 6px;
+  background-color: #F44336; /* قرمز کم‌رنگ */
+  border-radius: 5px;
+}
+
+.review-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #F44336; /* رنگ قرمز کم‌رنگ */
+  text-align: center;
+  margin-bottom: 20px;
+  text-transform: capitalize;
+  letter-spacing: 1px;
+}
+
+.review-text {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #666;
+  text-align: justify;
+}
+
+.review-box:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+</style>
 </head>
+@php
+use App\Helpers\Cart\Cart;
+use App\Models\productcategory;
+$AllParentProductCategory = productcategory::whereparent(0)->get();
+@endphp
 <body class="bg-[#fcfcfc]">
   <!-- header -->
-   <form action="{{route('products')}}" id="form" method="get">
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+     <form action="{{route('products')}}" id="form" method="get">
   <input id="desktopHeaderSearch2" name="search" type="text"/>
   </form>
   <header>
@@ -326,7 +517,35 @@
             <!-- Cart and Account -->
             <div class="flex items-center justify-center gap-x-6">
               <!-- Account -->
-               <a href="">
+               @guest
+               <a href="{{route('login')}}" >
+              <div class="flex items-center py-2 px-2 rounded-xl bg-red-500 hover:bg-red-400 transition shadow-lg shadow-red-500/50 nnn" >
+                <button
+                  class="text-gray-100 flex gap-x-1"
+                  data-dropdown-toggle="dropdownAccountDesktop"
+                  id="dropdownDefaultButton"
+                  type="button">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <!-- بدنه قفل -->
+                    <rect x="6" y="10" width="12" height="10" rx="2" ry="2" fill="#ffffff" />
+                    <!-- حلقه قفل -->
+                    <path d="M8 10V7C8 4.79 9.79 3 12 3C14.21 3 16 4.79 16 7V10" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <!-- کلید -->
+                    <path d="M13 15L16 15L16 17L17 17L17 19L15 19L15 17L13 17L13 15Z" fill="#ffffff" />
+                    <!-- دایره کلید -->
+                    <circle cx="12" cy="15" r="1" fill="#ffffff" />
+                  </svg>
+
+
+
+                <span class="hidden md:block text-sm">
+                  ورود/ثبت نام
+                </span>
+                </button>
+
+              </div></a>
+              @else
+
               <div class="flex items-center py-2 px-2 rounded-xl bg-red-500 hover:bg-red-400 transition shadow-lg shadow-red-500/50">
                 <button
                   class="text-gray-100 flex gap-x-1"
@@ -335,25 +554,26 @@
                   type="button">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#ffffff" viewBox="0 0 256 256"><path d="M229.19,213c-15.81-27.32-40.63-46.49-69.47-54.62a70,70,0,1,0-63.44,0C67.44,166.5,42.62,185.67,26.81,213a6,6,0,1,0,10.38,6C56.4,185.81,90.34,166,128,166s71.6,19.81,90.81,53a6,6,0,1,0,10.38-6ZM70,96a58,58,0,1,1,58,58A58.07,58.07,0,0,1,70,96Z"></path></svg>
                 <span class="hidden md:block text-sm">
-                  حساب کاربری
+                    {{request()->user()->name}}
                 </span>
-                </button>
+            </button>
                 <div
                   class="z-50 !ml-5 hidden w-60 rounded-lg bg-white shadow-lg"
                   id="dropdownAccountDesktop">
                   <ul class="space-y-2 p-2">
                     <li>
-                      <a class='flex items-center justify-between gap-x-2 rounded-lg p-2 text-zinc-700 hover:text-zinc-800 transition hover:bg-gray-100' href=''>
-                        <span class="flex items-center gap-x-2">
-                          <span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M229.19,213c-15.81-27.32-40.63-46.49-69.47-54.62a70,70,0,1,0-63.44,0C67.44,166.5,42.62,185.67,26.81,213a6,6,0,1,0,10.38,6C56.4,185.81,90.34,166,128,166s71.6,19.81,90.81,53a6,6,0,1,0,10.38-6ZM70,96a58,58,0,1,1,58,58A58.07,58.07,0,0,1,70,96Z"></path></svg>
-                          </span>
-                          <span class="text-sm">امیررضا کریمی</span>
+                      <a class='flex items-center justify-between gap-x-2 rounded-lg p-2 text-zinc-700 hover:text-zinc-800 transition hover:bg-gray-100' href='{{route('personal')}}'>
+                          <span class="flex items-center gap-x-2">
+                              <span>
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M229.19,213c-15.81-27.32-40.63-46.49-69.47-54.62a70,70,0,1,0-63.44,0C67.44,166.5,42.62,185.67,26.81,213a6,6,0,1,0,10.38,6C56.4,185.81,90.34,166,128,166s71.6,19.81,90.81,53a6,6,0,1,0,10.38-6ZM70,96a58,58,0,1,1,58,58A58.07,58.07,0,0,1,70,96Z"></path></svg>
+                                </span>
+
+                                <span class="text-sm"> {{request()->user()->name}}</span>
                         </span>
                       </a>
                     </li>
                     <li>
-                      <a class='flex items-center justify-between gap-x-2 rounded-lg p-2 text-zinc-700 hover:text-zinc-800 transition hover:bg-gray-100' href=''>
+                      <a class='flex items-center justify-between gap-x-2 rounded-lg p-2 text-zinc-700 hover:text-zinc-800 transition hover:bg-gray-100' href='{{route('factors')}}'>
                         <span class="flex items-center gap-x-2">
                           <span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M237.9,198.36l-14.25-120a14.06,14.06,0,0,0-14-12.36H174V64a46,46,0,0,0-92,0v2H46.33a14.06,14.06,0,0,0-14,12.36l-14.25,120a14,14,0,0,0,14,15.64H223.92a14,14,0,0,0,14-15.64ZM94,64a34,34,0,0,1,68,0v2H94ZM225.5,201.3a2.07,2.07,0,0,1-1.58.7H32.08a2.07,2.07,0,0,1-1.58-.7,1.92,1.92,0,0,1-.49-1.53l14.26-120A2,2,0,0,1,46.33,78H209.67a2,2,0,0,1,2.06,1.77l14.26,120A1.92,1.92,0,0,1,225.5,201.3Z"></path></svg>
@@ -363,12 +583,12 @@
                       </a>
                     </li>
                     <li>
-                      <a class='flex items-center justify-between gap-x-2 rounded-lg p-2 text-zinc-700 hover:text-zinc-800 transition hover:bg-gray-100' href=''>
+                      <a class='flex items-center justify-between gap-x-2 rounded-lg p-2 text-zinc-700 hover:text-zinc-800 transition hover:bg-gray-100' href='{{route('favorites')}}'>
                         <span class="flex items-center gap-x-2">
                           <span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M178,34c-21,0-39.26,9.47-50,25.34C117.26,43.47,99,34,78,34A60.07,60.07,0,0,0,18,94c0,29.2,18.2,59.59,54.1,90.31a334.68,334.68,0,0,0,53.06,37,6,6,0,0,0,5.68,0,334.68,334.68,0,0,0,53.06-37C219.8,153.59,238,123.2,238,94A60.07,60.07,0,0,0,178,34ZM128,209.11C111.59,199.64,30,149.72,30,94A48.05,48.05,0,0,1,78,46c20.28,0,37.31,10.83,44.45,28.27a6,6,0,0,0,11.1,0C140.69,56.83,157.72,46,178,46a48.05,48.05,0,0,1,48,48C226,149.72,144.41,199.64,128,209.11Z"></path></svg>
                           </span>
-                          <span class="text-sm">لیست ها</span>
+                          <span class="text-sm"> علاقه مندی ها</span>
                         </span>
                       </a>
                     </li>
@@ -399,7 +619,8 @@
                     </li>
                   </ul>
                 </div>
-              </div></a>
+              </div>
+              @endif
               <!-- card -->
               <div class="flex items-center p-2 rounded-xl bg-red-500 hover:bg-red-400 transition shadow-lg shadow-red-500/50">
                 <button
@@ -410,152 +631,101 @@
                     class="cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#ffffff" viewBox="0 0 256 256"><path d="M134,120v56a6,6,0,0,1-12,0V120a6,6,0,0,1,12,0ZM237.88,97.85,224,201.85A14,14,0,0,1,210.13,214H45.87A14,14,0,0,1,32,201.85l-13.87-104A14,14,0,0,1,32,82H69.28l54.2-61.95a6,6,0,0,1,9,0l54.2,62H224a14,14,0,0,1,13.87,15.85ZM85.22,82h85.56L128,33.11ZM225.5,94.68A2,2,0,0,0,224,94H32a2,2,0,0,0-1.51.68A2,2,0,0,0,30,96.26l13.86,104a2,2,0,0,0,2,1.73H210.13a2,2,0,0,0,2-1.73L226,96.26A1.93,1.93,0,0,0,225.5,94.68ZM181.4,114a6,6,0,0,0-6.57,5.37l-5.6,56A6,6,0,0,0,174.6,182l.61,0a6,6,0,0,0,6-5.4l5.6-56A6,6,0,0,0,181.4,114ZM81.17,119.4a6,6,0,0,0-11.94,1.2l5.6,56a6,6,0,0,0,6,5.4l.61,0a6,6,0,0,0,5.37-6.57Z"></path></svg>
                   </span>
-                  <span
-                    class="absolute -right-3 -top-3 flex h-5 w-5 drop-shadow-lg cursor-pointer items-center justify-center rounded-lg bg-white text-sm font-semibold text-red-500">
-                    2
-                  </span>
+
+                    @if (count(Cart::all()))
+                    <span
+                      class="absolute -right-3 -top-3 flex h-5 w-5 drop-shadow-lg cursor-pointer items-center justify-center rounded-lg bg-white text-sm font-semibold text-red-500">
+                      {{count(Cart::all())}}
+                    </span>
+
+                    @endif
+
                 </button>
+                @if (count(Cart::all()))
+
                 <div
                   class="z-50 mx-5 md:!ml-5 hidden w-auto md:w-[400px] rounded-lg bg-white shadow-lg"
                   id="dropdownBasketDesktop">
                   <!-- Head -->
                   <div class="flex items-center justify-between p-4 pb-2 border-b mx-5">
                     <div class="text-sm text-zinc-500">
-                      2 کالا
+                      {{count(Cart::all())}} کالا
                     </div>
                   </div>
                   <!-- Items -->
                   <div class="h-60">
                     <ul
                       class="main-scroll h-full space-y-2 divide-y divide-gray-100 overflow-y-auto p-5 pl-2">
-                      <li>
-                        <div class="flex gap-x-2 py-5">
-                          <!-- Product -->
-                          <div class="relative min-w-fit">
-                            <a href=''>
-                              <img
-                                alt=""
-                                class="h-[120px] w-[120px]"
-                                loading="lazy"
-                                src="./assets/image/products/1.webp"/>
-                            </a>
-                          </div>
-                          <div class="w-full space-y-1.5">
-                            <!-- Title -->
-                            <a class='line-clamp-2 h-12 text-zinc-700' href=''>
-                              لپ تاپ مدل لنوو
-                            </a>
-                            <!-- Attribute -->
-                            <div
-                              class="flex items-center gap-x-2 text-xs text-zinc-500">
-                              <div class="flex items-center gap-x-2">
-                                <span
-                                  class="h-4 w-4 rounded-full bg-gray-900"></span>
-                                <span>مشکی</span>
-                              </div>
+                        @foreach (Cart::all() as $item )
+                        <li>
+                          <div class="flex gap-x-2 py-5">
+                            <!-- Product -->
+                            <div class="relative min-w-fit">
+                              <a href=''>
+                                <img
+                                  alt=""
+                                  class="h-[120px] w-[120px]"
+                                  loading="lazy"
+                                  src="./assets/image/products/1.webp"/>
+                              </a>
                             </div>
-                            <div
-                              class="flex items-center gap-x-2 text-xs text-zinc-500">
-                              <div class="flex items-center gap-x-2">
-                                <svg class="fill-red-700" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M245.57,117.78l-14-35a13.93,13.93,0,0,0-13-8.8H182V64a6,6,0,0,0-6-6H24A14,14,0,0,0,10,72V184a14,14,0,0,0,14,14H42.6a30,30,0,0,0,58.8,0h53.2a30,30,0,0,0,58.8,0H232a14,14,0,0,0,14-14V120A6,6,0,0,0,245.57,117.78ZM182,86h36.58a2,2,0,0,1,1.86,1.26L231.14,114H182ZM22,72a2,2,0,0,1,2-2H170v68H22ZM72,210a18,18,0,1,1,18-18A18,18,0,0,1,72,210Zm82.6-24H101.4a30,30,0,0,0-58.8,0H24a2,2,0,0,1-2-2V150H170v15.48A30.1,30.1,0,0,0,154.6,186ZM184,210a18,18,0,1,1,18-18A18,18,0,0,1,184,210Zm50-26a2,2,0,0,1-2,2H213.4A30.05,30.05,0,0,0,184,162c-.67,0-1.34,0-2,.07V126h52Z"></path></svg>
-                                <span>ارسال پست پیشتاز</span>
-                              </div>
-                            </div>
-                            <div
-                              class="flex items-center justify-between gap-x-2">
-                              <!-- Price -->
+                            <div class="w-full space-y-1.5">
+                              <!-- Title -->
+                              <a class='line-clamp-2 h-12 text-zinc-700' href=''>
+
+
+                                {{$item['product']->name}}
+                              </a>
+                              <!-- Attribute -->
                               <div
-                                class="text-gray-700">
-                                <span class="text-lg font-bold">1,800,000</span>
-                                <span class="text-sm">تومان</span>
+                                class="flex items-center gap-x-2 text-xs text-zinc-500">
+                                <div class="flex items-center gap-x-2">
+                                  <span
+                                    class="h-4 w-4 rounded-full bg-gray-900"></span>
+                                  <span>مشکی</span>
+                                </div>
                               </div>
-                              <!-- Quantity -->
                               <div
-                                class="flex h-10 w-24 items-center justify-between rounded-lg border border-gray-100 px-2 py-1">
-                                <button
-                                  type="button"
-                                  data-action="increment">
-                                  <svg xlink:href="#plus" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M222,128a6,6,0,0,1-6,6H134v82a6,6,0,0,1-12,0V134H40a6,6,0,0,1,0-12h82V40a6,6,0,0,1,12,0v82h82A6,6,0,0,1,222,128Z"></path></svg>
-                                </button>
-                                <input
-                                  value="1"
-                                  disabled
-                                  type="number"
-                                  class="flex h-5 w-full grow select-none items-center justify-center bg-transparent text-center text-sm text-zinc-700 outline-none"/>
-                                <button
-                                  type="button"
-                                  data-action="decrement">
-                                  <svg xlink:href="#minus" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M222,128a6,6,0,0,1-6,6H40a6,6,0,0,1,0-12H216A6,6,0,0,1,222,128Z"></path></svg>
-                                </button>
+                                class="flex items-center gap-x-2 text-xs text-zinc-500">
+                                <div class="flex items-center gap-x-2">
+                                  <svg class="fill-red-700" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M245.57,117.78l-14-35a13.93,13.93,0,0,0-13-8.8H182V64a6,6,0,0,0-6-6H24A14,14,0,0,0,10,72V184a14,14,0,0,0,14,14H42.6a30,30,0,0,0,58.8,0h53.2a30,30,0,0,0,58.8,0H232a14,14,0,0,0,14-14V120A6,6,0,0,0,245.57,117.78ZM182,86h36.58a2,2,0,0,1,1.86,1.26L231.14,114H182ZM22,72a2,2,0,0,1,2-2H170v68H22ZM72,210a18,18,0,1,1,18-18A18,18,0,0,1,72,210Zm82.6-24H101.4a30,30,0,0,0-58.8,0H24a2,2,0,0,1-2-2V150H170v15.48A30.1,30.1,0,0,0,154.6,186ZM184,210a18,18,0,1,1,18-18A18,18,0,0,1,184,210Zm50-26a2,2,0,0,1-2,2H213.4A30.05,30.05,0,0,0,184,162c-.67,0-1.34,0-2,.07V126h52Z"></path></svg>
+                                  <span>ارسال پست پیشتاز</span>
+                                </div>
                               </div>
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="flex gap-x-2 py-5">
-                          <!-- Product -->
-                          <div class="relative min-w-fit">
-                            <a href=''>
-                              <img
-                                alt=""
-                                class="h-[120px] w-[120px]"
-                                loading="lazy"
-                                src="./assets/image/products/1.webp"/>
-                            </a>
-                          </div>
-                          <div class="w-full space-y-1.5">
-                            <!-- Title -->
-                            <a class='line-clamp-2 h-12 text-zinc-700' href=''>
-                              لپ تاپ مدل لنوو
-                            </a>
-                            <!-- Attribute -->
-                            <div
-                              class="flex items-center gap-x-2 text-xs text-zinc-500">
-                              <div class="flex items-center gap-x-2">
-                                <span
-                                  class="h-4 w-4 rounded-full bg-gray-900"></span>
-                                <span>مشکی</span>
-                              </div>
-                            </div>
-                            <div
-                              class="flex items-center gap-x-2 text-xs text-zinc-500">
-                              <div class="flex items-center gap-x-2">
-                                <svg class="fill-red-700" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M245.57,117.78l-14-35a13.93,13.93,0,0,0-13-8.8H182V64a6,6,0,0,0-6-6H24A14,14,0,0,0,10,72V184a14,14,0,0,0,14,14H42.6a30,30,0,0,0,58.8,0h53.2a30,30,0,0,0,58.8,0H232a14,14,0,0,0,14-14V120A6,6,0,0,0,245.57,117.78ZM182,86h36.58a2,2,0,0,1,1.86,1.26L231.14,114H182ZM22,72a2,2,0,0,1,2-2H170v68H22ZM72,210a18,18,0,1,1,18-18A18,18,0,0,1,72,210Zm82.6-24H101.4a30,30,0,0,0-58.8,0H24a2,2,0,0,1-2-2V150H170v15.48A30.1,30.1,0,0,0,154.6,186ZM184,210a18,18,0,1,1,18-18A18,18,0,0,1,184,210Zm50-26a2,2,0,0,1-2,2H213.4A30.05,30.05,0,0,0,184,162c-.67,0-1.34,0-2,.07V126h52Z"></path></svg>
-                                <span>ارسال پست پیشتاز</span>
-                              </div>
-                            </div>
-                            <div
-                              class="flex items-center justify-between gap-x-2">
-                              <!-- Price -->
                               <div
-                                class="text-gray-700">
-                                <span class="text-lg font-bold">1,800,000</span>
-                                <span class="text-sm">تومان</span>
-                              </div>
-                              <!-- Quantity -->
-                              <div
-                                class="flex h-10 w-24 items-center justify-between rounded-lg border border-gray-100 px-2 py-1">
-                                <button
-                                  type="button"
-                                  data-action="increment">
-                                  <svg xlink:href="#plus" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M222,128a6,6,0,0,1-6,6H134v82a6,6,0,0,1-12,0V134H40a6,6,0,0,1,0-12h82V40a6,6,0,0,1,12,0v82h82A6,6,0,0,1,222,128Z"></path></svg>
-                                </button>
-                                <input
-                                  value="1"
-                                  disabled
-                                  type="number"
-                                  class="flex h-5 w-full grow select-none items-center justify-center bg-transparent text-center text-sm text-zinc-700 outline-none"/>
-                                <button
-                                  type="button"
-                                  data-action="decrement">
-                                  <svg xlink:href="#minus" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M222,128a6,6,0,0,1-6,6H40a6,6,0,0,1,0-12H216A6,6,0,0,1,222,128Z"></path></svg>
-                                </button>
+                                class="flex items-center justify-between gap-x-2">
+                                <!-- Price -->
+                                <div
+                                  class="text-gray-700">
+                                  <span class="text-lg font-bold">1,800,000</span>
+                                  <span class="text-sm">تومان</span>
+                                </div>
+                                <!-- Quantity -->
+                                <div
+                                  class="flex h-10 w-24 items-center justify-between rounded-lg border border-gray-100 px-2 py-1">
+                                  <button
+                                    type="button"
+                                    data-action="increment">
+                                    <svg xlink:href="#plus" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M222,128a6,6,0,0,1-6,6H134v82a6,6,0,0,1-12,0V134H40a6,6,0,0,1,0-12h82V40a6,6,0,0,1,12,0v82h82A6,6,0,0,1,222,128Z"></path></svg>
+                                  </button>
+                                  <input
+                                    value="1"
+                                    disabled
+                                    type="number"
+                                    class="flex h-5 w-full grow select-none items-center justify-center bg-transparent text-center text-sm text-zinc-700 outline-none"/>
+                                  <button
+                                    type="button"
+                                    data-action="decrement">
+                                    <svg xlink:href="#minus" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M222,128a6,6,0,0,1-6,6H40a6,6,0,0,1,0-12H216A6,6,0,0,1,222,128Z"></path></svg>
+                                  </button>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </li>
+                        </li>
+
+                        @endforeach
+
                     </ul>
                   </div>
                   <!-- Down Price -->
@@ -578,6 +748,7 @@
                     </a>
                   </div>
                 </div>
+                @endif
               </div>
             </div>
           </div>
@@ -586,7 +757,7 @@
             class="absolute left-0 right-0 top-full z-20 bg-white shadow-sm transition-transform duration-300"
             id="desktop-header-bottom">
             <div
-              class="container relative flex max-w-[1680px] items-center gap-x-2 px-5 pb-2">
+              class="container relative flex max-w-[1680px] items-center gap-x-2 px-5">
               <div class="group" id="desktopMegamenuWrapper">
                 <div
                   class="relative flex cursor-pointer items-center gap-x-2 pb-2 text-zinc-700">
@@ -611,92 +782,37 @@
                       <div
                         class="main-scroll w-50 border-gray-100 bg-gray-100 border-l-2">
                         <ul id="mega-menu-parents">
-                          <li>
-                            <a class='flex items-center gap-x-1 py-4 pr-4 text-zinc-700 hover:text-zinc-600 hover:bg-white transition min-w-24 border-b' data-category-parent='1' href=''>
-                              <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M176,18H80A22,22,0,0,0,58,40V216a22,22,0,0,0,22,22h96a22,22,0,0,0,22-22V40A22,22,0,0,0,176,18Zm10,198a10,10,0,0,1-10,10H80a10,10,0,0,1-10-10V40A10,10,0,0,1,80,30h96a10,10,0,0,1,10,10ZM138,60a10,10,0,1,1-10-10A10,10,0,0,1,138,60Z"></path></svg>
-                              </span>
-                              <span class="text-sm">
-                                موبایل
-                              </span>
-                            </a>
-                          </li>
-                          <li>
-                            <a class='flex items-center gap-x-1 py-4 pr-4 text-zinc-700 hover:text-zinc-600 hover:bg-white transition min-w-24 border-b' data-category-parent='2' href=''>
-                              <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M232,170H222V72a22,22,0,0,0-22-22H56A22,22,0,0,0,34,72v98H24a6,6,0,0,0-6,6v16a22,22,0,0,0,22,22H216a22,22,0,0,0,22-22V176A6,6,0,0,0,232,170ZM46,72A10,10,0,0,1,56,62H200a10,10,0,0,1,10,10v98H46ZM226,192a10,10,0,0,1-10,10H40a10,10,0,0,1-10-10V182H226ZM150,88a6,6,0,0,1-6,6H112a6,6,0,0,1,0-12h32A6,6,0,0,1,150,88Z"></path></svg>
-                              </span>
-                              <span class="text-sm">
-                                کالای دیجیتال
-                              </span>
-                            </a>
-                          </li>
-                          <li>
-                            <a class='flex items-center gap-x-1 py-4 pr-4 text-zinc-700 hover:text-zinc-600 hover:bg-white transition min-w-24 border-b' data-category-parent='3' href=''>
-                              <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M217.47,105.24l-80-75.5-.09-.08a13.94,13.94,0,0,0-18.83,0l-.09.08-80,75.5A14,14,0,0,0,34,115.55V208a14,14,0,0,0,14,14H96a14,14,0,0,0,14-14V160a2,2,0,0,1,2-2h32a2,2,0,0,1,2,2v48a14,14,0,0,0,14,14h48a14,14,0,0,0,14-14V115.55A14,14,0,0,0,217.47,105.24ZM210,208a2,2,0,0,1-2,2H160a2,2,0,0,1-2-2V160a14,14,0,0,0-14-14H112a14,14,0,0,0-14,14v48a2,2,0,0,1-2,2H48a2,2,0,0,1-2-2V115.55a2,2,0,0,1,.65-1.48l.09-.08,79.94-75.48a2,2,0,0,1,2.63,0L209.26,114l.08.08a2,2,0,0,1,.66,1.48Z"></path></svg>
-                              </span>
-                              <span class="text-sm">
-                                لوازم خانه
-                              </span>
-                            </a>
-                          </li>
-                          <li>
-                            <a class='flex items-center gap-x-1 py-4 pr-4 text-zinc-700 hover:text-zinc-600 hover:bg-white transition min-w-24 border-b' data-category-parent='4' href=''>
-                              <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M200,50H178.48L164.24,35.76A6,6,0,0,0,160,34H96a6,6,0,0,0-4.21,1.76L77.52,50H56A14,14,0,0,0,42,64V216a14,14,0,0,0,14,14H200a14,14,0,0,0,14-14V64A14,14,0,0,0,200,50Zm-30,8.49V112a2,2,0,0,1-3.25,1.56L135.93,86.92l25-37.5ZM128,77.18,107.21,46h41.58ZM95.07,49.42l25,37.5L89.25,113.54A2,2,0,0,1,86,112V58.49ZM54,216V64a2,2,0,0,1,2-2H74v50a13.87,13.87,0,0,0,8.06,12.68A14.11,14.11,0,0,0,88,126,13.87,13.87,0,0,0,97,122.74l.08-.07,25-21.56V218H56A2,2,0,0,1,54,216Zm148,0a2,2,0,0,1-2,2H134V101.11l25,21.56.08.07A13.87,13.87,0,0,0,168,126a14.08,14.08,0,0,0,6-1.35A13.87,13.87,0,0,0,182,112V62h18a2,2,0,0,1,2,2Z"></path></svg>
-                              </span>
-                              <span class="text-sm">
-                                مد و پوشاک
-                              </span>
-                            </a>
-                          </li>
-                          <li>
-                            <a class='flex items-center gap-x-1 py-4 pr-4 text-zinc-700 hover:text-zinc-600 hover:bg-white transition min-w-24 border-b' data-category-parent='5' href=''>
-                              <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M72,134H32a6,6,0,0,1,0-12H68.79L83,100.67a6,6,0,0,1,10,0l27,40.51,11-16.51a6,6,0,0,1,5-2.67h24a6,6,0,0,1,0,12H139.21L125,155.33a6,6,0,0,1-10,0L88,114.82,77,131.33A6,6,0,0,1,72,134ZM178,34c-21,0-39.26,9.47-50,25.34C117.26,43.47,99,34,78,34A60.07,60.07,0,0,0,18,94q0,1.09,0,2.19a6,6,0,1,0,12-.38c0-.6,0-1.21,0-1.81A48.05,48.05,0,0,1,78,46c20.28,0,37.31,10.83,44.45,28.27a6,6,0,0,0,11.1,0C140.69,56.83,157.72,46,178,46a48.05,48.05,0,0,1,48,48c0,55.73-81.61,105.65-98,115.11-9.84-5.66-43.09-25.82-68.16-53.16a6,6,0,1,0-8.84,8.1c30.94,33.77,72.41,56.29,74.16,57.23a6,6,0,0,0,5.68,0,334.68,334.68,0,0,0,53.06-37C219.8,153.59,238,123.2,238,94A60.07,60.07,0,0,0,178,34Z"></path></svg>
-                              </span>
-                              <span class="text-sm">
-                                زیبایی و سلامت
-                              </span>
-                            </a>
-                          </li>
-                          <li>
-                            <a class='flex items-center gap-x-1 py-4 pr-4 text-zinc-700 hover:text-zinc-600 hover:bg-white transition min-w-24 border-b' data-category-parent='6' href=''>
-                              <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M134,120v56a6,6,0,0,1-12,0V120a6,6,0,0,1,12,0ZM237.88,97.85,224,201.85A14,14,0,0,1,210.13,214H45.87A14,14,0,0,1,32,201.85l-13.87-104A14,14,0,0,1,32,82H69.28l54.2-61.95a6,6,0,0,1,9,0l54.2,62H224a14,14,0,0,1,13.87,15.85ZM85.22,82h85.56L128,33.11ZM225.5,94.68A2,2,0,0,0,224,94H32a2,2,0,0,0-1.51.68A2,2,0,0,0,30,96.26l13.86,104a2,2,0,0,0,2,1.73H210.13a2,2,0,0,0,2-1.73L226,96.26A1.93,1.93,0,0,0,225.5,94.68ZM181.4,114a6,6,0,0,0-6.57,5.37l-5.6,56A6,6,0,0,0,174.6,182l.61,0a6,6,0,0,0,6-5.4l5.6-56A6,6,0,0,0,181.4,114ZM81.17,119.4a6,6,0,0,0-11.94,1.2l5.6,56a6,6,0,0,0,6,5.4l.61,0a6,6,0,0,0,5.37-6.57Z"></path></svg>
-                              </span>
-                              <span class="text-sm">
-                                کالای سوپر مارکت
-                              </span>
-                            </a>
-                          </li>
-                          <li>
-                            <a class='flex items-center gap-x-1 py-4 pr-4 text-zinc-700 hover:text-zinc-600 hover:bg-white transition min-w-24 border-b' data-category-parent='7' href=''>
-                              <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M128,26A102,102,0,1,0,230,128,102.12,102.12,0,0,0,128,26Zm77.67,147.42H169.89L159.41,159l13.29-38.72,17-5.51,27.94,21.43A89.38,89.38,0,0,1,205.67,173.42Zm-119.56,0H50.33A89.38,89.38,0,0,1,38.38,136.2l27.94-21.43,17,5.51L96.59,159ZM51,81.42l7.24,24.41-20,15.34A89.47,89.47,0,0,1,51,81.42ZM107.56,154,95.15,117.86,128,95.28l32.85,22.58L148.44,154Zm90.19-48.17L205,81.42a89.47,89.47,0,0,1,12.75,39.75Zm-1.66-36.62L186,103.35l-17,5.53-35-24V67.16l30.9-21.24A90.3,90.3,0,0,1,196.09,69.21ZM150.92,41,128,56.72,105.08,41a90.22,90.22,0,0,1,45.84,0ZM91.11,45.91,122,67.16V84.84l-35,24-17-5.53L59.91,69.21A90.4,90.4,0,0,1,91.11,45.91ZM58.75,185.42H84.93l9.19,26A90.37,90.37,0,0,1,58.75,185.42Zm49.68,30.43L95.88,180.39,106.34,166h43.32l10.46,14.39-12.55,35.46a90.14,90.14,0,0,1-39.14,0Zm53.45-4.48,9.19-26h26.18A90.37,90.37,0,0,1,161.88,211.37Z"></path></svg>
-                              </span>
-                              <span class="text-sm">
-                                ورزش و سفر
-                              </span>
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                      <!-- Left -->
-                      <div
-                        class="main-scroll h-[450px] max-h-[450px] w-full overflow-auto"
-                        dir="ltr">
-                        <div
+                            @foreach ( $AllParentProductCategory as $item )
+                            <li>
+                                <a class='flex items-center gap-x-1 py-4 pr-4 text-zinc-700 hover:text-zinc-600 hover:bg-white transition min-w-24 border-b' data-category-parent='{{$loop->iteration}}' href='#'>
+                                    <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M176,18H80A22,22,0,0,0,58,40V216a22,22,0,0,0,22,22h96a22,22,0,0,0,22-22V40A22,22,0,0,0,176,18Zm10,198a10,10,0,0,1-10,10H80a10,10,0,0,1-10-10V40A10,10,0,0,1,80,30h96a10,10,0,0,1,10,10ZM138,60a10,10,0,1,1-10-10A10,10,0,0,1,138,60Z"></path></svg>
+                                </span>
+                                <span class="text-sm">
+                                    {{$item->name}}
+                                    </span>
+                                </a>
+                                </li>
+
+                                @endforeach
+                            </ul>
+                    </div>
+                    <!-- Left -->
+                    <div
+                    class="main-scroll h-[450px] max-h-[450px] w-full overflow-auto"
+                    dir="ltr">
+                    <div
                           class="flex flex-grow"
                           dir="rtl"
                           id="mega-menu-childs">
                           <!-- Childs -->
-                          <div class="hidden p-5" data-category-child="1">
+
+                          @foreach ( $AllParentProductCategory as $item )
+                          <div class="hidden p-5" data-category-child="{{$loop->iteration}}">
                             <!-- head -->
                             <div class="mb-4">
                               <a class='flex items-center gap-x-1 py-2 text-xs text-red-400 hover:text-red-500 transition' href=''>
-                                <div>مشاهده همه محصولات موبایل</div>
+                                <div>مشاهده همه محصولات {{$item->name}} </div>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
                               </a>
                             </div>
@@ -706,55 +822,19 @@
                                 <a class='flex items-center gap-x-1 text-zinc-700 hover:text-red-400' href=''>
                                   <span
                                     class="h-5 w-0.5 rounded-full bg-red-500"></span>
-                                  <div class="text-sm">برند های مختلف موبایل</div>
+                                  <div class="text-sm">برند های مختلف {{$item->name}}</div>
                                   <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
                                 </a>
                                 <ul>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                       گوشی اپل
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی سامسونگ
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی شیائومی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی هاوائی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی ال جی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی آنر
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی نوکیا
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی آنر
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی جی پلاس
-                                    </a>
-                                  </li>
+                                    @foreach ( $item->Brand()->get() as $Item)
+                                    <li>
+                                      <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
+                                         {{ $Item->name}}
+                                      </a>
+                                    </li>
+
+                                    @endforeach
+
                                 </ul>
                               </div>
                               <div class="space-y-2">
@@ -850,1138 +930,20 @@
                                   <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
                                 </a>
                                 <ul>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گلکسی S21 FE
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گلکسی A54
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گلکسی A34 plus
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گلکسی A14
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      پوکو C40
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      آنر X9a
-                                    </a>
-                                  </li>
+                                   @foreach ( $item->products()->where('count_view', '>' , 10)->get() as $product )
+
+                                   <li>
+                                     <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
+                                       {{$product->name}}
+                                     </a>
+                                   </li>
+                                   @endforeach
                                 </ul>
                               </div>
                             </div>
                           </div>
-                          <!-- Childs -->
-                          <div class="hidden p-5" data-category-child="2">
-                            <!-- head -->
-                            <div class="mb-4">
-                              <a class='flex items-center gap-x-1 py-2 text-xs text-red-400 hover:text-red-500 transition' href=''>
-                                <div>مشاهده همه محصولات کالای دیجیتال</div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                              </a>
-                            </div>
-                            <div
-                              class="flex flex-grow flex-wrap gap-x-14 gap-y-8">
-                              <div class="space-y-2">
-                                <a class='flex items-center gap-x-1 text-zinc-700 hover:text-red-400' href=''>
-                                  <span
-                                    class="h-5 w-0.5 rounded-full bg-red-500"></span>
-                                  <div class="text-sm">برند های مختلف لپ تاپ</div>
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                                </a>
-                                <ul>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      لپ تاپ ایسوس
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      لپ تاپ لنوو
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      لپ تاپ HP
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      لپ تاپ دل
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      لپ تاپ اپل
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      لپ تاپ ایسر
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      لپ تاپ ام اس آی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      لپ تاپ فوجیتسو
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      لپ تاپ کاستوم
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                              <div class="space-y-2">
-                                <a class='flex items-center gap-x-1 text-zinc-700 hover:text-red-400' href=''>
-                                  <span
-                                    class="h-5 w-0.5 rounded-full bg-red-500"></span>
-                                  <div class="text-sm">هدفون براساس قیمت</div>
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                                </a>
-                                <ul>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      هدفون بیسیم
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      هدفون اپل
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      هدفون سامسونگ
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      هدفون بیتس
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      هدفون ریزر
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      هدفون سونی
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                              <div class="space-y-2">
-                                <a class='flex items-center gap-x-1 text-zinc-700 hover:text-red-400' href=''>
-                                  <span
-                                    class="h-5 w-0.5 rounded-full bg-red-500"></span>
-                                  <div class="text-sm">لوازم جانبی لپ تاپ</div>
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                                </a>
-                                <ul>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      شارژر لپ تاپ
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      کیف لپ تاپ
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      موس و کیبورد
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      برچسب کیبورد و تاچ پد
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                              <div class="space-y-2">
-                                <a class='flex items-center gap-x-1 text-zinc-700 hover:text-red-400' href=''>
-                                  <span
-                                    class="h-5 w-0.5 rounded-full bg-red-500"></span>
-                                  <div class="text-sm">لوازم جانبی دیجیتال</div>
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                                </a>
-                                <ul>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      پرینتر
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      اسکنر و فاکس
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      ساعت و مچ بند
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      هنذفری بلوتوثی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      بارکدخوان
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                          <!-- Childs -->
-                          <div class="hidden p-5" data-category-child="3">
-                            <!-- head -->
-                            <div class="mb-4">
-                              <a class='flex items-center gap-x-1 py-2 text-xs text-red-400 hover:text-red-500 transition' href=''>
-                                <div>مشاهده همه محصولات موبایل</div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                              </a>
-                            </div>
-                            <div
-                              class="flex flex-grow flex-wrap gap-x-14 gap-y-8">
-                              <div class="space-y-2">
-                                <a class='flex items-center gap-x-1 text-zinc-700 hover:text-red-400' href=''>
-                                  <span
-                                    class="h-5 w-0.5 rounded-full bg-red-500"></span>
-                                  <div class="text-sm">برند های مختلف موبایل</div>
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                                </a>
-                                <ul>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                       گوشی اپل
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی سامسونگ
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی شیائومی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی هاوائی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی ال جی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی آنر
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی نوکیا
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی آنر
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی جی پلاس
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                              <div class="space-y-2">
-                                <a class='flex items-center gap-x-1 text-zinc-700 hover:text-red-400' href=''>
-                                  <span
-                                    class="h-5 w-0.5 rounded-full bg-red-500"></span>
-                                  <div class="text-sm">گوشی براساس قیمت</div>
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                                </a>
-                                <ul>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                       گوشی ارزان
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی قسطی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی تا 2 میلیون تومان
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی تا 5 میلیون تومان
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی تا 7 میلیون تومان
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی تا 10 میلیون تومان
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی تا 15 میلیون تومان
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی تا 20 میلیون تومان
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی بالای 20 میلیون تومان
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                              <div class="space-y-2">
-                                <a class='flex items-center gap-x-1 text-zinc-700 hover:text-red-400' href=''>
-                                  <span
-                                    class="h-5 w-0.5 rounded-full bg-red-500"></span>
-                                  <div class="text-sm">لوازم جانبی موبایل</div>
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                                </a>
-                                <ul>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گلس و قاب گوشی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      شارژر گوشی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      هولدر گوشی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      کابل شارژ و مبدل
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                              <div class="space-y-2">
-                                <a class='flex items-center gap-x-1 text-zinc-700 hover:text-red-400' href=''>
-                                  <span
-                                    class="h-5 w-0.5 rounded-full bg-red-500"></span>
-                                  <div class="text-sm">داغ ترین ها</div>
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                                </a>
-                                <ul>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گلکسی S21 FE
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گلکسی A54
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گلکسی A34 plus
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گلکسی A14
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      پوکو C40
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      آنر X9a
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                          <!-- Childs -->
-                          <div class="hidden p-5" data-category-child="4">
-                            <!-- head -->
-                            <div class="mb-4">
-                              <a class='flex items-center gap-x-1 py-2 text-xs text-red-400 hover:text-red-500 transition' href=''>
-                                <div>مشاهده همه محصولات کالای دیجیتال</div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                              </a>
-                            </div>
-                            <div
-                              class="flex flex-grow flex-wrap gap-x-14 gap-y-8">
-                              <div class="space-y-2">
-                                <a class='flex items-center gap-x-1 text-zinc-700 hover:text-red-400' href=''>
-                                  <span
-                                    class="h-5 w-0.5 rounded-full bg-red-500"></span>
-                                  <div class="text-sm">برند های مختلف لپ تاپ</div>
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                                </a>
-                                <ul>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      لپ تاپ ایسوس
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      لپ تاپ لنوو
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      لپ تاپ HP
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      لپ تاپ دل
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      لپ تاپ اپل
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      لپ تاپ ایسر
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      لپ تاپ ام اس آی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      لپ تاپ فوجیتسو
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      لپ تاپ کاستوم
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                              <div class="space-y-2">
-                                <a class='flex items-center gap-x-1 text-zinc-700 hover:text-red-400' href=''>
-                                  <span
-                                    class="h-5 w-0.5 rounded-full bg-red-500"></span>
-                                  <div class="text-sm">هدفون براساس قیمت</div>
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                                </a>
-                                <ul>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      هدفون بیسیم
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      هدفون اپل
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      هدفون سامسونگ
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      هدفون بیتس
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      هدفون ریزر
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      هدفون سونی
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                              <div class="space-y-2">
-                                <a class='flex items-center gap-x-1 text-zinc-700 hover:text-red-400' href=''>
-                                  <span
-                                    class="h-5 w-0.5 rounded-full bg-red-500"></span>
-                                  <div class="text-sm">لوازم جانبی لپ تاپ</div>
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                                </a>
-                                <ul>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      شارژر لپ تاپ
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      کیف لپ تاپ
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      موس و کیبورد
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      برچسب کیبورد و تاچ پد
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                              <div class="space-y-2">
-                                <a class='flex items-center gap-x-1 text-zinc-700 hover:text-red-400' href=''>
-                                  <span
-                                    class="h-5 w-0.5 rounded-full bg-red-500"></span>
-                                  <div class="text-sm">لوازم جانبی دیجیتال</div>
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                                </a>
-                                <ul>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      پرینتر
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      اسکنر و فاکس
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      ساعت و مچ بند
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      هنذفری بلوتوثی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      بارکدخوان
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                          <!-- Childs -->
-                          <div class="hidden p-5" data-category-child="5">
-                            <!-- head -->
-                            <div class="mb-4">
-                              <a class='flex items-center gap-x-1 py-2 text-xs text-red-400 hover:text-red-500 transition' href=''>
-                                <div>مشاهده همه محصولات موبایل</div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                              </a>
-                            </div>
-                            <div
-                              class="flex flex-grow flex-wrap gap-x-14 gap-y-8">
-                              <div class="space-y-2">
-                                <a class='flex items-center gap-x-1 text-zinc-700 hover:text-red-400' href=''>
-                                  <span
-                                    class="h-5 w-0.5 rounded-full bg-red-500"></span>
-                                  <div class="text-sm">برند های مختلف موبایل</div>
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                                </a>
-                                <ul>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                       گوشی اپل
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی سامسونگ
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی شیائومی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی هاوائی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی ال جی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی آنر
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی نوکیا
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی آنر
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی جی پلاس
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                              <div class="space-y-2">
-                                <a class='flex items-center gap-x-1 text-zinc-700 hover:text-red-400' href=''>
-                                  <span
-                                    class="h-5 w-0.5 rounded-full bg-red-500"></span>
-                                  <div class="text-sm">گوشی براساس قیمت</div>
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                                </a>
-                                <ul>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                       گوشی ارزان
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی قسطی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی تا 2 میلیون تومان
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی تا 5 میلیون تومان
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی تا 7 میلیون تومان
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی تا 10 میلیون تومان
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی تا 15 میلیون تومان
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی تا 20 میلیون تومان
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی بالای 20 میلیون تومان
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                              <div class="space-y-2">
-                                <a class='flex items-center gap-x-1 text-zinc-700 hover:text-red-400' href=''>
-                                  <span
-                                    class="h-5 w-0.5 rounded-full bg-red-500"></span>
-                                  <div class="text-sm">لوازم جانبی موبایل</div>
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                                </a>
-                                <ul>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گلس و قاب گوشی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      شارژر گوشی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      هولدر گوشی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      کابل شارژ و مبدل
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                              <div class="space-y-2">
-                                <a class='flex items-center gap-x-1 text-zinc-700 hover:text-red-400' href=''>
-                                  <span
-                                    class="h-5 w-0.5 rounded-full bg-red-500"></span>
-                                  <div class="text-sm">داغ ترین ها</div>
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                                </a>
-                                <ul>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گلکسی S21 FE
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گلکسی A54
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گلکسی A34 plus
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گلکسی A14
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      پوکو C40
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      آنر X9a
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                          <!-- Childs -->
-                          <div class="hidden p-5" data-category-child="6">
-                            <!-- head -->
-                            <div class="mb-4">
-                              <a class='flex items-center gap-x-1 py-2 text-xs text-red-400 hover:text-red-500 transition' href=''>
-                                <div>مشاهده همه محصولات کالای دیجیتال</div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                              </a>
-                            </div>
-                            <div
-                              class="flex flex-grow flex-wrap gap-x-14 gap-y-8">
-                              <div class="space-y-2">
-                                <a class='flex items-center gap-x-1 text-zinc-700 hover:text-red-400' href=''>
-                                  <span
-                                    class="h-5 w-0.5 rounded-full bg-red-500"></span>
-                                  <div class="text-sm">برند های مختلف لپ تاپ</div>
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                                </a>
-                                <ul>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      لپ تاپ ایسوس
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      لپ تاپ لنوو
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      لپ تاپ HP
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      لپ تاپ دل
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      لپ تاپ اپل
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      لپ تاپ ایسر
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      لپ تاپ ام اس آی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      لپ تاپ فوجیتسو
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      لپ تاپ کاستوم
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                              <div class="space-y-2">
-                                <a class='flex items-center gap-x-1 text-zinc-700 hover:text-red-400' href=''>
-                                  <span
-                                    class="h-5 w-0.5 rounded-full bg-red-500"></span>
-                                  <div class="text-sm">هدفون براساس قیمت</div>
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                                </a>
-                                <ul>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      هدفون بیسیم
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      هدفون اپل
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      هدفون سامسونگ
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      هدفون بیتس
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      هدفون ریزر
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      هدفون سونی
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                              <div class="space-y-2">
-                                <a class='flex items-center gap-x-1 text-zinc-700 hover:text-red-400' href=''>
-                                  <span
-                                    class="h-5 w-0.5 rounded-full bg-red-500"></span>
-                                  <div class="text-sm">لوازم جانبی لپ تاپ</div>
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                                </a>
-                                <ul>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      شارژر لپ تاپ
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      کیف لپ تاپ
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      موس و کیبورد
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      برچسب کیبورد و تاچ پد
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                              <div class="space-y-2">
-                                <a class='flex items-center gap-x-1 text-zinc-700 hover:text-red-400' href=''>
-                                  <span
-                                    class="h-5 w-0.5 rounded-full bg-red-500"></span>
-                                  <div class="text-sm">لوازم جانبی دیجیتال</div>
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                                </a>
-                                <ul>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      پرینتر
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      اسکنر و فاکس
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      ساعت و مچ بند
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      هنذفری بلوتوثی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      بارکدخوان
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                          <!-- Childs -->
-                          <div class="hidden p-5" data-category-child="7">
-                            <!-- head -->
-                            <div class="mb-4">
-                              <a class='flex items-center gap-x-1 py-2 text-xs text-red-400 hover:text-red-500 transition' href=''>
-                                <div>مشاهده همه محصولات موبایل</div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                              </a>
-                            </div>
-                            <div
-                              class="flex flex-grow flex-wrap gap-x-14 gap-y-8">
-                              <div class="space-y-2">
-                                <a class='flex items-center gap-x-1 text-zinc-700 hover:text-red-400' href=''>
-                                  <span
-                                    class="h-5 w-0.5 rounded-full bg-red-500"></span>
-                                  <div class="text-sm">برند های مختلف موبایل</div>
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                                </a>
-                                <ul>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                       گوشی اپل
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی سامسونگ
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی شیائومی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی هاوائی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی ال جی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی آنر
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی نوکیا
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی آنر
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی جی پلاس
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                              <div class="space-y-2">
-                                <a class='flex items-center gap-x-1 text-zinc-700 hover:text-red-400' href=''>
-                                  <span
-                                    class="h-5 w-0.5 rounded-full bg-red-500"></span>
-                                  <div class="text-sm">گوشی براساس قیمت</div>
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                                </a>
-                                <ul>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                       گوشی ارزان
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی قسطی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی تا 2 میلیون تومان
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی تا 5 میلیون تومان
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی تا 7 میلیون تومان
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی تا 10 میلیون تومان
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی تا 15 میلیون تومان
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی تا 20 میلیون تومان
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گوشی بالای 20 میلیون تومان
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                              <div class="space-y-2">
-                                <a class='flex items-center gap-x-1 text-zinc-700 hover:text-red-400' href=''>
-                                  <span
-                                    class="h-5 w-0.5 rounded-full bg-red-500"></span>
-                                  <div class="text-sm">لوازم جانبی موبایل</div>
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                                </a>
-                                <ul>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گلس و قاب گوشی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      شارژر گوشی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      هولدر گوشی
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      کابل شارژ و مبدل
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                              <div class="space-y-2">
-                                <a class='flex items-center gap-x-1 text-zinc-700 hover:text-red-400' href=''>
-                                  <span
-                                    class="h-5 w-0.5 rounded-full bg-red-500"></span>
-                                  <div class="text-sm">داغ ترین ها</div>
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                                </a>
-                                <ul>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گلکسی S21 FE
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گلکسی A54
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گلکسی A34 plus
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      گلکسی A14
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      پوکو C40
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class='block py-2 text-xs text-zinc-600 hover:text-red-500' href=''>
-                                      آنر X9a
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
+                          @endforeach
+
                         </div>
                       </div>
                     </div>
@@ -2257,12 +1219,22 @@
                 </div>
                 <div class="absolute top-full hidden group-hover:block bg-white rounded-lg drop-shadow-xl w-56 z-50 p-2 text-sm text-zinc-600">
 
-                  <a class="block hover:text-zinc-800 hover:bg-zinc-100 rounded-md transition p-2 my-1" href="{{route('blog_list')}}">
+                <a class="block hover:text-zinc-800 hover:bg-zinc-100 rounded-md transition p-2 my-1" href="{{route('blog_list')}}">
                     بلاگ
                   </a>
 
-                  <a class="block hover:text-zinc-800 hover:bg-zinc-100 rounded-md transition p-2 my-1" href="./cart.html">
+                  <a class="block hover:text-zinc-800 hover:bg-zinc-100 rounded-md transition p-2 my-1" href="{{route('cart')}}">
                     سبد خرید
+                  </a>
+                  <a class="block hover:text-zinc-800 hover:bg-zinc-100 rounded-md transition p-2 my-1" href="{{route('comparision')}}">
+                    مقایسه محصول
+                  </a>
+
+                  <a class="block hover:text-zinc-800 hover:bg-zinc-100 rounded-md transition p-2 my-1" href="{{route('contact')}}">
+                     تماس با ما
+                  </a>
+                  <a class="block hover:text-zinc-800 hover:bg-zinc-100 rounded-md transition p-2 my-1" href="{{route('about')}}">
+                      درباره ما
                   </a>
                   <a class="block hover:text-zinc-800 hover:bg-zinc-100 rounded-md transition p-2 my-1" href="./category-index.html">
                    دسته بندی
@@ -2276,15 +1248,8 @@
                     پروفایل کاربر
                   </a>
                   @endif
+
                 </div>
-              </div>
-              <div class="mr-auto">
-                <a class="" href="./seller-login.html">
-                  <div class="py-2 px-3 rounded-lg text-sm text-zinc-700 bg-gray-100 hover:bg-gray-200 transition border hover:shadow-lg flex items-center gap-x-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M184,89.57V84c0-25.08-37.83-44-88-44S8,58.92,8,84v40c0,20.89,26.25,37.49,64,42.46V172c0,25.08,37.83,44,88,44s88-18.92,88-44V132C248,111.3,222.58,94.68,184,89.57ZM232,132c0,13.22-30.79,28-72,28-3.73,0-7.43-.13-11.08-.37C170.49,151.77,184,139,184,124V105.74C213.87,110.19,232,122.27,232,132ZM72,150.25V126.46A183.74,183.74,0,0,0,96,128a183.74,183.74,0,0,0,24-1.54v23.79A163,163,0,0,1,96,152,163,163,0,0,1,72,150.25Zm96-40.32V124c0,8.39-12.41,17.4-32,22.87V123.5C148.91,120.37,159.84,115.71,168,109.93ZM96,56c41.21,0,72,14.78,72,28s-30.79,28-72,28S24,97.22,24,84,54.79,56,96,56ZM24,124V109.93c8.16,5.78,19.09,10.44,32,13.57v23.37C36.41,141.4,24,132.39,24,124Zm64,48v-4.17c2.63.1,5.29.17,8,.17,3.88,0,7.67-.13,11.39-.35A121.92,121.92,0,0,0,120,171.41v23.46C100.41,189.4,88,180.39,88,172Zm48,26.25V174.4a179.48,179.48,0,0,0,24,1.6,183.74,183.74,0,0,0,24-1.54v23.79a165.45,165.45,0,0,1-48,0Zm64-3.38V171.5c12.91-3.13,23.84-7.79,32-13.57V172C232,180.39,219.59,189.4,200,194.87Z"></path></svg>
-                    فروشنده شوید
-                  </div>
-                </a>
               </div>
             </div>
           </div>
@@ -2299,11 +1264,11 @@
             class="mb-6 flex items-center justify-between gap-x-4 border-b border-gray-100 pb-5">
             <!-- Logo -->
             <div>
-              <a href=''>
+              <a href="{{route('index')}}">
                 <img
                   alt=""
                   class="h-10 w-full rounded-lg"
-                  src="./assets/image/logo.png"/>
+                  src="{{asset('./assets/image/logo.png')}}"/>
               </a>
             </div>
             <!-- Close Button -->
@@ -2350,14 +1315,6 @@
                   <span class="flex items-center gap-x-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M138,180a10,10,0,1,1-10-10A10,10,0,0,1,138,180ZM128,74c-21,0-38,15.25-38,34v4a6,6,0,0,0,12,0v-4c0-12.13,11.66-22,26-22s26,9.87,26,22-11.66,22-26,22a6,6,0,0,0-6,6v8a6,6,0,0,0,12,0v-2.42c18.11-2.58,32-16.66,32-33.58C166,89.25,149,74,128,74Zm102,54A102,102,0,1,1,128,26,102.12,102.12,0,0,1,230,128Zm-12,0a90,90,0,1,0-90,90A90.1,90.1,0,0,0,218,128Z"></path></svg>
                     <span class="text-sm">سوالات متداول</span>
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a class='flex items-center justify-between rounded-lg px-4 py-3 text-zinc-700 bg-gray-100 hover:bg-gray-200 transition border' href="./seller-login.html">
-                  <span class="flex items-center gap-x-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M184,89.57V84c0-25.08-37.83-44-88-44S8,58.92,8,84v40c0,20.89,26.25,37.49,64,42.46V172c0,25.08,37.83,44,88,44s88-18.92,88-44V132C248,111.3,222.58,94.68,184,89.57ZM232,132c0,13.22-30.79,28-72,28-3.73,0-7.43-.13-11.08-.37C170.49,151.77,184,139,184,124V105.74C213.87,110.19,232,122.27,232,132ZM72,150.25V126.46A183.74,183.74,0,0,0,96,128a183.74,183.74,0,0,0,24-1.54v23.79A163,163,0,0,1,96,152,163,163,0,0,1,72,150.25Zm96-40.32V124c0,8.39-12.41,17.4-32,22.87V123.5C148.91,120.37,159.84,115.71,168,109.93ZM96,56c41.21,0,72,14.78,72,28s-30.79,28-72,28S24,97.22,24,84,54.79,56,96,56ZM24,124V109.93c8.16,5.78,19.09,10.44,32,13.57v23.37C36.41,141.4,24,132.39,24,124Zm64,48v-4.17c2.63.1,5.29.17,8,.17,3.88,0,7.67-.13,11.39-.35A121.92,121.92,0,0,0,120,171.41v23.46C100.41,189.4,88,180.39,88,172Zm48,26.25V174.4a179.48,179.48,0,0,0,24,1.6,183.74,183.74,0,0,0,24-1.54v23.79a165.45,165.45,0,0,1-48,0Zm64-3.38V171.5c12.91-3.13,23.84-7.79,32-13.57V172C232,180.39,219.59,189.4,200,194.87Z"></path></svg>
-                    <span class="text-sm">فروشنده شوید</span>
                   </span>
                 </a>
               </li>
@@ -2659,11 +1616,8 @@
 
 
 
-
-
-
-    <!-- footer -->
-    <div class="bg-white border-t pt-8 max-w-[1680px] mx-auto">
+  <!-- footer -->
+  <div class="bg-white border-t pt-8 max-w-[1680px] mx-auto">
     <!-- top footer -->
     <div class="flex flex-wrap gap-y-4 justify-between items-center px-6">
       <div class="flex flex-col">
@@ -2883,26 +1837,6 @@
   </div>
 </body>
 <!-- HEADER -->
- <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const elements = document.querySelectorAll(".scroll-animate");
-
-        const revealOnScroll = () => {
-          const windowHeight = window.innerHeight;
-          elements.forEach((el, index) => {
-            const elementTop = el.getBoundingClientRect().top;
-            if (elementTop < windowHeight - 50) { // فاصله از پایین
-              setTimeout(() => el.classList.add("visible"), index * 100); // تأخیر بر اساس ترتیب
-            }
-          });
-        };
-
-        window.addEventListener("scroll", revealOnScroll);
-        revealOnScroll(); // اجرا برای المنت‌های اولیه در دید
-      });
-
-
- </script>
 <script defer src="./assets/js/dependencies/flowbite.min.js"></script>
 <script defer src="./assets/js/app.js"></script>
 <!-- HERO SLIDER -->
@@ -2912,6 +1846,4 @@
 <script src="./assets/js/slider.js"></script>
 
 <script src="./assets/js/swiper-product.js"></script>
-
-
 </html>

@@ -16,8 +16,9 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('address_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('address_id')->references('id')->on('adresses')->onDelete('cascade');
+            $table->foreign('address_id')->references('id')->on('address')->onDelete('cascade');
             $table->unsignedBigInteger('price');
+            $table->unsignedBigInteger('discount');
             $table->enum('status',['unpaid', 'paid', 'posted','recieved','cancelled']);
             $table->string('tracking_serial')->nullable();
             $table->timestamps();

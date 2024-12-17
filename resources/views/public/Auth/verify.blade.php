@@ -12,6 +12,7 @@
   <title>اعتبارسنجی</title>
 </head>
 <body class="bg-[#fcfcfc]">
+    <form action="" method="get">
   <div class="h-screen flex justify-center items-center">
     <div class="bg-white rounded-2xl shadow-box-sm w-11/12 sm:w-7/12 md:w-6/12 lg:w-4/12 xl:w-3/12 h-auto py-5 px-4">
       <img class="w-48 mx-auto" src="./assets/image/logo.png" alt="">
@@ -34,6 +35,7 @@
         ورود
       </button>
     </div>
-  </div>
+    </div>
+</form>
 </body>
 </html>

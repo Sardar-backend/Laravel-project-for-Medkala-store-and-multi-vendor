@@ -32,13 +32,15 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id()->primary();
             $table->string('name');
-            $table->string('Brand');
+            $table->string('brand_id');
             $table->integer('price');
             $table->integer('discount_end_time');
             $table->integer('count')->default(0);
             $table->bigInteger('count_view')->default(0);
             $table->longText('discription');
             $table->longText('Criticism');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->float('stars');
             $table->float('with');
             $table->float('length');

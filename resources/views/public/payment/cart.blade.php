@@ -385,7 +385,11 @@ $colorMap = [
         </svg>
         سبد شما
     </div>
-
+    <form id="outer-form" action="{{route('checkout_post')}}" method="POST">
+    @csrf
+    <input type="hidden" name="totalPrice" id="input" class="form-control" value="{{$totalPrice}}">
+    <input type="hidden" name="totalDiscust" id="input" class="form-control" value="{{$totalDiscust}}">
+    <input type="hidden" name="FinalPrice" id="input" class="form-control" value="{{$FinalPrice}}">
     <!-- قیمت کالاها -->
     <div class="flex gap-x-1 justify-between items-center text-zinc-600 mt-5 bg-gray-100 rounded-lg px-2 py-3 text-sm">
         <div>قیمت کالاها (2)</div>
@@ -414,58 +418,41 @@ $colorMap = [
     </div>
 
     <!-- اعمال کد تخفیف -->
+    @if (Nwidart\Modules\Facades\Module::isEnabled('Discount'))
     <div class="mt-4">
+    <form action="{{route('discount.check')}}" class="d-flex" method="post">
         <label for="discount-code" class="block text-sm text-zinc-700 mb-2">کد تخفیف</label>
         <div class="flex gap-x-2">
+            @csrf
             <input
                 type="text"
                 id="discount-code"
+                name="discount"
                 placeholder="کد تخفیف خود را وارد کنید"
                 class="flex-grow px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none"
             >
             <button
+                type="submit"
                 class="px-4 py-2 text-sm bg-red-500 text-white rounded-lg hover:bg-red-400 transition"
-                onclick="applyDiscount()"
+
             >
                 اعمال
             </button>
         </div>
         <!-- پیام وضعیت کد تخفیف -->
-        <div id="discount-message" class="mt-2 text-sm text-center hidden"></div>
+        @if ($errors->has('discount'))
+
+        <div id="discount-message" class="mt-2 text-sm text-center text-red-500">{{$errors->first('discount')}}</div>
+        @endif
+    </form>
     </div>
-
+    @endif
     <!-- دکمه تایید -->
-    <button class="mx-auto w-full px-2 py-3 mt-5 text-sm bg-red-500 hover:bg-red-400 transition text-gray-100 rounded-lg">
-        تایید و تکمیل سفارش
+    <button onclick="document.getElementById('outer-form').submit();" type="button" class="mx-auto w-full px-2 py-3 mt-5 text-sm bg-red-500 hover:bg-red-400 transition text-gray-100 rounded-lg">
+        تایید و ثبت سفارش
     </button>
+    </form>
 </div>
-
-<script>
-    function applyDiscount() {
-        const discountCode = document.getElementById('discount-code').value;
-        const messageBox = document.getElementById('discount-message');
-
-        // تنظیم پیام بر اساس کد تخفیف
-        if (discountCode === "") {
-            messageBox.textContent = "لطفاً کد تخفیف را وارد کنید.";
-            messageBox.className = "mt-2 text-sm text-center text-red-500";
-        } else if (discountCode === "EXPIRED") { // مثال: کد منقضی شده
-            messageBox.textContent = "کد تخفیف شما منقضی شده است.";
-            messageBox.className = "mt-2 text-sm text-center text-red-500";
-        } else if (discountCode === "VALID") { // مثال: کد معتبر
-            messageBox.textContent = "کد تخفیف با موفقیت اعمال شد!";
-            messageBox.className = "mt-2 text-sm text-center text-green-500";
-        } else {
-            messageBox.textContent = "کد تخفیف نامعتبر است.";
-            messageBox.className = "mt-2 text-sm text-center text-red-500";
-        }
-
-        messageBox.classList.remove("hidden"); // نمایش پیام
-    }
-</script>
-
-
-
 </div>
     </div>
   </main>

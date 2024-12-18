@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Helpers\Comparison;
-
 use Illuminate\Support\Facades\Facade;
 
 /**

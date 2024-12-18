@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Helpers\Comparison;
-
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cookie;

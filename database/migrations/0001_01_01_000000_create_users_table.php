@@ -24,6 +24,7 @@ return new class extends Migration
             $table->char('image')->nullable();
             $table->bigInteger('home_number')->nullable();
             $table->string('email')->nullable()->unique();
+            $table->boolean('IsSeller');
             $table->rememberToken();
             $table->timestamps();
         });

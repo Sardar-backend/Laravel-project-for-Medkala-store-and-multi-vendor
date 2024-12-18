@@ -8,9 +8,15 @@
         <div class="md:w-9/12 bg-white shadow-box-md rounded-2xl p-5 mt-5 md:mt-0">
 
             <div class="">
-                <div class="text-zinc-800 text-lg mb-4">
-                    آدرس های من:
-                </div>
+            <div class="flex justify-between items-center">
+    <div class="text-zinc-800 text-xl font-semibold mb-4">
+        آدرس‌های من:
+    </div>
+    <button data-modal-toggle="authentication-modal" class="bg-red-600 text-white px-6 py-3 rounded-lg shadow-lg transform hover:scale-105 hover:shadow-xl transition-all duration-300 ease-in-out">
+        ایجاد آدرس
+    </button>
+</div>
+
             @foreach ( $Addresses as $Address)
               <div class="space-y-5 mt-5">
                 <div class="border border-zinc-300 rounded-md">

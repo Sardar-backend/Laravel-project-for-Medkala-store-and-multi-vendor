@@ -106,12 +106,20 @@ class User extends Authenticatable
     }
 
 
+    // public function SellerOrders() {
+    //     return $this->hasMany(Order::class , 'id' , 'Seller_id');
+    // }
+
 
     public function favorite (){
         return $this->belongsToMany(Product::class);
     }
     public function favorite_blog (){
         return $this->belongsToMany(blog::class , 'blog_user');
+    }
+
+    public function products() {
+        return $this->hasMany(Product::class);
     }
 
     // public function Discounts (){

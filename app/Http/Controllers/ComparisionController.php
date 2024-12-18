@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Helpers\Comparison\Comparison;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Nwidart\Modules\Facades\Module;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class ComparisionController extends Controller
 {
     public function comparision(){
         // $all=Comparison::remove(5);
+        
         $all=Comparison::all();
         $productAttributes =$all->map(function($t){
             return $t->attribute()->get();

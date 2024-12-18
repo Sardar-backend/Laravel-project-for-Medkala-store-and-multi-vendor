@@ -1,0 +1,30 @@
+{
+    "name": "nwidart/multivendor",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\MultiVendor\\": "app/",
+            "Modules\\MultiVendor\\Database\\Factories\\": "database/factories/",
+            "Modules\\MultiVendor\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\MultiVendor\\Tests\\": "tests/"
+        }
+    }
+}

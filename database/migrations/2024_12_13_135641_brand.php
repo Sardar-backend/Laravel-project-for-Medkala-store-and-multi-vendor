@@ -25,8 +25,8 @@ return new class extends Migration
         });
 
         Schema::table('products' , function  (Blueprint $table) {
-            $table->unsignedBigInteger('Brand')->change();
-            $table->foreign('Brand')->references('id')->on('brands')->onDelete('cascade');
+            $table->unsignedBigInteger('brand_id')->change();
+            $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
 
         } );
 

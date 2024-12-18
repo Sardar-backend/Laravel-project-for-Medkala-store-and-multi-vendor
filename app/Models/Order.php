@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     // use HasFactory;
-    protected $fillable = ['price','status','tracking_serial','discount'];
+    protected $fillable = ['price','status' ,'user_id','address_id','tracking_serial','discount','Discount'];
     public function payment(){
         return $this->hasMany(Payment::class);
     }

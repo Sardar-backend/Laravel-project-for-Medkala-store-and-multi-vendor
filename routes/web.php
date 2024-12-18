@@ -175,10 +175,3 @@ Route::get('/UpdateCart', action: [\App\Http\Controllers\JsRequestController::cl
 // Route::get('able', [DisableAbleController::class,'able'])->name('discount.able');
 
 
-// seller
-Route::get('seller-authentication', action: [\App\Http\Controllers\seller\SellerController::class,'seller_authentication'])->name('seller');
-Route::get('seller-guidance', action: [\App\Http\Controllers\seller\SellerController::class,'seller_guidance'])->name('seller-guidance');
-Route::get('seller-revenue', action: [\App\Http\Controllers\seller\SellerController::class,'seller_revenue'])->name('seller-revenue');
-Route::get('seller-product-insert', action: [\App\Http\Controllers\seller\SellerController::class,'seller_product_insert'])->name('seller-product-insert');
-Route::get('seller-products', action: [\App\Http\Controllers\seller\SellerController::class,'seller_products'])->name('seller-products');
-// end seller

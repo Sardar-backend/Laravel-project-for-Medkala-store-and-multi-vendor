@@ -691,50 +691,60 @@ $colorMap = [
               <div class="mt-6 mb-2 text-sm text-zinc-700">
                 اگر سوالی دارید بپرسید
               </div>
-              <textarea placeholder="متن پرسش" name="mailTicket" cols="30" rows="7" class="focus:shadow-primary-outline text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all focus:border-red-400 focus:outline-none"></textarea>
-              <button class="mx-auto w-full px-2 py-3 mt-5 text-sm bg-red-500 hover:bg-red-400 transition text-gray-100 rounded-lg">
+              <form action="{{route('create_question')}}" method="post">
+                @csrf
+                <input type="hidden" value="{{request()->user()->id}}" name="user_id">
+                <input type="hidden" value="{{$product->Seller()->first()->id}}" name="Seller_id">
+                <input type="hidden" value="{{$product->id}}" name="product_id">
+              <textarea placeholder="متن پرسش" name="Question" cols="30" rows="7" class="focus:shadow-primary-outline text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all focus:border-red-400 focus:outline-none"></textarea>
+              <button type="submit" class="mx-auto w-full px-2 py-3 mt-5 text-sm bg-red-500 hover:bg-red-400 transition text-gray-100 rounded-lg">
                 ارسال
               </button>
+            </form>
             </div>
             <div class="lg:w-9/12 divide-y">
-              <div class="px-3 pt-5">
-                <div class="mt-2 flex gap-x-4 items-center border-b pb-3">
-                  <div class="text-xs text-zinc-600">
-                    11 بهمن 1402
-                  </div>
-                  <div class="text-xs text-zinc-600">
-                    امیررضا کریمی
-                  </div>
-                </div>
-                <div class="mt-2 mb-4 text-zinc-600 text-sm">
-                  سلام صفحه نمایش واقعا ipsهستش ممنون میشم راهنمایی کنید چقدر با tnفرق میکنه
-                </div>
-                <a href="">
-                  <div class="transition px-2 flex items-center text-xs text-zinc-600 hover:text-zinc-700">
-                    پاسخ
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#292929" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
-                  </div>
-                </a>
-                <div class="flex justify-end items-center gap-x-5 mt-3">
-                  <div class="text-sm text-zinc-400">
-                    آیا این جواب برایتان مفید بود؟
-                  </div>
-                  <ul class="grid my-3 gap-5 grid-cols-2">
-                    <li>
-                      <input type="radio" id="isgoodquest" name="quest" value="isgoodquest" class="hidden peer" required="">
-                      <label for="isgoodquest" class="inline-flex p-2 border border-gray-200 rounded-lg cursor-pointer peer-checked:border-green-400 hover:bg-gray-100">
-                        <svg class="fill-green-500" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="" viewBox="0 0 256 256"><path d="M234,80.12A24,24,0,0,0,216,72H160V56a40,40,0,0,0-40-40,8,8,0,0,0-7.16,4.42L75.06,96H32a16,16,0,0,0-16,16v88a16,16,0,0,0,16,16H204a24,24,0,0,0,23.82-21l12-96A24,24,0,0,0,234,80.12ZM32,112H72v88H32ZM223.94,97l-12,96a8,8,0,0,1-7.94,7H88V105.89l36.71-73.43A24,24,0,0,1,144,56V80a8,8,0,0,0,8,8h64a8,8,0,0,1,7.94,9Z"></path></svg>
-                      </label>
-                    </li>
-                    <li>
-                      <input type="radio" id="isbadquest" name="quest" value="isbadquest" class="hidden peer" required="">
-                      <label for="isbadquest" class="inline-flex p-2 border border-gray-200 rounded-lg cursor-pointer peer-checked:border-red-400 hover:bg-gray-100">
-                        <svg class="fill-red-500" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="" viewBox="0 0 256 256"><path d="M239.82,157l-12-96A24,24,0,0,0,204,40H32A16,16,0,0,0,16,56v88a16,16,0,0,0,16,16H75.06l37.78,75.58A8,8,0,0,0,120,240a40,40,0,0,0,40-40V184h56a24,24,0,0,0,23.82-27ZM72,144H32V56H72Zm150,21.29a7.88,7.88,0,0,1-6,2.71H152a8,8,0,0,0-8,8v24a24,24,0,0,1-19.29,23.54L88,150.11V56H204a8,8,0,0,1,7.94,7l12,96A7.87,7.87,0,0,1,222,165.29Z"></path></svg>
-                      </label>
-                    </li>
-                  </ul>
-                </div>
-              </div>
+                @foreach ( $questions as $question )
+
+                    <div class="px-3 pt-5">
+                    <div class="mt-2 flex gap-x-4 items-center border-b pb-3">
+                        <div class="text-xs text-zinc-600">
+                        {{jdate($question->failed_at)->format('%B %d، %Y')}}
+                        </div>
+                        <div class="text-xs text-zinc-600">
+                        {{$question->user()->first()->name}}
+                        </div>
+                    </div>
+                    <div class="mt-2 mb-4 text-zinc-600 text-sm">
+                        {{$question->Question}}
+                    </div>
+                    <a href="">
+                        <div class="transition px-2 flex items-center text-xs text-zinc-600 hover:text-zinc-700">
+                        پاسخ
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#292929" viewBox="0 0 256 256"><path d="M164.24,203.76a6,6,0,1,1-8.48,8.48l-80-80a6,6,0,0,1,0-8.48l80-80a6,6,0,0,1,8.48,8.48L88.49,128Z"></path></svg>
+                        <p class="mr-2">{{$question->Answer}}</p>
+                        </div>
+                    </a>
+                    <div class="flex justify-end items-center gap-x-5 mt-3">
+                        <div class="text-sm text-zinc-400">
+                        آیا این جواب برایتان مفید بود؟
+                        </div>
+                        <ul class="grid my-3 gap-5 grid-cols-2">
+                        <li>
+                            <input type="radio" id="isgoodquest" name="quest" value="isgoodquest" class="hidden peer" required="">
+                            <label for="isgoodquest" class="inline-flex p-2 border border-gray-200 rounded-lg cursor-pointer peer-checked:border-green-400 hover:bg-gray-100">
+                            <svg class="fill-green-500" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="" viewBox="0 0 256 256"><path d="M234,80.12A24,24,0,0,0,216,72H160V56a40,40,0,0,0-40-40,8,8,0,0,0-7.16,4.42L75.06,96H32a16,16,0,0,0-16,16v88a16,16,0,0,0,16,16H204a24,24,0,0,0,23.82-21l12-96A24,24,0,0,0,234,80.12ZM32,112H72v88H32ZM223.94,97l-12,96a8,8,0,0,1-7.94,7H88V105.89l36.71-73.43A24,24,0,0,1,144,56V80a8,8,0,0,0,8,8h64a8,8,0,0,1,7.94,9Z"></path></svg>
+                            </label>
+                        </li>
+                        <li>
+                            <input type="radio" id="isbadquest" name="quest" value="isbadquest" class="hidden peer" required="">
+                            <label for="isbadquest" class="inline-flex p-2 border border-gray-200 rounded-lg cursor-pointer peer-checked:border-red-400 hover:bg-gray-100">
+                            <svg class="fill-red-500" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="" viewBox="0 0 256 256"><path d="M239.82,157l-12-96A24,24,0,0,0,204,40H32A16,16,0,0,0,16,56v88a16,16,0,0,0,16,16H75.06l37.78,75.58A8,8,0,0,0,120,240a40,40,0,0,0,40-40V184h56a24,24,0,0,0,23.82-27ZM72,144H32V56H72Zm150,21.29a7.88,7.88,0,0,1-6,2.71H152a8,8,0,0,0-8,8v24a24,24,0,0,1-19.29,23.54L88,150.11V56H204a8,8,0,0,1,7.94,7l12,96A7.87,7.87,0,0,1,222,165.29Z"></path></svg>
+                            </label>
+                        </li>
+                        </ul>
+                    </div>
+                    </div>
+                @endforeach
             </div>
           </div>
         </div>

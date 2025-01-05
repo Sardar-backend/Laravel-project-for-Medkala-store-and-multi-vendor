@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" href="./assets/css/output.css" />
     <link rel="stylesheet" href="./assets/css/seller-font.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <title>احراز هویت</title>
 </head>
@@ -307,5 +308,6 @@
       </div>
     </footer>
   </body>
+  @include('sweetalert::alert')
   <script src="./assets/js/app.js"></script>
 </html>

@@ -12,16 +12,19 @@ class ComparisionController extends Controller
 {
     public function comparision(){
         // $all=Comparison::remove(5);
-        
+
         $all=Comparison::all();
         $productAttributes =$all->map(function($t){
             return $t->attribute()->get();
         });
         $commonAttributes = collect(array_intersect_key(...$productAttributes->toArray()));
-        $r=$commonAttributes->map(function($t){
-            return $t['id'];
-        });
-
+        // $r=$commonAttributes->map(function($t){
+        //     return $t['id'];
+        // });
+        if(!count($all)){
+            Alert::info('سبد مقابسه شما خالی است ','لطفا یک محصول به سبد مقایسه اضافه کنید');
+            return back();
+        }
         return view('public.product-comparision' , compact('all' ,'commonAttributes')) ;
     }
 

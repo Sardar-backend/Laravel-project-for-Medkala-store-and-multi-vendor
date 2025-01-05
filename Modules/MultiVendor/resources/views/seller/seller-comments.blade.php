@@ -22,7 +22,7 @@
                             <img src="{{ asset('assets/image/users/default.png') }}" alt="User Image"
                                 class="w-12 h-12 rounded-full object-cover shadow-md">
                             <div>
-                                <p class="font-semibold text-gray-700">{{ $question->name }}</p>
+                                <p class="font-semibold text-gray-700">{{ $question->Question }}</p>
                                 <p class="text-xs text-gray-500">{{ jdate($question->created_at)->format('%B %d، %Y') }}</p>
                             </div>
                         </div>
@@ -37,9 +37,10 @@
 
                     <!-- باکس پاسخ‌دهی -->
                     <div id="response-box-question-{{ $question->id }}" class="mt-4 hidden">
-                        <textarea class="w-full p-3 border border-teal-300 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-teal-500 transition duration-300"
+                        <form action="{{route('respond',['id'=>$question->id , 'type' => 'Question'])}}" method="post"> @csrf
+                        <textarea name="Answer" class="w-full p-3 border border-teal-300 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-teal-500 transition duration-300"
                             rows="4" placeholder="پاسخ خود را وارد کنید..."></textarea>
-                        <button class="mt-2 px-6 py-2 text-white bg-teal-500 hover:bg-teal-600 rounded-md focus:outline-none transition duration-300">ارسال پاسخ</button>
+                        <button class="mt-2 px-6 py-2 text-white bg-teal-500 hover:bg-teal-600 rounded-md focus:outline-none transition duration-300">ارسال پاسخ</button></form>
                     </div>
                 </div>
                 @endforeach
@@ -77,9 +78,11 @@
 
                     <!-- باکس پاسخ‌دهی -->
                     <div id="response-box-comment-{{ $comment->id }}" class="mt-4 hidden">
+                    <form action="{{route('respond',['id'=>$question->id , 'type' => 'Question'])}}" method="post"> @csrf
                         <textarea class="w-full p-3 border border-indigo-300 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300"
                             rows="4" placeholder="پاسخ خود را وارد کنید..."></textarea>
                         <button class="mt-2 px-6 py-2 text-white bg-indigo-500 hover:bg-indigo-600 rounded-md focus:outline-none transition duration-300">ارسال پاسخ</button>
+                        </form>
                     </div>
                 </div>
                 @endforeach

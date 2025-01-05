@@ -14,15 +14,15 @@
               نام:
             </label>
             <label for="" class="border border-gray-300 rounded-lg mt-2 w-full p-2 text-gray-500">
-              امیررضا
+              {{$user->name}}
             </label>
           </div>
           <div class="flex flex-col md:w-1/2">
             <label for="" class="text-gray-800 text-sm">
-              نام خانوادگی:
+                شماره همراه
             </label>
             <label for="" class="border border-gray-300 rounded-lg mt-2 w-full p-2 text-gray-500">
-              کریمی
+              {{$user->phonenumber}}
             </label>
           </div>
         </div>
@@ -32,7 +32,7 @@
               استان:
             </label>
             <label for="" class="border border-gray-300 rounded-lg mt-2 w-full p-2 text-gray-500">
-              تهران
+              {{$Address->ostan}}
             </label>
           </div>
           <div class="flex flex-col md:w-1/2">
@@ -40,7 +40,7 @@
               شهر:
             </label>
             <label for="" class="border border-gray-300 rounded-lg mt-2 w-full p-2 text-gray-500">
-              تهران
+            {{$Address->city}}
             </label>
           </div>
         </div>
@@ -50,25 +50,25 @@
               خیابان و کوچه:
             </label>
             <label for="" class="border border-gray-300 rounded-lg mt-2 w-full p-2 text-gray-500">
-              خیابان دماوند کوچه دماوند 16
-            </label>
+{{$Address->street}}
+      </label>
           </div>
           <div class="flex flex-col md:w-1/2">
             <label for="" class="text-gray-800 text-sm">
               پلاک و واحد:
             </label>
             <label for="" class="border border-gray-300 rounded-lg mt-2 w-full p-2 text-gray-500">
-              پلاک 76-واحد2
+{{$Address->plate}}
             </label>
           </div>
         </div>
         <div class="mt-7 flex flex-col md:flex-row gap-5">
           <div class="flex flex-col md:w-1/2">
             <label for="" class="text-gray-800 text-sm">
-              تلفن همراه:
+              شماره کارت حهت مرجوعی
             </label>
             <label for="" class="border border-gray-300 rounded-lg mt-2 w-full p-2 text-gray-500">
-              09300000000
+            {{$user->cart_number}}
             </label>
           </div>
           <div class="flex flex-col md:w-1/2">
@@ -76,7 +76,7 @@
               کدپستی:
             </label>
             <label for="" class="border border-gray-300 rounded-lg mt-2 w-full p-2 text-gray-500">
-              966666666
+{{$Address->post_number}}
             </label>
           </div>
         </div>
@@ -109,44 +109,50 @@
           </div>
         </div>
         <p class="border-b pb-2 border-b-gray-300 text-lg md:text-xl text-gray-700 mt-10 mb-5">
-          جزئیات محصول
+         جزئیات محصولات
         </p>
+        @foreach ( $order->products()->get() as $product)
+
         <div class="flex flex-col md:flex-row gap-5">
-          <div class="flex flex-col md:w-1/2">
-            <label for="" class="text-gray-800 text-sm">
-              نام محصول:
-            </label>
-            <label for="" class="border border-gray-300 rounded-lg mt-2 w-full p-2 text-gray-500">
-              گوشی موبایل اپل مدل 11 pro max
-            </label>
-          </div>
-          <div class="flex flex-col md:w-1/2">
-            <label for="" class="text-gray-800 text-sm">
-              رنگ محصول:
-            </label>
-            <label for="" class="border border-gray-300 rounded-lg mt-2 w-full p-2 text-gray-500">
-              آبی روشن
+            <div class="flex flex-col md:w-1/2">
+                <label for="" class="text-gray-800 text-sm">
+                    نام محصول:
+                </label>
+                <label for="" class="border border-gray-300 rounded-lg mt-2 w-full p-2 text-gray-500">
+                    {{$product->name}}
             </label>
           </div>
+          <div class="flex flex-col md:w-1/2">
+              <label for="" class="text-gray-800 text-sm">
+                  رنگ محصول:
+                </label>
+                <label for="" class="border border-gray-300 rounded-lg mt-2 w-full p-2 text-gray-500">
+                    آبی روشن
+                </label>
+            </div>
         </div>
         <div class="flex flex-col md:flex-row gap-5 mt-7">
-          <div class="flex flex-col md:w-1/2">
-            <label for="" class="text-gray-800 text-sm">
-              تعداد محصول
-            </label>
-            <label for="" class="border border-gray-300 rounded-lg mt-2 w-full p-2 text-gray-500">
-              1
-            </label>
-          </div>
-          <div class="flex flex-col md:w-1/2">
-            <label for="" class="text-gray-800 text-sm">
-              اندازه محصول
-            </label>
-            <label for="" class="border border-gray-300 rounded-lg mt-2 w-full p-2 text-gray-500">
-              md
-            </label>
+
+            <div class="flex flex-col md:w-1/2">
+                <label for="" class="text-gray-800 text-sm">
+                    تعداد محصول
+                </label>
+                <label for="" class="border border-gray-300 rounded-lg mt-2 w-full p-2 text-gray-500">
+                    1
+                </label>
+            </div>
+            <div class="flex flex-col md:w-1/2">
+                <label for="" class="text-gray-800 text-sm">
+                    اندازه محصول
+                </label>
+                <label for="" class="border border-gray-300 rounded-lg mt-2 w-full p-2 text-gray-500">
+                    md
+                </label>
           </div>
         </div>
+        <br>
+        <hr>
+        @endforeach
       </div>
     </main>
 @endsection

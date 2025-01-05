@@ -21,7 +21,7 @@ class SendNotificationCodeJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(public $code , public $phoneNumber , public User $existingUser)
+    public function __construct(public $code , public $phoneNumber , public User $existingUser , public  $template)
     {
         $this->onQueue('Send-Notification-Code');
     }
@@ -31,7 +31,6 @@ class SendNotificationCodeJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $this->existingUser->notify(new notificationCode($this->code,$this->phoneNumber , 'Ghasedak'));
-
+        $this->existingUser->notify(new notificationCode($this->code,$this->phoneNumber , $this->template));
     }
 }

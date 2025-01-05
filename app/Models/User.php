@@ -31,7 +31,9 @@ class User extends Authenticatable
         'is_superuser',
         'birthday',
         'cart_number',
-        'home_number'
+        'home_number',
+        'Gender',
+        'about'
     ];
 
     protected static $rules = [
@@ -101,14 +103,21 @@ class User extends Authenticatable
         return $this->hasMany(address::class);
     }
 
+    public function fines() {
+        return $this->hasMany(fine::class);
+    }
     public function orders() {
         return $this->hasMany(Order::class);
     }
 
+    public function orders_sellers() {
+        return $this->hasMany(Order::class , 'Seller_id');
+    }
 
-    // public function SellerOrders() {
-    //     return $this->hasMany(Order::class , 'id' , 'Seller_id');
-    // }
+
+    public function SellerOrders() {
+        return $this->hasMany(Order::class ,  'Seller_id','id');
+    }
 
 
     public function favorite (){
@@ -122,6 +131,9 @@ class User extends Authenticatable
         return $this->hasMany(Product::class);
     }
 
+    public function messages(){
+        return $this->hasMany(message::class);
+    }
     // public function Discounts (){
     //     return $this->belongsToMany(Discount::class);
     // }

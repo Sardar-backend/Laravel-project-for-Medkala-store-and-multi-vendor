@@ -33,20 +33,29 @@ return new class extends Migration
             $table->primary(['role_id','permission_id']);
         });
 
-        Schema::create('messages', function (Blueprint $table){
-            $table->id();
-            $table->longText('content');
-            $table->longText('Answer');
-            $table->timestamps();
-        });
+        // Schema::create('messages', function (Blueprint $table){
+        //     $table->id();
+        //     $table->longText('content');
+        //     $table->longText('Answer');
+        //     $table->timestamps();
+        // });
 
-        Schema::create('message_user', function (Blueprint $table){
+        // Schema::create('message_user', function (Blueprint $table){
 
-            $table->unsignedBigInteger('message_id');
-            $table->foreign('message_id')->references('id')->on('messages')->onDelete('cascade');
+        //     $table->unsignedBigInteger('message_id');
+        //     $table->foreign('message_id')->references('id')->on('messages')->onDelete('cascade');
+        //     $table->unsignedBigInteger('user_id');
+        //     $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        //     $table->primary(['message_id','user_id']);
+
+        // });
+        Schema::create('role_user', function (Blueprint $table){
+
+            $table->unsignedBigInteger('role_id');
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->primary(['message_id','user_id']);
+            $table->primary(['role_id','user_id']);
 
         });
 

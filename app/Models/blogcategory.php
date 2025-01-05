@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class blogcategory extends Model
 {
     //use HasFactory;
-    protected $table = 'blogcategorys';
+    protected $table = 'blogCategorys';
     protected $fillable = ['name', 'parent'];
 
     public static $rules = [

@@ -52,9 +52,15 @@ class Product extends Model
     public function favorite (){
         return $this->belongsToMany(User::class,'favorites','user_id','products_id','id','id');
     }
+    public function Seller (){
+        return $this->belongsTo(User::class , 'user_id');
+    }
 
     public function Brand (){
         return $this->belongsTo(Brand::class);
     }
 
+    public function questions(){
+        return $this->hasMany(Question::class);
+    }
 }

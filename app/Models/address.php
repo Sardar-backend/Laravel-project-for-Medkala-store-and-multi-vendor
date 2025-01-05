@@ -10,7 +10,7 @@ class address extends Model
     // use HasFactory;
     public $table = 'address';
     public $timestamps = false;
-    public $fillable = ['user_id','ostan','tahvil','city','adress','number','post_number','failed_at','is_selected'];
+    public $fillable = ['user_id','ostan','street','city','plate','explanation','number','post_number','failed_at','is_selected'];
 
     public function selectAsPrimary()
     {

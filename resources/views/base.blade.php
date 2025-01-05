@@ -217,6 +217,7 @@
 </style>
 </head>
 @php
+$UnSeens = request()->user() ? request()->user()->messages()->whereSeen(0)->get() : [] ;
 use App\Helpers\Cart\Cart;
 use App\Models\productcategory;
 $AllParentProductCategory = productcategory::whereparent(0)->get();
@@ -597,15 +598,19 @@ $AllParentProductCategory = productcategory::whereparent(0)->get();
                           <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#4d4d4d" viewBox="0 0 256 256"><path d="M227.33,91l-96-64a6,6,0,0,0-6.66,0l-96,64A6,6,0,0,0,26,96V200a14,14,0,0,0,14,14H216a14,14,0,0,0,14-14V96A6,6,0,0,0,227.33,91ZM100.18,152,38,195.9V107.65Zm12.27,6h31.1l62.29,44H50.16Zm43.37-6L218,107.65V195.9ZM128,39.21l85.43,57L143.53,146H112.47L42.57,96.17Z"></path></svg>
                           <span>پیغام ها</span>
                         </span>
+
+                        @if (count($UnSeens))
                         <span class="relative flex h-5 w-5">
                           <span
                             class="absolute inline-flex h-full w-full animate-ping rounded-full bg-rose-500 opacity-75"
                           ></span>
                           <span
                             class="relative inline-flex h-5 w-5 items-center justify-center rounded-full bg-rose-500 text-sm text-white">
-                            4
+                            {{count($UnSeens)}}
                           </span>
                         </span>
+
+                        @endif
                       </a>
                     </li>
                     <li>
@@ -1856,4 +1861,8 @@ $AllParentProductCategory = productcategory::whereparent(0)->get();
 <script src="./assets/js/slider.js"></script>
 
 <script src="./assets/js/swiper-product.js"></script>
+
+@include('sweetalert::alert')
+@yield('Scripts')
+
 </html>

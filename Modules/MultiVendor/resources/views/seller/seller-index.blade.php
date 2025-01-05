@@ -46,7 +46,7 @@
                     درآمد کل
                   </div>
                   <div class="text-gray-800">
-                    13,710,450 تومان
+                  {{request()->user()->orders_sellers()->sum('price')}} تومان
                   </div>
                 </div>
               </a>
@@ -57,7 +57,7 @@
                    سفارشات کل
                   </div>
                   <div class="text-gray-800">
-                    18 عدد
+                    {{request()->user()->orders_sellers()->count()}} عدد
                   </div>
                 </div>
               </a>
@@ -68,7 +68,7 @@
                    سفارشات ارسال شده
                   </div>
                   <div class="text-gray-800">
-                    17 عدد
+                  {{request()->user()->orders_sellers()->wherestatus( 'posted' )->count()}}  عدد
                   </div>
                 </div>
               </a>
@@ -79,7 +79,7 @@
                     سفارشات منتظر ارسال
                   </div>
                   <div class="text-gray-800">
-                    1 عدد
+                  {{request()->user()->orders_sellers()->where( 'status' , '!=' ,  'posted' )->count()}} عدد
                   </div>
                 </div>
               </a>
@@ -87,7 +87,7 @@
             <!-- chart -->
             <div class="overflow-x-auto">
               <div class="mt-5 w-full min-w-[400px]">
-                <canvas id="myChart"></canvas>
+              <canvas id="myChart" width="400" height="200"></canvas>
               </div>
             </div>
           </div>
@@ -112,7 +112,7 @@
                      <img src="./assets/image/blog/5.jpg" alt="" class="max-w-16 rounded-md">
                      <div class="flex flex-col justify-around text-xs text-gray-500">
                        <div>
-                         {{$comment->user()->name}}
+                         {{$comment->user()->first()->name}}
                        </div>
                        <div>
                        {{jdate(str: $comment->failed_at)->format('%B %d، %Y')}}
@@ -150,4 +150,57 @@
       },
     });
   </script>
+      <script src="./assets/js/chart.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'bar', // یا هر نوع نموداری که می‌خواهید
+            data: {
+                labels: @json($labels), // آرایه لیبل‌ها از کنترلر
+                datasets: [{
+                    label: 'فروش ماهانه',
+                    data: @json($data), // داده‌ها از کنترلر
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(99, 255, 132, 0.2)',
+                        'rgba(162, 54, 235, 0.2)',
+                        'rgba(206, 255, 86, 0.2)',
+                        'rgba(192, 75, 192, 0.2)',
+                        'rgba(102, 153, 255, 0.2)',
+                        'rgba(159, 255, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(99, 255, 132, 1)',
+                        'rgba(162, 54, 235, 1)',
+                        'rgba(206, 255, 86, 1)',
+                        'rgba(192, 75, 192, 1)',
+                        'rgba(102, 153, 255, 1)',
+                        'rgba(159, 255, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+</script>
+
 @endsection

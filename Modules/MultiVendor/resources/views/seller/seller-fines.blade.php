@@ -22,26 +22,29 @@
                     علت جریمه
                   </td>
                 </tr>
+                @foreach ( $fines as $fine)
                 <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 hover:bg-gray-100 transition text-xs md:text-sm">
                       <td class="pr-5">
                         <p class="text-gray-700 mr-2">
-                          15435fdc45c
+                          {{$fine->id}}
                         </p>
                       </td>
                       <td class="pl-24">
                         <p class="text-gray-600 ml-2">
-                          75,000 تومان
+                          {{$fine->price}}
                         </p>
                       </td>
                       <td class="pl-5">
                         <a href="" class="text-red-500 hover:text-red-600 transition">
-                          1403/04/18
+                        {{jdate($fine->failed_at)->format('%B %d، %Y')}}
                         </a>
                       </td>
                       <td class="w-40 pl-4">
-                        دیر کرد در موجود کردن محصول گوشی موبایل اپل
+                        {{$fine->reason}}
                       </td>
                 </tr>
+
+                @endforeach
               </tbody>
           </table>
       </div>

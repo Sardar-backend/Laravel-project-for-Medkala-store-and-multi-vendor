@@ -9,6 +9,7 @@ use App\Helpers\CalculatorClassFacade\CalculatorClassFacade;
 use App\Helpers\Cart\Cart;
 use App\Helpers\Cart\CartService;
 use App\Helpers\Comparison\Comparison;
+use App\Helpers\PdfService\PdfService;
 use App\Helpers\TrendingContent;
 use App\Models\blog;
 use App\Models\Product;
@@ -18,9 +19,11 @@ use App\Models\address;
 use App\Models\blogcategory;
 use App\Models\comment;
 use App\Models\contact;
+use App\Models\Order;
 use App\Models\permission;
 use App\Models\Product as ModelsProduct;
 use App\Models\productcategory;
+use App\Models\Question;
 use App\Models\Tag;
 use App\Models\User;
 use Artesaos\SEOTools\Facades\SEOTools;
@@ -202,7 +205,7 @@ class HomeController extends Controller
                 'height' => 200,
                 'width' => 200,
             ]);
-
+        Auth::loginUsingId(1);
         // Return the Contact Us view
         return view('public.contact');
     }
@@ -227,7 +230,6 @@ class HomeController extends Controller
                 'height' => 200,
                 'width' => 200,
             ]);
-
 
 
         // Increment the product's view count by 1
@@ -256,16 +258,27 @@ class HomeController extends Controller
             ->distinct()
             ->get();
         });
-
+        $questions = $product->questions()->get();
         // Return the product page view with the product details, comments, and category
         return view('public.single-product'
         , compact(
-        'product','comments' , 'relatedproduct'
+        'product','comments' , 'relatedproduct' , 'questions'
         // 'comments', 'category'
         )
     );
     }
 
+    public function create_question(Request $request){
+        $data = $request->validate([
+            'user_id' => ['required', 'integer', 'exists:users,id'],
+            'Seller_id' => ['required', 'integer', 'exists:users,id'],
+            'product_id' => ['required', 'integer', 'exists:products,id'],
+            'Question' => ['required', 'string', 'max:500'],
+        ]);
+        Question::create($data);
+        Alert::success('پرسش شما ارسال شد', 'پرسش شما در اسرع وقت پاسخ داده خواهد شد');
+        return back();
+    }
 
 
     /**
@@ -575,5 +588,10 @@ public function rules(){
     return view('public.rules');
 }
 
-
+public function printOrder(PdfService $pdfService, $id)
+{
+    $order = Order::findOrFail($id);
+    $pdf = $pdfService->generateOrderPdf($order);
+    return response($pdf)->withHeaders(['Content-Type' => 'application/pdf','Content-Disposition' => 'inline; filename="order-' . $order->id . '.pdf"',]);
+}
 }

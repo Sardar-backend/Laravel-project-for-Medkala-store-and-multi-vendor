@@ -163,22 +163,48 @@ $colorMap = [
     <!-- main -->
     <main class="p-3 md:p-5">
       <div class="bg-white rounded-lg border drop-shadow-lg p-5">
+                            @if ($errors->any())
+            <div class="mb-4 p-4 bg-red-50 border-l-4 border-red-500 text-red-700">
+                <p class="font-medium">خطاهایی رخ داده است:</p>
+                <ul class="mt-2 list-disc list-inside text-sm">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+                </ul>
+            </div>
+            @endif
         <p class="text-center text-lg md:text-2xl text-gray-700">
            ثبت محصول جدید
         </p>
-        <form action="">
+        <form action="{{route('admin_PRODUCT.store')}}" id="FORM-INSERT" method="post" >
+            @csrf
+            <input type="hidden" value="{{request()->user()->id}}" name="user_id">
+            <input type="hidden" value="" id="INPUT" name="discription">
           <div class="mt-7 flex flex-col md:flex-row gap-5">
             <div class="flex flex-col md:w-1/2">
               <label for="" class="text-gray-800 text-sm">
                 نام فارسی محصول:
               </label>
-              <input value="گوشی موبایل اپل مدل x" type="text" class="border border-gray-400 rounded-lg shadow-lg mt-2 w-full p-2 focus:outline-gray-400">
+              <input name="name" type="text" class="border border-gray-400 rounded-lg shadow-lg mt-2 w-full p-2 focus:outline-gray-400">
             </div>
-            <div class="flex flex-col md:w-1/2">
+            <!-- <div class="flex flex-col md:w-1/2">
               <label for="" class="text-gray-800 text-sm">
-                نام انگلیسی محصول:
+                برند  محصول:
               </label>
               <input value="apple mobile x 64g" type="text" class="border border-gray-400 rounded-lg shadow-lg mt-2 w-full p-2 focus:outline-gray-400">
+            </div> -->
+            <div class="flex items-center md:w-1/2">
+              <label for="" class="text-gray-800 text-sm">
+                تعداد
+              </label>
+              <label class="relative flex items-center p-3 rounded-full cursor-pointer" htmlfor="check">
+                <span class="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" stroke-width="1">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                  </svg>
+                </span>
+              </label>
+              <input min="1" name="count" type="number" class="border border-gray-400 rounded-lg shadow-lg p-2 focus:outline-gray-400" placeholder="مقدار ماه">
             </div>
           </div>
           <div class="mt-10 flex flex-col md:flex-row gap-5">
@@ -186,7 +212,7 @@ $colorMap = [
               <label for="" class="text-gray-800 text-sm">
                 دسته بندی:
               </label>
-              <select name="" id="" class="border border-gray-400 rounded-lg shadow-lg mt-2 w-full p-2 focus:outline-gray-400">
+              <select name="categories" id="" class="border border-gray-400 rounded-lg shadow-lg mt-2 w-full p-2 focus:outline-gray-400">
                 @foreach ( $categories as $item)
 
                 <option value="موبایل">
@@ -269,9 +295,9 @@ $colorMap = [
                 (ماه)گارانتی دارد؟
               </label>
               <label class="relative flex items-center p-3 rounded-full cursor-pointer" htmlFor="check">
-                <input checked type="checkbox"
+                <!-- <input checked type="checkbox"
                   class="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-gray-900 checked:before:bg-gray-900"
-                  id="check" />
+                  id="check" /> -->
                 <span
                   class="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"
@@ -282,13 +308,13 @@ $colorMap = [
                   </svg>
                 </span>
               </label>
-              <input min="1" value="18" type="number" class="border border-gray-400 rounded-lg shadow-lg p-2 focus:outline-gray-400" placeholder="مقدار ماه">
+              <input name="garant" min="1" value="18" type="number" class="border border-gray-400 rounded-lg shadow-lg p-2 focus:outline-gray-400" placeholder="مقدار ماه">
             </div>
             <div class="flex gap-x-3 items-center md:w-1/2">
               <label for="" class="text-gray-800 text-sm">
                 تخفیف
               </label>
-              <input min="0" max="100" type="number" class="border border-gray-400 rounded-lg shadow-lg p-2 focus:outline-gray-400" placeholder="مقدار تخفیف">
+              <input min="0" max="100" name="discust" type="number" class="border border-gray-400 rounded-lg shadow-lg p-2 focus:outline-gray-400" placeholder="مقدار تخفیف">
             </div>
           </div>
           <div class="mt-10 flex flex-col md:flex-row gap-5">
@@ -307,7 +333,7 @@ $colorMap = [
                   </svg>
                 </span>
               </label>
-              <input min="1" value="18" type="number" class="border border-gray-400 rounded-lg shadow-lg p-2 focus:outline-gray-400" placeholder="مقدار ماه">
+              <input name="length" min="1" type="number" class="border border-gray-400 rounded-lg shadow-lg p-2 focus:outline-gray-400" placeholder="مقدار ماه">
             </div>
             <div class="flex items-center md:w-1/2">
               <label for="" class="text-gray-800 text-sm">
@@ -324,22 +350,21 @@ $colorMap = [
                   </svg>
                 </span>
               </label>
-              <input min="1" value="18" type="number" class="border border-gray-400 rounded-lg shadow-lg p-2 focus:outline-gray-400" placeholder="مقدار ماه">
+              <input min="1" name="with" type="number" class="border border-gray-400 rounded-lg shadow-lg p-2 focus:outline-gray-400" placeholder="مقدار ماه">
             </div>
-
           </div>
           <div class="mt-10 flex flex-col md:flex-row gap-5">
             <div class="flex flex-col md:w-1/2">
               <label for="" class="text-gray-800 text-sm">
                 قیمت اصلی کالا:
               </label>
-              <input value="21000000" type="text" class="border border-gray-400 rounded-lg shadow-lg mt-2 w-full p-2 focus:outline-gray-400" placeholder="تومان">
+              <input name="price" type="text" class="border border-gray-400 rounded-lg shadow-lg mt-2 w-full p-2 focus:outline-gray-400" placeholder="تومان">
             </div>
             <div class="flex flex-col md:w-1/2">
               <label for="" class="text-gray-800 text-sm">
-                دسته بندی:
+                 برندمحصول:
               </label>
-              <select name="" id="" class="border border-gray-400 rounded-lg shadow-lg mt-2 w-full p-2 focus:outline-gray-400">
+              <select name="Brand" id="" class="border border-gray-400 rounded-lg shadow-lg mt-2 w-full p-2 focus:outline-gray-400">
                 @foreach ( $Brands as $item)
 
                 <option value="{{$item->id}}">
@@ -402,7 +427,6 @@ $colorMap = [
 
         </div>
     </div>
-
     <!-- دکمه افزودن -->
     <button
     type="button"
@@ -420,21 +444,30 @@ $colorMap = [
               :توضیحات محصول
             </label>
             <div id="editor" class="border border-gray-400 shadow-lg text-right" dir="rtl">
-              <p>
-                محصولی بسیار زیبا و خوش دست.
-              </p>
+              <p id="Param">
+                  محصولی بسیار زیبا و خوش دست.
+                </p>
+                <!-- <script>
+
+                </script> -->
             </div>
           </div>
           <div class="mt-32">
-            <a href="" class="mx-auto w-full md:w-3/12 block text-center shadow-lg px-2 py-3 text-sm bg-cyan-600 hover:bg-cyan-700 transition text-gray-100 rounded-lg">
+            <a onclick="INS()"  class="mx-auto w-full md:w-3/12 block text-center shadow-lg px-2 py-3 text-sm bg-cyan-600 hover:bg-cyan-700 transition text-gray-100 rounded-lg">
              ثبت محصول
             </a>
           </div>
         </form>
       </div>
     </main>
-    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.3.5/dist/alpine.min.js"></script>
     <script>
+    function INS() {
+
+
+
+        document.querySelector('#INPUT').value = document.getElementById('editor').querySelector('p').textContent ;
+        document.querySelector('#FORM-INSERT').submit()
+    }
     // عناصر DOM
     let container = document.querySelector('.asa'); // والد اصلی
     let addButton = document.querySelector('#add_product_attribute'); // دکمه افزودن ویژگی
@@ -533,4 +566,6 @@ $colorMap = [
       theme: 'snow'
     });
   </script>
+<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.3.5/dist/alpine.min.js"></script>
+
 @endsection

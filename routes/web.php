@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -56,6 +57,7 @@ Route::post('/t_auth2',[\App\Http\Controllers\HomeController::class,'tokenpostau
 
 
 Route::post('/create_comment',[\App\Http\Controllers\HomeController::class,'craete_comment'])->name('create_comment');
+Route::post('/create_question',[\App\Http\Controllers\HomeController::class,'create_question'])->name('create_question');
 
 
 Route::get('/blog',[\App\Http\Controllers\HomeController::class,'blog_list'])->name('blog_list');
@@ -63,7 +65,7 @@ Route::get('/blog-single-{id}',[\App\Http\Controllers\HomeController::class,'blo
 
 
 Route::get('/edit',[\App\Http\Controllers\HomeController::class,'edit_user'])->name('edit_user')->middleware('auth');
-Route::patch('/edit_post{id}',[\App\Http\Controllers\HomeController::class,'edit_user_post'])->name('aaaaaaaaaa')->middleware('auth');
+Route::patch('/edit_post{id}',[\App\Http\Controllers\HomeController::class,'edit_user_post'])->name('edit_user_post')->middleware('auth');
 // Route::resource('edit_user', App\Http\Controllers\authcontroll\edit_user::class);
 
 
@@ -91,11 +93,11 @@ Route::post('/verify_confrim',[\App\Http\Controllers\AuthController::class,'veri
 // Authentication
 // //Route::get('/y',[\App\Http\Controllers\authcontroll\authcontorel::class,'log'])->name('x');
 // Cart
-Route::post('/add_to_card{product}',[\App\Http\Controllers\cartcontroller::class,'addToCart'])->name('add_to_card');
+Route::post('/add_to_card{product}',[\App\Http\Controllers\CartController::class,'addToCart'])->name('add_to_card');
 Route::get('/cart',[\App\Http\Controllers\HomeController::class,'cart'])->name('cart')->middleware(['auth','password.confirm']);
-Route::delete('/delete_cart{product}',[\App\Http\Controllers\cartcontroller::class,'deleteFromCart'])->name('delete_cart');
-Route::post('/delete_cartAll',[\App\Http\Controllers\cartcontroller::class,'deleteAll'])->name('delete_cart_All');
-Route::get('/cart',[\App\Http\Controllers\cartcontroller::class,'Cart'])->name('cart');
+Route::delete('/delete_cart{product}',[\App\Http\Controllers\CartController::class,'deleteFromCart'])->name('delete_cart');
+Route::post('/delete_cartAll',[\App\Http\Controllers\CartController::class,'deleteAll'])->name('delete_cart_All');
+Route::get('/cart',[\App\Http\Controllers\CartController::class,'Cart'])->name('cart');
 // Cart
 
 // Profile
@@ -109,7 +111,9 @@ Route::get('/favorites',[\App\Http\Controllers\ProfileController::class,'favorit
 Route::get('/personal',[\App\Http\Controllers\ProfileController::class,'personal'])->middleware('auth')->name('personal');
 Route::post('/deleteaddress/{id}', [\App\Http\Controllers\ProfileController::class, 'delete_address'])->name('delete_address')->middleware('auth');
 Route::get('/edit',[\App\Http\Controllers\ProfileController::class,'edit_user'])->name('edit_user')->middleware('auth');
-Route::patch('/edit_post{id}',[\App\Http\Controllers\ProfileController::class,'edit_user_post'])->name('edit_user_post')->middleware('auth');
+Route::match(['put', 'patch'],'/edit_post{id}',[\App\Http\Controllers\ProfileController::class,'edit_user_post'])->name('edit_user_post')->middleware('auth');
+Route::post('/adresses_post',[\App\Http\Controllers\ProfileController::class,'adresses_post'])->name('adresses_post')->middleware('auth');
+Route::post(uri: '/AddressesEdit/{id}',action: [\App\Http\Controllers\ProfileController::class,'adresses_post'])->name('AddressesEdit')->middleware('auth');
 // Profile
 
 
@@ -174,4 +178,4 @@ Route::get('/UpdateCart', action: [\App\Http\Controllers\JsRequestController::cl
 // Route::get('current_user',App\Http\Controllers\Api\GetCurrentUserController::class)->middleware('auth:sanctum');
 // Route::get('able', [DisableAbleController::class,'able'])->name('discount.able');
 
-
+Route::get('/orders/{id}/print', [HomeController::class, 'printOrder'])->name('orders.print');

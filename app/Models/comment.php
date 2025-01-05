@@ -19,4 +19,9 @@ class comment extends Model
         return $this->hasMany(Comment::class,'parent_id','id');
     }
 
+    public function commenttable()
+    {
+        return $this->morphTo();
+    }
+
 }

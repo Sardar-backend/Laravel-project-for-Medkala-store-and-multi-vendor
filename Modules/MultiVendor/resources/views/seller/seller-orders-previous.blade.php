@@ -44,7 +44,7 @@
                         </a>
                       </td>
                       <td class="pl-10">
-                      @elseif($order->status == 'paid')
+                      @if($order->status == 'paid')
                             <span class="text-green-600">
                                 پرداخت شده
                             </span>

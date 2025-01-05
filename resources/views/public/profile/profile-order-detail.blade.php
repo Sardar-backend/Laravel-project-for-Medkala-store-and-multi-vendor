@@ -138,9 +138,10 @@
                    {{$address->ostan}} - {{$address->city}} -   {{$address->street}}
                 </div>
               </div>
-              <button class="mx-auto w-full px-2 py-3 mt-5 text-sm bg-green-500 hover:bg-green-400 transition text-gray-100 rounded-lg">
+              <form action="{{route('orders.print' , ['id' => $order->id])}}" method="get">
+              <button  class="mx-auto w-full px-2 py-3 mt-5 text-sm bg-green-500 hover:bg-green-400 transition text-gray-100 rounded-lg">
                 چاپ
-              </button>
+              </button></form>
             </div>
           </div>
         </div>

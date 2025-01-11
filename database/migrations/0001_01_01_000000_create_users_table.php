@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->bigInteger('phonenumber')->unique()->nullable();
             $table->boolean('is_superuser')->default(0);
+            $table->unsignedBigInteger(column: 'wallet')->default(0);
             // $table->boolean('is_staff')->default(0);
             $table->bigInteger('cart_number')->nullable();
             $table->bigInteger('meli_code')->nullable();

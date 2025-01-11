@@ -20,6 +20,8 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use RealRashid\SweetAlert\Facades\Alert;
 use Morilog\Jalali\Jalalian;
+use Illuminate\Support\Facades\DB;
+
 class MultiVendorController extends Controller
 {
 
@@ -34,15 +36,24 @@ class MultiVendorController extends Controller
             'مرداد', 'شهریور', 'مهر', 'آبان',
             'آذر', 'دی', 'بهمن', 'اسفند'
         ];
+        // dd(Jalalian::now()->getMonth() - 1);
         $counter = 1;
         $data = [];
+        $Commission=DB::table('settings')->first()->Commission ;
         foreach ($labels as $value) {
             $month = str_pad($counter, 2, '0', STR_PAD_LEFT); // مقدار 10 را به "10" تبدیل می‌کند
             $sum = request()->user()->orders_sellers()->ofShamsiMonth( Jalalian::now()->getYear(), $month)->wherestatus('paid')->sum('price');
+            $SUM=$sum*((100 - $Commission)/100) ;
             $counter ++ ;
-            $data[] = $sum;
+            $data[] = $SUM;
+
         }
-        return view('multivendor::seller.seller-revenue'  , compact('labels' , 'data'));
+        $Sumrevenue=array_sum(array: $data);
+        $sum = request()->user()->orders_sellers()->ofShamsiMonth( Jalalian::now()->getYear(), str_pad(Jalalian::now()->getMonth(), 2, '0', STR_PAD_LEFT))->wherestatus('paid')->sum('price');
+        $SumThisMonth=$sum*((100 - $Commission)/100);
+        $Sum = request()->user()->orders_sellers()->ofShamsiMonth( Jalalian::now()->getYear(), str_pad(Jalalian::now()->getMonth(), 2, '0', STR_PAD_LEFT))->wherestatus('paid')->sum('price');
+        $SumLastMonth=$Sum*((100 - $Commission)/100);
+        return view('multivendor::seller.seller-revenue'  , compact('SumLastMonth','SumThisMonth','Sumrevenue','labels' , 'data'));
     }
 
     public function seller_product_insert(){
@@ -63,17 +74,20 @@ class MultiVendorController extends Controller
             'مرداد', 'شهریور', 'مهر', 'آبان',
             'آذر', 'دی', 'بهمن', 'اسفند'
         ];
+        $user = request()->user();
         $counter = 1;
         $data = [];
         foreach ($labels as $value) {
+            $Commission=DB::table('settings')->first()->Commission ;
             $month = str_pad($counter, 2, '0', STR_PAD_LEFT); // مقدار 10 را به "10" تبدیل می‌کند
-            $sum = request()->user()->orders_sellers()->ofShamsiMonth( Jalalian::now()->getYear(), $month)->wherestatus('paid')->sum('price');
+            $sum = $user->orders_sellers()->ofShamsiMonth( Jalalian::now()->getYear(), $month)->wherestatus('paid')->sum('price');
+            $SUM=$sum*((100 - $Commission)/100);
             $counter ++ ;
-            $data[] = $sum;
+            $data[] = $SUM;
         }
-        $user = request()->user();
+        $Sumrevenue=array_sum($data);
         $comments = comment::whereIn('commenttable_id', request()->user()->products()->pluck('id') )->where('commenttable_type' , Product::class)->orderBy('failed_at')->take(4)->get();
-        return view('multivendor::seller.seller-index' , compact('comments' , 'labels' , 'data'));
+        return view('multivendor::seller.seller-index' , compact('Sumrevenue','comments' , 'labels' , 'data'));
     }
 
     public function seller_products(){

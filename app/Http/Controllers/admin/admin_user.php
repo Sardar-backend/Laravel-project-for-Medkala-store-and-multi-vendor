@@ -30,6 +30,10 @@ class admin_user extends Controller
             $users=$users->where('name', 'LIKE', "%{$keyword}%")->orWhere('email', 'LIKE', "%{$keyword}%")->orWhere('id', 'LIKE', "%{$keyword}%")->orWhere('phonenumber', 'LIKE', "%{$keyword}%");
         }
 
+        if ($keyword=request('only')) {
+            $users=$users->where('IsSeller', 'LIKE', 1);
+        }
+
         $users=$users->latest()->paginate(20);
 
 

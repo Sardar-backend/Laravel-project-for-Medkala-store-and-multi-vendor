@@ -243,23 +243,24 @@ $colorMap = [
                   </div>
                 </a>
               </div>
-              <img class="mySlides w-10/12 lg:w-full mx-auto border-2 rounded-xl" src="./assets/image/products/9.webp">
-              <img class="mySlides w-10/12 lg:w-full mx-auto border-2 rounded-xl" src="./assets/image/products/91.jpg" style="display:none">
-              <img class="mySlides w-10/12 lg:w-full mx-auto border-2 rounded-xl" src="./assets/image/products/92.jpg" style="display:none">
-              <img class="mySlides w-10/12 lg:w-full mx-auto border-2 rounded-xl" src="./assets/image/products/93.jpg" style="display:none">
+                @foreach ( $images as $image )
+                <img class="mySlides w-10/12 lg:w-full mx-auto border-2 rounded-xl" src="{{$image->image}}" @if ($loop->iteration != 1)
+                 style="display:none"
+                @endif>
+                <!-- <img class="mySlides w-10/12 lg:w-full mx-auto border-2 rounded-xl" src="./assets/image/products/91.jpg" style="display:none">
+                <img class="mySlides w-10/12 lg:w-full mx-auto border-2 rounded-xl" src="./assets/image/products/92.jpg" style="display:none">
+                <img class="mySlides w-10/12 lg:w-full mx-auto border-2 rounded-xl" src="./assets/image/products/93.jpg" style="display:none"> -->
+                @endforeach
+
               <div class="flex mt-4">
+              @foreach ($images as $image)
                 <div class="">
-                  <img class="opacity-50 hover:opacity-95 transition-all cursor-pointer w-10/12 lg:w-12/12 border-2 rounded-lg hover:border-red-400" src="./assets/image/products/9.webp" onclick="currentDiv(1)">
+                    <img class="opacity-50 hover:opacity-95 transition-all cursor-pointer w-10/12 lg:w-12/12 border-2 rounded-lg hover:border-red-400"
+                        src="{{$image->image}}"
+                        onclick="currentDiv({{ $loop->iteration }})">
                 </div>
-                <div class="">
-                  <img class="opacity-50 hover:opacity-95 transition-all cursor-pointer w-10/12 lg:w-12/12 border-2 rounded-lg hover:border-red-400" src="./assets/image/products/91.jpg" onclick="currentDiv(2)">
-                </div>
-                <div class="">
-                  <img class="opacity-50 hover:opacity-95 transition-all cursor-pointer w-10/12 lg:w-12/12 border-2 rounded-lg hover:border-red-400" src="./assets/image/products/92.jpg" onclick="currentDiv(3)">
-                </div>
-                <div class="">
-                  <img class="opacity-50 hover:opacity-95 transition-all cursor-pointer w-10/12 lg:w-12/12 border-2 rounded-lg hover:border-red-400" src="./assets/image/products/93.jpg" onclick="currentDiv(4)">
-                </div>
+            @endforeach
+
               </div>
           </div>
           <!-- info -->
@@ -421,6 +422,7 @@ $colorMap = [
                 @endif
               </div>
               @if ($product->count)
+
                <form action="{{route('add_to_card' , ['product' => $product])}}" id="Form" method="post">
                 @csrf
                 <input type="hidden" name="color" id="color"  value="unimportant" >
@@ -430,8 +432,14 @@ $colorMap = [
               <button onclick="document.getElementById('Form').submit();" class="mx-auto w-full px-2 py-3 text-sm bg-red-500 hover:bg-red-400 transition text-gray-100 rounded-lg ">
                 افزودن به سبد خرید
               </button>
+
               @else
-              <button class="bell mb-1">
+              <form id="FormSubmit" action="{{route('NotificationProduct', ['id' => $product->id])}}" method="post">
+                @csrf
+
+              </form>
+              @if (!request()->user()->productNotificationUser()->where('product_id', $product->id)->count())
+              <button onclick="document.getElementById('FormSubmit').submit()" class="bell mb-1">
                   <svg
                 class="bell-icon w-6 h-6 mr-2 transition-transform duration-300"
                 xmlns="http://www.w3.org/2000/svg"
@@ -446,12 +454,11 @@ $colorMap = [
                 </svg>
                 اطلاع‌رسانی در صورت موجود شدن
                 </button>
+              @endif
+
                 <button class="mx-auto w-full px-2 py-3 text-sm bg-red-400 transition text-gray-100 rounded-lg mb-1">
                 فعلا این محصول موجود نمیباشد
                 </button>
-
-
-
 
               @endif
             </div>

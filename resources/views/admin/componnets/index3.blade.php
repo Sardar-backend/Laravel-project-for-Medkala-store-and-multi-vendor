@@ -5,8 +5,16 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header d-flex">
-                <h3 class="card-title">فهرست کاربران</h3>
-
+                <h3 id="tit" class="card-title">
+                    @if (request('only'))
+                        فهرست فروشندگان
+                    @else
+                        فهرست کاربران
+                    @endif
+                </h3>
+                <form action="" id="only" method="get">
+                    <input name="only" value="1" type="hidden">
+                </form>
                 <div class="card-tools d-flex"><form action="">
                   <div class="input-group input-group-sm" style="width: 150px;">
 
@@ -19,6 +27,14 @@
                     </form>
                     <div class="btn-group-sm mr-2"></div>
                     <a href="{{ route('create') }}" class="btn btn-info">ایجاد کاربر</a>
+                    @if (request('only'))
+                    <a href="/admin" class="btn btn-primary mr-1">همه کاربران</a>
+                    @else
+                    <form action="" id="only" method="get">
+                        <input name="only" value="1" type="hidden">
+                    </form>
+                    <a  onclick="document.getElementById('only').submit();" class="btn btn-primary mr-1">فقط فروشندگان</a>
+                    @endif
                     </div>
                 </div>
 

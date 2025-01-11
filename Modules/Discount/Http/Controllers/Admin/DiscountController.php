@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Discount\Models\Discount;
+// use Modules\Discount\Http\Models\Discount;
 use Nwidart\Modules\Facades\Module;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -19,6 +20,7 @@ class DiscountController extends Controller
      */
     public function index()
     {
+
         $all=Discount::all();
         $module= Module::find('Discount');
         return view('discount::admin.index', compact('all','module'));

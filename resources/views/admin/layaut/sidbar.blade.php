@@ -89,7 +89,7 @@ $module= Module::find('Discount');
             </li> --}}
 
             <li class="nav-item has-treeview ">
-                <a href="#" class="nav-link active">
+                <a href="#" class="nav-link @if (Request::path()=='Charts' || Request::path()=='Users' || Request::path()=='Low-stock-products' )active @endif">
                 <i class="nav-icon fa fa-tachometer-alt"></i>
                   <p>
                     داشبورد
@@ -98,12 +98,12 @@ $module= Module::find('Discount');
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="{{route('Charts-admin')}}" class="nav-link active">
+                    <a href="{{route('Charts-admin')}}" class="nav-link @if (Request::path()=='Charts' ) active @endif ">
                     <i class="fa fa-chart-area nav-icon"></i>                      <p>نمودار ها</p>
                     </a>
                   </li>
                   <li class="nav-item has-treeview">
-                      <a href="#" class="nav-link">
+                      <a href="#" class="nav-link @if (Request::path()=='Users' || Request::path()=='Low-stock-products' ) active @endif ">
                       <i class="fa fa-wrench nav-icon"></i> <!-- ابزارها -->                        <p>
                           ویجت ها
                           <i class="fa fa-angle-left right"></i>
@@ -111,13 +111,14 @@ $module= Module::find('Discount');
                       </a>
                       <ul class="nav nav-treeview" style="display: none;">
                         <li class="nav-item">
-                          <a href="pages/forms/general.html" class="nav-link">
-                          <i class="fa fa-address-book nav-icon"></i>                            <p> کاربران جدید</p>
+                          <a href="{{route('Users')}}" class="nav-link @if (Request::path()=='Users' ) active @endif">
+                          <i class="fa fa-address-book nav-icon"></i>                            <p> لیست کاربران </p>
                           </a>
                         </li>
                         <li class="nav-item">
-                          <a href="pages/forms/advanced.html" class="nav-link">
-                          <i class="fa fa-box-open nav-icon"></i> <!-- جعبه باز (کمبود کالا) -->                            <p>محصولات موجودی کم</p>
+                          <a href="{{route('Low_stock_products')}}" class="nav-link @if (Request::path()=='Low-stock-products' ) active @endif">
+                          <i class="fa fa-box-open nav-icon"></i>
+                            <p>محصولات موجودی کم</p>
                           </a>
                         </li>
                         <li class="nav-item">
@@ -125,19 +126,21 @@ $module= Module::find('Discount');
                           <i class="fa fa-wallet nav-icon"></i> <!-- کیف پول -->                            <p>درآمد کل و سود خالص</p>
                           </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{route('Commission')}}" class="nav-link @if (Request::path()=='admin_comment'  ) active @endif">
+                            <i class="fa fa-file-invoice"></i> <!-- آیکون صورتحساب -->
+                            <p> تنظیم کمیسیون </p>
+                            </a>
+                        </li>
                       </ul>
                     </li>
-                  <li class="nav-item">
-                    <a href="" class="nav-link">
-                    <i class="fa fa-list-alt nav-icon"></i> <!-- لیست با جزئیات -->                      <p>لیست سریع</p>
-                    </a>
-                  </li>
+
                 </ul>
               </li>
 
 
              <li class="nav-item has-treeview ">
-              <a href="#" class="nav-link @if (Request::path()=='admin_PRODUCT' || Request::path()=='admin_PRODUCT/create' )active @endif ">
+              <a href="#" class="nav-link @if (Request::path()=='admin_PRODUCT' || Request::path()=='admin_PRODUCT/create' || Request::path()=='admin_category' || Request::path()=='admin_category/create')active @endif ">
               <i class="fa fa-warehouse"></i> <!-- انبار -->
 
                 <p>
@@ -166,7 +169,7 @@ $module= Module::find('Discount');
 
 
             <li class="nav-item has-treeview ">
-              <a href="#" class="nav-link @if ( Request::path()=='admin_blog' || Request::path()=='admin_blog/create' || Request::path()=='admin_comment' || Request::path()=='admin_blogCategory' || Request::path()=='admin_blogCategory/create'  )active @endif ">
+              <a href="#" class="nav-link @if ( Request::path()=='admin_blog' || Request::path()=='admin_blog/create'  || Request::path()=='admin_blogCategory' || Request::path()=='admin_blogCategory/create'  )active @endif ">
               <i class="fa fa-newspaper"></i>
                 <p>
                 مدیریت محتوا
@@ -195,7 +198,7 @@ $module= Module::find('Discount');
 
 
             <li class="nav-item has-treeview ">
-                <a href="#" class="nav-link @if ( Request::path()=='admin_blog' || Request::path()=='admin_blog/create' || Request::path()=='admin_comment' || Request::path()=='admin_blogCategory' || Request::path()=='admin_blogCategory/create'  )active @endif ">
+                <a href="#" class="nav-link @if ( Request::path()=='admin_comment' ||  Request::path()=='massage'  )active @endif ">
                   <!-- <i class="nav-icon fa fa-dashboard"></i> -->
                   <i class="fa fa-comments"></i> <!-- گفتگو -->
 
@@ -206,7 +209,7 @@ $module= Module::find('Discount');
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href=""{{route('massage')}}" class="nav-link @if (Request::path()=='admin/massage' ) active @endif "">
+                    <a href="{{route('massage')}}" class="nav-link @if (Request::path()=='massage' ) active @endif ">
                       <i class="fa fa-file-text"></i>
                       <p>پیغام ها</p>
                     </a>
@@ -222,27 +225,27 @@ $module= Module::find('Discount');
 
 
               <li class="nav-item has-treeview ">
-                <a href="#" class="nav-link @if ( Request::path()=='admin_blog' || Request::path()=='admin_blog/create' || Request::path()=='admin_comment' || Request::path()=='admin_blogCategory' || Request::path()=='admin_blogCategory/create'  )active @endif ">
+                <a href="#" class="nav-link @if ( Request::path()=='admin/Logo' || Request::path()=='admin/Banner' || Request::path()=='admin/editor'  )active @endif ">
                 <i class="fa fa-cog"></i> <!-- تنظیمات -->
                   <p>
-                    مدیریت تنظیمات سایت
+                     تنظیمات سایت
                     <i class="right fa fa-angle-left"></i>
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href=""{{route('massage')}}" class="nav-link @if (Request::path()=='admin/massage' ) active @endif "">
+                    <a href="{{ route('logo' ) }}" class="nav-link @if (Request::path()=='admin/Logo' ) active @endif "">
                     <i class="fab fa-apple"></i> <!-- آیکون سیب اپل -->                      <p>تغییر لوگو</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="{{route('admin_comment.index')}}" class="nav-link @if (Request::path()=='admin_comment'  ) active @endif">
+                    <a href="{{route('Banner.index')}}" class="nav-link @if (Request::path()=='admin/Banner'  ) active @endif">
                     <i class="fa fa-image"></i> <!-- تصویر بنر -->
                     <p> تغییر بنر </p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="{{route('admin_comment.index')}}" class="nav-link @if (Request::path()=='admin_comment'  ) active @endif">
+                    <a href="{{route('editor')}}" class="nav-link @if (Request::path()=='admin/editor'  ) active @endif">
                     <i class="fa fa-info-circle"></i> <!-- آیکون اطلاعات -->                      <p>  درباره ما </p>
                     </a>
                   </li>
@@ -285,29 +288,7 @@ $module= Module::find('Discount');
                 </li>
             </ul>
         </li>
-        <li class="nav-item has-treeview ">
-                <a href="#" class="nav-link @if ( Request::path()=='admin_blog' || Request::path()=='admin_blog/create' || Request::path()=='admin_comment' || Request::path()=='admin_blogCategory' || Request::path()=='admin_blogCategory/create'  )active @endif ">
-                  <!-- <i class="nav-icon fa fa-dashboard"></i> -->
-                  <i class="fa fa-users"></i> <!-- آیکون کاربران -->
-                  <p>
-                    مدیریت فروشندگان
-                    <i class="right fa fa-angle-left"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href=""{{route('massage')}}" class="nav-link @if (Request::path()=='admin/massage' ) active @endif "">
-                    <i class="fa fa-list-ol"></i> <!-- آیکون لیست مرتب -->                    <p>لیست فروشندگان</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="{{route('admin_comment.index')}}" class="nav-link @if (Request::path()=='admin_comment'  ) active @endif">
-                    <i class="fa fa-file-invoice"></i> <!-- آیکون صورتحساب -->
-                    <p> تنظیم کمیسیون </p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
+
         <li class="nav-item">
           <a href="{{route('admin_Orders.index')}}" class="nav-link @if (Request::path()=='admin_Orders' ) active @endif ">
             <i class="fa fa-shopping-cart"></i>

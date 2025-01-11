@@ -15,7 +15,7 @@
                   موجودی حساب
                 </div>
                 <div>
-                  75,000 تومان
+                  {{request()->user()->wallet}} تومان
                 </div>
               </div>
             </div>
@@ -37,7 +37,7 @@
                  سفارشات کل
                 </div>
                 <div>
-                  16
+                  {{$CountOrdersAll}}
                 </div>
               </div>
             </div>
@@ -48,7 +48,7 @@
                   تحویل داده شده
                 </div>
                 <div>
-                  16
+                  {{$CountOrdersRecieved}}
                 </div>
               </div>
             </div>

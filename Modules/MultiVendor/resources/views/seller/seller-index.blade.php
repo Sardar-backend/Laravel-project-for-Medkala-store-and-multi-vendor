@@ -46,7 +46,7 @@
                     درآمد کل
                   </div>
                   <div class="text-gray-800">
-                  {{request()->user()->orders_sellers()->sum('price')}} تومان
+                  {{ $Sumrevenue }} تومان
                   </div>
                 </div>
               </a>
@@ -133,7 +133,7 @@
         </div>
       </div>
     </main>
-  <script>
+  <!-- <script>
     const ctx = document.getElementById('myChart');
 
     new Chart(ctx, {
@@ -149,7 +149,7 @@
         }]
       },
     });
-  </script>
+  </script> -->
       <script src="./assets/js/chart.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function () {

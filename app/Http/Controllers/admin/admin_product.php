@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Jobs\ApplyFineJob;
 use App\Jobs\SendNotificationCodeJob;
 use App\Jobs\SendNotificationFineJob;
+use App\Jobs\SendNotificationProductJob;
 use App\Jobs\TimerJob;
 use App\Models\Attributes;
 use App\Models\Product;
 use App\Models\productcategory;
+use App\Models\productNotificationUser;
 use Attribute;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -225,7 +227,9 @@ class admin_product extends Controller
                 $p->attribute()->attach($attre->id,['value_id' => $attre_value->id]);
         });
 
-
+        if (!$user->count && $data['count']) {
+            SendNotificationProductJob::dispatch($user);
+        }
         $user->update($data);
         $p->category()->sync($data['categories']);
 

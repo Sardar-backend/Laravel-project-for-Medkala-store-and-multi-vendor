@@ -82,7 +82,7 @@
                 <!-- /.card-body -->
                 <div class="card-footer">
                   <button type="submit" class="btn btn-info">ایجاد کاربر</button>
-                  <a href="{{route('admin')}}" class="btn btn-default float-left">لغو<a/>
+                  <a href="{{route('Users')}}" class="btn btn-default float-left">لغو<a/>
                 </div>
                 <!-- /.card-footer -->
               </form>

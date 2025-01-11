@@ -22,11 +22,6 @@
                                 <a href="#">
                                     <img src="{{ $image->image }}" class="img-fluid mb-2" alt="{{ $image->image }}">
                                 </a>
-                                <form action="{{ route('product.gallery.destroy' , ['product' => $product->id , 'gallery' => $image->id]) }}" id="image-{{ $image->id }}" method="post">
-                                    @method('delete')
-                                    @csrf
-                                </form>
-
                                 <a href="#" class="btn btn-sm btn-danger" onclick="document.getElementById('image-{{ $image->id }}').submit()">حذف</a>
                             </div>
                         @endforeach

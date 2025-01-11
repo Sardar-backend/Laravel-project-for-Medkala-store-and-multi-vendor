@@ -29,7 +29,7 @@
             تایید
           </a>
           <div class="flex justify-center mt-6">
-            <a href="" class="border-l border-l-zinc-400 text-zinc-600 hover:text-zinc-800 transition-all text-xs px-3">
+            <a href="{{route('seller-guidance')}}" class="border-l border-l-zinc-400 text-zinc-600 hover:text-zinc-800 transition-all text-xs px-3">
               راهنمای ثبت نام
             </a>
             <a href="" class="text-zinc-600 hover:text-zinc-800 transition-all text-xs px-3">

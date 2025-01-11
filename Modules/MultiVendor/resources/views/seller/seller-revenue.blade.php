@@ -37,8 +37,8 @@
                     درآمد کل
                   </div>
                   <div class="text-gray-800">
-                  {{request()->user()->orders_sellers()->sum('price')}} تومان
-                  
+                  {{$Sumrevenue}} تومان
+
                   </div>
                 </div>
               </a>
@@ -49,7 +49,7 @@
                    درآمد این ماه
                   </div>
                   <div class="text-gray-800">
-                    32,237,000 تومان
+                    {{$SumThisMonth}} تومان
                   </div>
                 </div>
               </a>
@@ -60,7 +60,7 @@
                    درآمد ماه قبل
                   </div>
                   <div class="text-gray-800">
-                    16,587,000 تومان
+                    {{$SumLastMonth}} تومان
                   </div>
                 </div>
               </a>

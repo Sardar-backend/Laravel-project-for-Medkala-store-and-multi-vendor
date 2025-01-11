@@ -46,7 +46,7 @@ Route::post('/t_auth2',[\App\Http\Controllers\HomeController::class,'tokenpostau
 
 
 
-
+Route::post('NotificationProduct/{id}',[HomeController::class , 'NotificationProduct'])->name('NotificationProduct')->middleware('auth');
 
 
 // Auth::routes();

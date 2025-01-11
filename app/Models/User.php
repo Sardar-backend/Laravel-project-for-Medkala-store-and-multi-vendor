@@ -11,10 +11,20 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\HasApiTokens;
 use Modules\Discount\Models\Discount;
+use Morilog\Jalali\Jalalian;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable ;
+
+
+
+    public function scopeOfShamsiMonth($query, $year, $month)
+    {
+        $start = Jalalian::fromFormat('Y-m-d', "$year-$month-01")->toCarbon(); // شروع ماه
+        $end = $start->copy()->endOfMonth(); // پایان ماه
+        return $query->whereBetween('created_at', [$start, $end]);
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -33,8 +43,12 @@ class User extends Authenticatable
         'cart_number',
         'home_number',
         'Gender',
-        'about'
+        'about',
+        'created_at'
     ];
+
+
+
 
     protected static $rules = [
         'name' => ['required', 'string', 'max:255'],
@@ -133,6 +147,11 @@ class User extends Authenticatable
 
     public function messages(){
         return $this->hasMany(message::class);
+    }
+
+
+    public function productNotificationUser() {
+        return $this->belongsToMany(Product::class , 'product_notification_user');
     }
     // public function Discounts (){
     //     return $this->belongsToMany(Discount::class);

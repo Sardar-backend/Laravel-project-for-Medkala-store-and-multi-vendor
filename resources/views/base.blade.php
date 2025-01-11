@@ -217,6 +217,7 @@
 </style>
 </head>
 @php
+use Illuminate\Support\Facades\DB;
 $UnSeens = request()->user() ? request()->user()->messages()->whereSeen(0)->get() : [] ;
 use App\Helpers\Cart\Cart;
 use App\Models\productcategory;
@@ -243,7 +244,7 @@ $AllParentProductCategory = productcategory::whereparent(0)->get();
                 <img
                   alt=""
                   class="w-44 text-red-700"
-                  src="./assets/image/logo.png"
+                  src="{{DB::table(table: 'settings')->first()->logo}}"
                 />
               </a>
             </div>
@@ -384,7 +385,7 @@ $AllParentProductCategory = productcategory::whereparent(0)->get();
                       <img
                         alt=""
                         class="h-6 w-full rounded-lg xs:h-10"
-                        src="./assets/image/logo.png"/>
+                        src="{{DB::table(table: 'settings')->first()->logo}}"/>
                     </a>
                   </div>
                 </div>
@@ -1283,7 +1284,7 @@ $AllParentProductCategory = productcategory::whereparent(0)->get();
                 <img
                   alt=""
                   class="h-10 w-full rounded-lg"
-                  src="{{asset('./assets/image/logo.png')}}"/>
+                  src="{{DB::table(table: 'settings')->first()->logo}}"/>
               </a>
             </div>
             <!-- Close Button -->
@@ -1637,7 +1638,7 @@ $AllParentProductCategory = productcategory::whereparent(0)->get();
     <div class="flex flex-wrap gap-y-4 justify-between items-center px-6">
       <div class="flex flex-col">
         <div>
-          <img class="w-32 md:w-48" src="./assets/image/logo.png" alt="">
+          <img class="w-32 md:w-48" src="{{DB::table(table: 'settings')->first()->logo}}" alt="">
         </div>
         <div class="text-xs text-zinc-600 mt-3">
           تلفن پشتیبانی 44444444-021

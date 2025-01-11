@@ -13,6 +13,7 @@ use App\Helpers\PdfService\PdfService;
 use App\Helpers\TrendingContent;
 use App\Models\blog;
 use App\Models\Product;
+use App\Models\productNotificationUser;
 use App\Notifications\notificationCode;
 use App\Models\activecode;
 use App\Models\address;
@@ -27,7 +28,7 @@ use App\Models\Question;
 use App\Models\Tag;
 use App\Models\User;
 use Artesaos\SEOTools\Facades\SEOTools;
-
+use Carbon\Carbon;
 use \Illuminate\Support\Facades\Auth;
 use \Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
@@ -38,6 +39,8 @@ use Illuminate\Validation\Rule;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\DB;
+use App\Jobs\SendNotificationProductJob;
 
 class HomeController extends Controller
 {
@@ -57,6 +60,11 @@ class HomeController extends Controller
                 'height' => 200,
                 'width' => 200,
             ]);
+
+            // DB::table('visits')->insert([
+            //     'views' => 1,
+            // ]);
+
 
         // Caching the results of the categories query for better performance
         $categories = Cache::remember('product_categories', 60, function () {
@@ -83,7 +91,7 @@ class HomeController extends Controller
             return Product::where('Chosen', 1)->limit(4)->get();
         });
 
-        // Caching the special sale products query, limiting to 2 items
+
         $special_sale = Cache::remember('special_sale_products', 60, function () {
             return Product::where('Special_sale', 1)->limit(2)->get();
         });
@@ -93,10 +101,11 @@ class HomeController extends Controller
             return Product::where('discust', '>', 20)->limit(4)->get();
         });
 
+        $Banners  =  DB::table('Banners')->get();
 
         // Return the homepage view with the fetched data
         return view('public.index',
-        compact('pro', 'categories', 'blogs', 'discounted', 'count_view', 'special_sale' , 'amazing')
+        compact('pro', 'categories', 'blogs', 'discounted', 'count_view', 'special_sale' , 'amazing' , 'Banners')
     );
     }
 
@@ -115,9 +124,10 @@ class HomeController extends Controller
                 'height' => 200,
                 'width' => 200,
             ]);
-
+            Auth::logout();
+        $about = DB::table('settings')->first()->about ;
         // Return the About Us view
-        return view('public.about');
+        return view('public.about' , compact('about'));
     }
 
     /**
@@ -259,10 +269,12 @@ class HomeController extends Controller
             ->get();
         });
         $questions = $product->questions()->get();
+        $images = $product->gallery()->get();
+
         // Return the product page view with the product details, comments, and category
         return view('public.single-product'
         , compact(
-        'product','comments' , 'relatedproduct' , 'questions'
+        'product','comments' , 'relatedproduct' , 'questions' , 'images'
         // 'comments', 'category'
         )
     );
@@ -509,11 +521,11 @@ public function craete_comment(Request $request) {
  */
 public function like_post (Request $request) {
     // Find the product by its ID from the request
+
     $p = Product::find($request->product_id);
 
     // Attach the product to the authenticated user's favorites
     $request->user()->favorite()->attach($p);
-
     // Redirect back to the previous page
     return back();
 }
@@ -593,5 +605,13 @@ public function printOrder(PdfService $pdfService, $id)
     $order = Order::findOrFail($id);
     $pdf = $pdfService->generateOrderPdf($order);
     return response($pdf)->withHeaders(['Content-Type' => 'application/pdf','Content-Disposition' => 'inline; filename="order-' . $order->id . '.pdf"',]);
+}
+
+public function NotificationProduct(Request $request , Product $product){
+
+    $request->user()->productNotificationUser()->attach($product->first());
+    Alert::success('عملیات موفقیت آمیز بود', 'در صورت موجود شدن به شما پیامک خواهد شد');
+    // Redirect back to the previous page
+    return back();
 }
 }

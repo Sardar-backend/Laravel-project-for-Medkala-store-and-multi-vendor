@@ -4,19 +4,18 @@
         @include('admin.layaut.errors')
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">ثبت تصویر</h3>
+                    <h3 class="card-title">ثبت بنر</h3>
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form class="form-horizontal" action="{{ route('product.gallery.store' , ['product' => $product->id]) }}" method="POST" enctype="multipart/form-data">
+                <form class="form-horizontal" action="{{ route('logo.store' ) }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <input type="hidden" name="product_id" value="{{$product->id}}">
                     <div id="father">
                      <!-- card -->
                     <div class="card-body">
                     <div class="form-group">
                   <div class="col-sm-10">
-                  <label for="email">عکس محصول  :</label>
+                  <label for="email">عکس بنر  :</label>
                   <input name="image" accept="image/*" type="file" class="form-control"   ></div>
                   </div>
                     <div class="form-group">
@@ -37,7 +36,7 @@
                     <!-- /.card-body -->
                     <div class="card-footer">
                         <button type="submit" class="btn btn-info">ثبت تصاویر</button>
-                        <a href="{{ route('product.gallery.index' , ['product' => $product->id]) }}" class="btn btn-default float-left">لغو</a>
+                        <a href="{{ route('Banner.index' ) }}" class="btn btn-default float-left">لغو</a>
                     </div>
                     <!-- /.card-footer -->
                 </form>

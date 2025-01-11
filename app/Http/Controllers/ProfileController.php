@@ -72,8 +72,9 @@ class ProfileController extends Controller
 
     public function personal (Request $request){
         $orders = $request->user()->orders()->orderBy('updated_at')->take(3)->get();
-
-        return view('public.profile.profile' , compact('orders'));
+        $CountOrdersRecieved = $request->user()->orders()->where('status','recieved')->count();
+        $CountOrdersAll = $request->user()->orders()->count();
+        return view('public.profile.profile' , compact('orders' , 'CountOrdersRecieved','CountOrdersAll'));
     }
 
     public function message(){

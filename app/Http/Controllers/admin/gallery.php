@@ -16,9 +16,6 @@ class gallery extends Controller
     public function index(Product $product)
     {
         $images = $product->gallery()->latest()->get();
-
-        // dd($images[0]->image);
-        // dd('kir');
         return view('admin.componnets.gallery.all',compact('images','product'));
     }
 

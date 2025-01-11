@@ -2,7 +2,7 @@
 
 <div class="md:w-3/12 bg-white shadow-box-md rounded-2xl py-3">
 @if( request()->user()->image )
-<div style="display: flex; justify-content: center; align-items: center; height: 200px;">
+<div style="display: flex; justify-content: center; align-items: center; height: 150px;">
     <img
         src="{{ asset('/storage/' . request()->user()->image ) }}"
         alt="عکس کاربر"

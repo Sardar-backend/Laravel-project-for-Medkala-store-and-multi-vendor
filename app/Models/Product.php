@@ -63,4 +63,8 @@ class Product extends Model
     public function questions(){
         return $this->hasMany(Question::class);
     }
+
+    public function productNotificationUser() {
+        return $this->belongsToMany(User::class , 'product_notification_user');
+    }
 }

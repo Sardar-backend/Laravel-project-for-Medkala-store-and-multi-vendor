@@ -54,10 +54,13 @@
     <!-- desktop -->
     <div class="swiper heroSlider hidden md:block">
       <div class="swiper-wrapper">
+        @foreach ( $Banners as $Banner)
         <a href="" class="swiper-slide">
-          <img src="./assets/image/heroSlider/1.jpg" alt="">
+          <img src="{{$Banner->image}}" alt="">
         </a>
-        <a href="" class="swiper-slide">
+        @endforeach
+
+        <!-- <a href="" class="swiper-slide">
           <img src="./assets/image/heroSlider/2.webp" alt="">
         </a>
         <a href="" class="swiper-slide">
@@ -68,7 +71,8 @@
         </a>
         <a href="" class="swiper-slide">
           <img src="./assets/image/heroSlider/5.webp" alt="">
-        </a>
+        </a> -->
+        
       </div>
       <div class="swiper-button-next"></div>
       <div class="swiper-button-prev"></div>
